@@ -1,12 +1,12 @@
 var map = {
 	Months: ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'],
 	Temples: [
-						['Спасо-Преображенский собор',	57.620655,	39.887763,	6,	'img/map_marker_1.png',	'img/map_marker_invert_1.png', 'img/map_info_4.png', 'Богоявленская пл., д. 25'],
-						['Церковь Ильи Пророка',				57.6269,		39.89423,	5,	'img/map_marker_2.png',	'img/map_marker_invert_2.png', 'img/map_info_3.png', 'Советская пл., д. 7'],
-						['Церковь Николы Надеина',			57.62887,	39.89582,	4,	'img/map_marker_3.png',	'img/map_marker_invert_3.png', 'img/map_info_2.png', 'Народный пер., д. 2а'],
-						['Церковь Рождества Христова',		57.63058,	39.89422,	3,	'img/map_marker_4.png',	'img/map_marker_invert_4.png', 'img/map_info_1.png', 'Ул. Кедрова, д. 1'],
-						['Церковь Иоанна Предтечи',			57.610931,	39.857109,	2,	'img/map_marker_5.png',	'img/map_marker_invert_5.png', 'img/map_info_6.png', '2-я Закоторосльная наб., д. 69']
-						['Церковь Богоявления',					57.62163,	39.88628,	1,	'img/map_marker_6.png',	'img/map_marker_invert_6.png', 'img/map_info_5.png', 'Богоявленская пл., д. 12'],
+						['Спасо-Преображенский собор', 57.620655, 39.887763, 6, 'img/map_marker_1.png', 'img/map_marker_invert_1.png', 'img/map_info_1.png', 'Богоявленская пл., д. 25'],
+						['Церковь Ильи Пророка', 57.6269,	 39.89423, 5, 'img/map_marker_2.png', 'img/map_marker_invert_2.png', 'img/map_info_2.png', 'Советская пл., д. 7'],
+						['Церковь Николы Надеина', 57.62887, 39.89582, 4, 'img/map_marker_3.png', 'img/map_marker_invert_3.png', 'img/map_info_3.png', 'Народный пер., д. 2а'],
+						['Церковь Рождества Христова', 57.63058, 39.89422, 3, 'img/map_marker_4.png', 'img/map_marker_invert_4.png', 'img/map_info_4.png', 'Ул. Кедрова, д. 1'],
+						['Церковь Богоявления', 57.62163, 39.88628, 1, 'img/map_marker_5.png', 'img/map_marker_invert_5.png', 'img/map_info_5.png', 'Богоявленская пл., д. 12'],
+						['Церковь Иоанна Предтечи', 57.610931, 39.857109, 2, 'img/map_marker_6.png', 'img/map_marker_invert_6.png', 'img/map_info_6.png', '2-я Закоторосльная наб., д. 69']
 				   ],
 //					Start Month, End Month, Days of week, Working text, Not working months text, Not working days text
 	WorkTime:[	[4, 8, [0,3,4,5,6], '10:00-17:00<br>В дождливые дни посещение храмов ограничено', 'Храм закрыт', 'Выходной'],
