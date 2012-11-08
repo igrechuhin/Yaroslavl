@@ -44,4 +44,8 @@ $(document).ready(function() {
 	$("#Page06").live("pageinit", function() {
 		gallery.init('#Gallery');
 	});
+	$('#PageContent').scroll(function(eventObj) {
+		var div = eventObj.target;
+		console.log(div.scrollTop + div.clientHeight + '==' + div.scrollHeight);
+	});
 });
