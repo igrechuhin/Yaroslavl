@@ -38,19 +38,19 @@ $(document).ready(function() {
 	$('.menu_link').click(function() {
         menu.restore_init_state();
     });
-	$("#Page04").live("pageinit", function() {
+	$('#Page04').live('pageinit', function() {
   		setTimeout(map.initialize, 500);
 	});
-	$("#Page06").live("pageinit", function() {
+	$('#Page06').live('pageinit', function() {
 		gallery.init('#Gallery');
 	});
-	$('#Page09 > #PageContent').scroll(function(eventObj) {
-		var div = eventObj.target;
-		if (div.scrollTop + div.clientHeight > div.scrollHeight - 20) {
-			$('#Page09 > #ArrowDown').css('display', 'none');
-		}
-		else {
-			$('#Page09 > #ArrowDown').css('display', 'block');
-		}
-	});
 });
+
+function page09Scroll(eventObj, arrowDownID) {
+	if (eventObj.scrollTop + eventObj.clientHeight > eventObj.scrollHeight - 20) {
+		$('#Page09 > #'+arrowDownID).css('display', 'none');
+	}
+	else {
+		$('#Page09 > #'+arrowDownID).css('display', 'block');
+	}
+}
