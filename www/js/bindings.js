@@ -44,8 +44,13 @@ $(document).ready(function() {
 	$("#Page06").live("pageinit", function() {
 		gallery.init('#Gallery');
 	});
-	$('#PageContent').scroll(function(eventObj) {
+	$('#Page09 > #PageContent').scroll(function(eventObj) {
 		var div = eventObj.target;
-		console.log(div.scrollTop + div.clientHeight + '==' + div.scrollHeight);
+		if (div.scrollTop + div.clientHeight > div.scrollHeight - 20) {
+			$('#Page09 > #ArrowDown').css('display', 'none');
+		}
+		else {
+			$('#Page09 > #ArrowDown').css('display', 'block');
+		}
 	});
 });
