@@ -1,0 +1,134 @@
+@import url("../webfonts/PT_Sans_Pro_Narrow_Demi_Regular/stylesheet.css");
+@import url("../webfonts/PT_Sans_Pro_Narrow_Light_Regular/stylesheet.css");
+@import url("../webfonts/PT_Sans_Pro_Condensed_Demi_Regular/stylesheet.css");
+@import url("../webfonts/PT_Serif_Regular/stylesheet.css");
+
+A:link {
+	text-decoration: none;
+}
+
+A:visited {
+	text-decoration: none;
+}
+
+A:active {
+	text-decoration: none;
+}
+
+A:hover {
+	text-decoration: none;
+}
+
+h1 {
+	font-family: 'PT Sans Pro Condensed Demi Regular';
+	font-size: 24pt;
+	font-weight: normal;
+	letter-spacing: 1px;
+	border-bottom: 2px solid black;
+	position: absolute;
+	left: 35px;
+	top: 7px;
+}
+
+#Body {
+	margin: 0px;
+	background-color: white;
+}
+
+#PageContent {
+	position: absolute;
+	left: 35px;
+	right: 130px;
+	top: 120px;
+	bottom: 20px;
+	overflow-y: scroll;
+	font-family: "PT Serif Regular";
+	font-size: 14pt;
+	color: black;
+	z-index: 200;
+}
+
+.button_text {
+	font-family: "PT Sans Pro Narrow Demi Regular";
+	font-size: 11pt;
+	line-height: 15px;
+	color: black;
+	opacity: 0.4;
+	position: relative;
+	left: -18px;
+	bottom: -46px;
+	text-align: center;
+	width: 100px;
+}
+
+.page {
+	background-image: none;
+	z-index: 500;
+}
+
+.swipe_links {
+	display: none;
+}
+.ui-loading .ui-loader { display: block; }
+.ui-loader { display: none; position: absolute; opacity: .85; z-index: 100; left: 50%; width: 200px; margin-left: -130px; margin-top: -35px; padding: 10px 30px; }
+
+.gallery { list-style: none; padding: 0; margin: 0; }
+.gallery:after { clear: both; content: "."; display: block; height: 0; visibility: hidden; }
+.gallery li { float: left; width: 33.33333333%; }
+.gallery li a { display: block; margin: 5px; border: 1px solid #3c3c3c; }
+.gallery li img { display: block; width: 100%; height: auto; }
+#Gallery .ui-content { overflow: hidden; }
+
+/*
+.ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page { top: 0; left: 0; width: 100%; min-height: 100%; position: absolute; display: none; border: 0; }
+.ui-mobile .ui-page-active { display: block; overflow: visible; }
+
+
+/* iPads (landscape) ----------- */
+/*@media only screen 
+   and (min-device-width : 768px) 
+   and (max-device-width : 1024px) 
+   and (orientation : landscape) {
+}*/
+
+/* iPads (portrait) ----------- */
+/*@media only screen and (min-device-width : 768px) 
+								and (max-device-width : 1024px)
+								and (orientation : portrait) {
+	#Page01 {
+		background-image:url(/img/page01_background_768x1024.jpg);
+	}
+	
+	.Menu_link {
+		src:url(/img/circle01_35.png);
+	}
+}*/
+
+/* iPads Retina (landscape) ----------- */
+/*@media only screen 
+   and (min-device-width : 1536px) 
+   and (max-device-width : 2048px) 
+   and (orientation : landscape) {
+}*/
+
+/* iPads Retina (portrait) ----------- */
+/*@media only screen and (min-device-width : 1536px) 
+								and (max-device-width : 2048px)
+								and (orientation : portrait) {
+	#Page01 {
+		background-image:url(../img/page01_background_1536x2048.jpg);
+	}
+
+	.Menu_link {
+		src:url(/img/circle01_70.png);
+	}
+}
+*/
+.red_line {
+	padding-left: 40px;
+}
+
+.underline {
+	border-bottom: 2px solid black;
+}
+

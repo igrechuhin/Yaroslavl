@@ -1,0 +1,128 @@
+#Menu {
+	display: none;
+	z-index: 1001;
+}
+
+.menu_icon {
+	background-size: contain;
+	right: 30px;
+	top: 30px;
+	width: 63px;
+	height: 63px;
+	position: fixed;
+	vertical-align: bottom;
+	cursor: pointer;
+	z-index: 1010;
+}
+
+#MenuIcon {
+	background-image: url(../img/contents_126x126.png);
+}
+
+#MenuIconBrown {
+	background-image: url(../img/contents_brown_126x126.png);
+}
+
+#Menu #Dim {
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	opacity: 0.7;
+	z-index: 1000;
+}
+
+.menu_rect {
+	position: fixed;
+	opacity: 0;
+	z-index: 1001;
+}
+
+.menu_button {
+	cursor: pointer;
+	border-radius: 50%;
+	color: white;
+	z-index: 1003;
+}
+
+.menu_green {
+	background-color: #93C357;
+}
+
+.menu_purple {
+	background-color: #745AA3;
+}
+
+.menu_blue {
+	background-color: #165FAA;
+}
+
+.menu_cyan {
+	background-color: #00A7BD;
+}
+
+.menu_rotate {
+	-webkit-transform: rotate(-45deg);
+}
+
+#Page01Button {left: 318px; top: 580px; width: 138px; height: 138px;}
+#Page02Button {left: 129px; top: 596px; width: 105px; height: 105px;}
+#Page03Button {left: 318px; top: 376px; width: 138px; height: 138px;}
+#Page04Button {left: 421px; top: 478px; width: 138px; height: 138px;}
+#Page05Button {left: 215px; top: 478px; width: 138px; height: 138px;}
+#Page06Button {left: 40px; top: 509px; width: 78px; height: 78px;}
+#Page07Button {left: 40px; top: 713px; width: 78px; height: 78px;}
+#Page08Button {left: 656px; top: 508px; width: 78px; height: 78px;}
+#Page09Button {left: 142px; top: 816px; width: 78px; height: 78px;}
+#Page10Button {left: 348px; top: 816px; width: 78px; height: 78px;}
+#Page11Button {left: 438px; top: 700px; width: 105px; height: 105px;}
+#Page12Button {left: 232px; top: 290px; width: 105px; height: 105px;}
+#Page13Button {left: 348px; top: 200px; width: 78px; height: 78px;}
+
+#MenuCircle01 {left: 440px; top: 290px; width: 105px; height: 105px;}
+#MenuCircle02 {left: 656px; top: 713px; width: 78px; height: 78px;}
+#MenuCircle03 {left: 142px; top: 200px; width: 78px; height: 78px;}
+#MenuCircle04 {left: 129px; top: 392px; width: 105px; height: 105px;}
+
+#MenuRect01 {left: 595px;	top: 356px; width: 10px; height: 185px;}
+#MenuRect02 {left: 568px;	top: 542px; width: 80px;  height: 10px;}
+#MenuRect03 {left: 485px;	top: 625px; width: 10px; height: 65px;}
+#MenuRect04 {left: 550px;	top: 748px; width: 100px; height: 10px;}
+#MenuRect05 {left: 690px;	top: 595px; width: 10px; height: 110px;}
+#MenuRect06 {left: 381px;	top: 726px; width: 10px; height: 82px;}
+#MenuRect07 {left: 192px;	top: 758px; width: 165px; height: 10px;}
+#MenuRect08 {left: 174px;	top: 709px; width: 10px; height: 100px;}
+#MenuRect09 {left: 126px;	top: 542px; width: 80px; height: 10px;}
+#MenuRect10 {left: 76px;	top: 595px; width: 10px; height: 110px;}
+#MenuRect11 {left: 380px;	top: 287px; width: 10px; height: 80px;}
+#MenuRect12 {left: 322px;	top: 281px; width: 35px; height: 10px;}
+#MenuRect13 {left: 224px;	top: 266px; width: 10px; height: 35px;}
+#MenuRect14 {left: 177px;	top: 285px; width: 10px; height: 100px;}
+
+#Text01 {left: 18px; top: 12px; font-size: 43px;}
+#Text02 {left: 18px; top: 12px; font-size: 20px;}
+#Text03 {left: 20px; top: 15px; font-size: 26px;}
+#Text04 {left: 20px; top: 15px; font-size: 38px;}
+#Text05 {left: 20px; top: 15px; font-size: 45px;}
+#Text06 {left: 6px; top: 15px; font-size: 17px;}
+#Text07 {left: 9px; top: 13px; font-size: 20px;}
+#Text08 {left: 12px; top: 13px; font-size: 20px;}
+#Text09 {left: 12px; top: 11px; font-size: 22px;}
+#Text10 {left: 9px; top: 9px; font-size: 22px;}
+#Text11 {left: 7px; top: 20px; font-size: 22px;}
+#Text12 {left: 22px; top: 13px; font-size: 16px;}
+#Text13 {left: 16px; top: 7px; font-size: 16px;}
+
+.menu_text {
+	position: relative;
+	font-family: 'PT Sans Pro Condensed Demi Regular';
+	font-weight: normal;
+	text-decoration: none;
+	font-style: normal;
+	text-align: left;
+}
+
+.control_buttons {
+}

@@ -1,0 +1,87 @@
+#MapGetRoute {
+	background-image: url(../img/route_126x126.png);
+	background-size: contain;
+	right: 30px;
+	top: 500px;
+	width: 63px;
+	height: 63px;
+	position: absolute;
+	vertical-align: bottom;
+	cursor: pointer;
+	display: none;
+}
+
+#MapGetLocaction {
+	background-image: url(../img/get_location_126x126.png);
+	background-size: contain;
+	right: 30px;
+	top: 600px;
+	width: 63px;
+	height: 63px;
+	position: absolute;
+	vertical-align: bottom;
+	cursor: pointer;
+}
+
+.map_info {
+	font-family: "PT Sans Narrow Regular", Verdana, sans-serif;
+	padding-top: 8px;
+	height: 100%;
+}
+
+.map_info_name {
+	font-weight: bold;
+}
+
+.map_info_state {
+	color: red;
+}
+
+.map_info table tr th {
+	font-weight: normal;
+}
+
+.map_info_month_header {
+	color: #1353A5;
+}
+
+.map_info_yead_day_header {
+	color: #a9a9a9;
+}
+
+.map_info_selector {
+	color: white;
+	text-align: center;
+	height: 43px;
+}
+
+.map_info_selector_down {
+	color: white;
+	text-align: center;
+	height: 59px;
+}
+
+.map_info_month_selector {
+	background-color: #1353A5;
+	width: 90px;
+}
+
+.map_info_yead_day_selector {
+	background-color: #a9a9a9;
+	width: 60px;
+}
+
+.map_info_table {
+	width: 270px;
+	border: none;
+	vertical-align: bottom;
+}
+
+.map_info_day {
+}
+
+.map_info_month {
+}
+
+.map_info_year {
+}

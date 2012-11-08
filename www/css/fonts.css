@@ -1,0 +1,109 @@
+@font-face {
+    font-family: 'PT Sans Caption Regular';
+    src: url('../fonts/ptc55f-webfont.eot');
+    src: url('../fonts/ptc55f-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ptc55f-webfont.woff') format('woff'),
+         url('../fonts/ptc55f-webfont.ttf') format('truetype'),
+         url('../fonts/ptc55f-webfont.svg#pt_sans_captionregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Serif Regular';
+    src: url('../fonts/ptf55f-webfont.eot');
+    src: url('../fonts/ptf55f-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ptf55f-webfont.woff') format('woff'),
+         url('../fonts/ptf55f-webfont.ttf') format('truetype'),
+         url('../fonts/ptf55f-webfont.svg#pt_serifregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Sans Pro Narrow Light Regular';
+    src: url('../fonts/ptn47-webfont.eot');
+    src: url('../fonts/ptn47-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ptn47-webfont.woff') format('woff'),
+         url('../fonts/ptn47-webfont.ttf') format('truetype'),
+         url('../fonts/ptn47-webfont.svg#pt_sans_pro_narrow_lightRg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Sans Narrow Regular';
+    src: url('../fonts/ptn57f-webfont.eot');
+    src: url('../fonts/ptn57f-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ptn57f-webfont.woff') format('woff'),
+         url('../fonts/ptn57f-webfont.ttf') format('truetype'),
+         url('../fonts/ptn57f-webfont.svg#pt_sans_narrowregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Sans Pro Narrow Demi Regular';
+    src: url('../fonts/ptn67-webfont.eot');
+    src: url('../fonts/ptn67-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ptn67-webfont.woff') format('woff'),
+         url('../fonts/ptn67-webfont.ttf') format('truetype'),
+         url('../fonts/ptn67-webfont.svg#pt_sans_pro_narrow_demiRg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Sans Pro Narrow Extra Bold Regular';
+    src: url('../fonts/ptn87-webfont.eot');
+    src: url('../fonts/ptn87-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ptn87-webfont.woff') format('woff'),
+         url('../fonts/ptn87-webfont.ttf') format('truetype'),
+         url('../fonts/ptn87-webfont.svg#pt_sans_pro_narrow_extra_boRg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Serif Caption Italic';
+    src: url('../fonts/ptz56f-webfont.eot');
+    src: url('../fonts/ptz56f-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ptz56f-webfont.woff') format('woff'),
+         url('../fonts/ptz56f-webfont.ttf') format('truetype'),
+         url('../fonts/ptz56f-webfont.svg#pt_serif_captionitalic') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Sans Pro Condensed Demi Regular';
+    src: url('../fonts/pts67-webfont.eot');
+    src: url('../fonts/pts67-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/pts67-webfont.woff') format('woff'),
+         url('../fonts/pts67-webfont.ttf') format('truetype'),
+         url('../fonts/pts67-webfont.svg#pt_sans_pro_cond_demiregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Sans Pro Extra Bold Regular';
+    src: url('../fonts/pts85-webfont.eot');
+    src: url('../fonts/pts85-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/pts85-webfont.woff') format('woff'),
+         url('../fonts/pts85-webfont.ttf') format('truetype'),
+         url('../fonts/pts85-webfont.svg#pt_sans_pro_extra_boldregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Serif Caption Regular';
+    src: url('../fonts/ptz55f-webfont.eot');
+    src: url('../fonts/ptz55f-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/ptz55f-webfont.woff') format('woff'),
+         url('../fonts/ptz55f-webfont.ttf') format('truetype'),
+         url('../fonts/ptz55f-webfont.svg#pt_serif_captionregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
