@@ -1161,7 +1161,7 @@ input.ui-slider-input.ui-mini,
 input.ui-slider-input, .ui-field-contain input.ui-slider-input { -webkit-box-sizing: content-box; -moz-box-sizing: content-box; -ms-box-sizing: content-box; box-sizing: content-box; }
 .ui-slider-input::-webkit-outer-spin-button { margin: 0; }
 select.ui-slider-switch { display: none; }
-div.ui-slider { position: relative; display: inline-block; overflow: visible; height: 15px; padding: 0; margin: 0 2% 0 20px; top: 4px; width: 65%; }
+div.ui-slider { position: relative; display: inline-block; overflow: visible; height: 15px; padding: 0; margin: 0 2% 0 20px; top: 10px; width: 85%; }
 div.ui-slider-mini { height: 12px; margin-left: 10px; top: 2px; }
 div.ui-slider-bg { border: none; height: 100%; padding-right: 8px; }
 .ui-controlgroup a.ui-slider-handle, a.ui-btn.ui-slider-handle { position: absolute; z-index: 1; top: 50%; width: 28px; height: 28px; margin: -15px 0 0 -15px; outline: 0; }

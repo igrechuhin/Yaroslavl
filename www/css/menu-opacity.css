@@ -1,26 +1,5 @@
 #Menu {
-	display: none;
 	z-index: 1001;
-}
-
-.menu_icon {
-	background-size: contain;
-	right: 30px;
-	top: 30px;
-	width: 63px;
-	height: 63px;
-	position: fixed;
-	vertical-align: bottom;
-	cursor: pointer;
-	z-index: 1010;
-}
-
-#MenuIcon {
-	background-image: url(../img/contents_126x126.png);
-}
-
-#MenuIconBrown {
-	background-image: url(../img/contents_brown_126x126.png);
 }
 
 #Menu #Dim {
@@ -122,7 +101,4 @@
 	text-decoration: none;
 	font-style: normal;
 	text-align: left;
-}
-
-.control_buttons {
 }

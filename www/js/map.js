@@ -1,12 +1,12 @@
 var map = {
 	Months: ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'],
 	Temples: [
-						['Спасо-Преображенский собор', 57.620655, 39.887763, 6, 'img/map_marker_1.png', 'img/map_marker_invert_1.png', 'img/map_info_1.png', 'Богоявленская пл., д. 25'],
-						['Церковь Ильи Пророка', 57.6269,	 39.89423, 5, 'img/map_marker_2.png', 'img/map_marker_invert_2.png', 'img/map_info_2.png', 'Советская пл., д. 7'],
-						['Церковь Николы Надеина', 57.62887, 39.89582, 4, 'img/map_marker_3.png', 'img/map_marker_invert_3.png', 'img/map_info_3.png', 'Народный пер., д. 2а'],
-						['Церковь Рождества Христова', 57.63058, 39.89422, 3, 'img/map_marker_4.png', 'img/map_marker_invert_4.png', 'img/map_info_4.png', 'Ул. Кедрова, д. 1'],
-						['Церковь Богоявления', 57.62163, 39.88628, 1, 'img/map_marker_5.png', 'img/map_marker_invert_5.png', 'img/map_info_5.png', 'Богоявленская пл., д. 12'],
-						['Церковь Иоанна Предтечи', 57.610931, 39.857109, 2, 'img/map_marker_6.png', 'img/map_marker_invert_6.png', 'img/map_info_6.png', '2-я Закоторосльная наб., д. 69']
+						['Спасо-Преображенский собор', 57.620655, 39.887763, 6, 'img/page04/map_marker_1.png', 'img/page04/map_marker_invert_1.png', 'img/page04/map_info_1.png', 'Богоявленская пл., д. 25'],
+						['Церковь Ильи Пророка', 57.6269,	 39.89423, 5, 'img/page04/map_marker_2.png', 'img/page04/map_marker_invert_2.png', 'img/page04/map_info_2.png', 'Советская пл., д. 7'],
+						['Церковь Николы Надеина', 57.62887, 39.89582, 4, 'img/page04/map_marker_3.png', 'img/page04/map_marker_invert_3.png', 'img/page04/map_info_3.png', 'Народный пер., д. 2а'],
+						['Церковь Рождества Христова', 57.63058, 39.89422, 3, 'img/page04/map_marker_4.png', 'img/page04/map_marker_invert_4.png', 'img/page04/map_info_4.png', 'Ул. Кедрова, д. 1'],
+						['Церковь Богоявления', 57.62163, 39.88628, 1, 'img/page04/map_marker_5.png', 'img/page04/map_marker_invert_5.png', 'img/page04/map_info_5.png', 'Богоявленская пл., д. 12'],
+						['Церковь Иоанна Предтечи', 57.610931, 39.857109, 2, 'img/page04/map_marker_6.png', 'img/page04/map_marker_invert_6.png', 'img/page04/map_info_6.png', '2-я Закоторосльная наб., д. 69']
 				   ],
 //					Start Month, End Month, Days of week, Working text, Not working months text, Not working days text
 	WorkTime:[	[4, 8, [0,3,4,5,6], '10:00-17:00<br>В дождливые дни посещение храмов ограничено', 'Храм закрыт', 'Выходной'],
@@ -19,9 +19,7 @@ var map = {
 	CheckDate: null,
 	TempleIndex: 0,
 	Center: [57.61944, 39.8743],
-	MyLocationIcon: 'img/map_my_location.png',
-	GetLocationImages: ['url(img/get_location_126x126.png)', 'url(img/get_location_invert_126x126.png)'],
-	GetRouteImages: ['url(img/route_126x126.png)', 'url(img/route_invert_126x126.png)'],
+	MyLocationIcon: 'img/page04/map_my_location.png',
 	GoogleMap: null,
 	WatchID: null,
 	MyLocationMarker: null,
@@ -84,16 +82,16 @@ var map = {
 																									zIndex: 100
 																									});
 					map.WatchID = navigator.geolocation.watchPosition(map.updateLocation, map.onError, { enableHighAccuracy: true });
-					$('#MapGetLocaction').css('background-image', map.GetLocationImages[1]);
-					$('#MapGetRoute').css('display', 'block');
+					$('#MapGetLocactionIcon').removeClass('normal_icon').addClass('invert_icon');
+					$('#MapGetRouteIcon').removeClass('invisible');
 				}, map.onError
 			);
 		} else {
 			map.MyLocationMarker.setMap(null);
 			navigator.geolocation.clearWatch(map.WatchID);
 			map.WatchID = null;
-			$('#MapGetLocaction').css('background-image', map.GetLocationImages[0]);
-			$('#MapGetRoute').css('display', 'none');
+			$('#MapGetLocactionIcon').addClass('normal_icon').removeClass('invert_icon');
+			$('#MapGetRouteIcon').addClass('invisible');
 		}
 	},
 	updateLocation: function(position) {
@@ -127,13 +125,13 @@ var map = {
 				if (status == google.maps.DirectionsStatus.OK) {
 					map.DirectionDisplay.setDirections(response);
 					map.HaveRoute = true;
-					$('#MapGetRoute').css('background-image', map.GetRouteImages[1]);
+					$('#MapGetRouteIcon').removeClass('normal_icon').addClass('invert_icon');				
 				}
 			});
 		} else {
 			map.DirectionDisplay.setDirections({routes: []});
 			map.HaveRoute = false;
-			$('#MapGetRoute').css('background-image', map.GetRouteImages[0]);
+			$('#MapGetRouteIcon').addClass('normal_icon').removeClass('invert_icon');
 		}
 	},
 	makeMapInfo: function() {
@@ -155,9 +153,9 @@ var map = {
 					'<th class="map_info_month_header">месяц</th>' +
 					'<th class="map_info_yead_day_header">год</th>' +
 				'<tr class="map_info_selector map_info_selector_up">' +
-					'<td><img src="img/map_info_up_triangle_grey.png" width="43" height="38" onClick="map.onDayChange(true)"></td>' +
-					'<td><img src="img/map_info_up_triangle_blue.png" width="43" height="38" onClick="map.onMonthChange(true)"></td>' +
-					'<td><img src="img/map_info_up_triangle_grey.png" width="43" height="38" onClick="map.onYearChange(true)"></td>' +
+					'<td><img src="img/page04/map_info_up_triangle_grey.png" width="43" height="38" onClick="map.onDayChange(true)"></td>' +
+					'<td><img src="img/page04/map_info_up_triangle_blue.png" width="43" height="38" onClick="map.onMonthChange(true)"></td>' +
+					'<td><img src="img/page04/map_info_up_triangle_grey.png" width="43" height="38" onClick="map.onYearChange(true)"></td>' +
 				'</tr>' +
 				'<tr class="map_info_selector">' +
 					'<td class="map_info_yead_day_selector map_info_day">'+dd+'</td>' +
@@ -165,9 +163,9 @@ var map = {
 					'<td class="map_info_yead_day_selector map_info_year">'+yyyy+'</td>' +
 				'</tr>' +
 				'<tr class="map_info_selector_down">' +
-					'<td><img src="img/map_info_down_triangle_grey.png" width="43" height="38" onClick="map.onDayChange(false)"></td>' +
-					'<td><img src="img/map_info_down_triangle_blue.png" width="43" height="38" onClick="map.onMonthChange(false)"></td>' +
-					'<td><img src="img/map_info_down_triangle_grey.png" width="43" height="38" onClick="map.onYearChange(false)"></td>' +
+					'<td><img src="img/page04/map_info_down_triangle_grey.png" width="43" height="38" onClick="map.onDayChange(false)"></td>' +
+					'<td><img src="img/page04/map_info_down_triangle_blue.png" width="43" height="38" onClick="map.onMonthChange(false)"></td>' +
+					'<td><img src="img/page04/map_info_down_triangle_grey.png" width="43" height="38" onClick="map.onYearChange(false)"></td>' +
 				'</tr>' +
 				'</table>' +
 			'</div>';

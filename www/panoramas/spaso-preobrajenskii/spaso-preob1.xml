@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- for xml compliance -->
+<krpano version="1.0.8.14">
+    <!-- actions to perform while loading -->
+    <events onxmlcomplete="onxmlcompleteaction();"/>
+    <action name="onxmlcompleteaction">
+		unselectmapspotsbutpassed();
+		selectmapspot(mapspot1,270);
+	</action>
+    <action name="playpanosounds">
+		playbackgroundsound(none);
+	</action>
+    <action name="stoppanosounds">
+		stopbackgroundsound();
+	</action>
+    <action name="closepanoobjects">
+	</action>
+    <!--************** Панорама *******************************************************************-->
+    <!-- @File="spaso-preob1.xml" @PanoName="Trans_3_Panorama" @FilePath="/Users/Ilya/Desktop/Ярославль - панорамы/Trans 3/Trans_3_Panorama.psd" -->
+    <panoview h="0" v="0" fov="60"/>
+    <!-- view parameters -->
+    <view fisheye="0" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-90" vlookatmax="90" fovmin="10" fovmax="120" fov="60" hlookat="0" vlookat="0"/>
+    <autorotate horizon="0" tofov="60" waittime="1" speed="5"/>
+    <!-- preview image -->
+    <preview url="spaso-preobdata/spaso-preob1/preview.jpg" type="CUBESTRIP" striporder="FRBLUD" details="16"/>
+    <!-- the pano itself -->
+    <image type="CUBE" multires="true" tilesize="834" baseindex="0">
+        <level tiledimagewidth="3334" tiledimageheight="3334">
+            <left url="spaso-preobdata/spaso-preob1/3/2/%v_%u.jpg"/>
+            <front url="spaso-preobdata/spaso-preob1/0/2/%v_%u.jpg"/>
+            <right url="spaso-preobdata/spaso-preob1/1/2/%v_%u.jpg"/>
+            <back url="spaso-preobdata/spaso-preob1/2/2/%v_%u.jpg"/>
+            <up url="spaso-preobdata/spaso-preob1/4/2/%v_%u.jpg"/>
+            <down url="spaso-preobdata/spaso-preob1/5/2/%v_%u.jpg"/>
+        </level>
+        <level tiledimagewidth="1667" tiledimageheight="1667">
+            <left url="spaso-preobdata/spaso-preob1/3/1/%v_%u.jpg"/>
+            <front url="spaso-preobdata/spaso-preob1/0/1/%v_%u.jpg"/>
+            <right url="spaso-preobdata/spaso-preob1/1/1/%v_%u.jpg"/>
+            <back url="spaso-preobdata/spaso-preob1/2/1/%v_%u.jpg"/>
+            <up url="spaso-preobdata/spaso-preob1/4/1/%v_%u.jpg"/>
+            <down url="spaso-preobdata/spaso-preob1/5/1/%v_%u.jpg"/>
+        </level>
+        <level tiledimagewidth="833" tiledimageheight="833">
+            <left url="spaso-preobdata/spaso-preob1/3/0/%v_%u.jpg"/>
+            <front url="spaso-preobdata/spaso-preob1/0/0/%v_%u.jpg"/>
+            <right url="spaso-preobdata/spaso-preob1/1/0/%v_%u.jpg"/>
+            <back url="spaso-preobdata/spaso-preob1/2/0/%v_%u.jpg"/>
+            <up url="spaso-preobdata/spaso-preob1/4/0/%v_%u.jpg"/>
+            <down url="spaso-preobdata/spaso-preob1/5/0/%v_%u.jpg"/>
+        </level>
+        <!-- mobile phone / iphone images -->
+        <mobile>
+            <left url="spaso-preobdata/spaso-preob1/3/mobile_face.jpg"/>
+            <front url="spaso-preobdata/spaso-preob1/0/mobile_face.jpg"/>
+            <right url="spaso-preobdata/spaso-preob1/1/mobile_face.jpg"/>
+            <back url="spaso-preobdata/spaso-preob1/2/mobile_face.jpg"/>
+            <up url="spaso-preobdata/spaso-preob1/4/mobile_face.jpg"/>
+            <down url="spaso-preobdata/spaso-preob1/5/mobile_face.jpg"/>
+        </mobile>
+        <!-- tablet pc / ipad images -->
+        <tablet>
+            <left url="spaso-preobdata/spaso-preob1/3/tablet_face.jpg"/>
+            <front url="spaso-preobdata/spaso-preob1/0/tablet_face.jpg"/>
+            <right url="spaso-preobdata/spaso-preob1/1/tablet_face.jpg"/>
+            <back url="spaso-preobdata/spaso-preob1/2/tablet_face.jpg"/>
+            <up url="spaso-preobdata/spaso-preob1/4/tablet_face.jpg"/>
+            <down url="spaso-preobdata/spaso-preob1/5/tablet_face.jpg"/>
+        </tablet>
+    </image>
+    <!--************** Hotspots and lensflares ****************************************************-->
+    <hotspot name="spot1" onclick="mainloadpano(spaso-preob0.xml);" url="spaso-preobdata/graphics/spots/spot1.png" ath="-0.8867" atv="-3.29577"/>
+    <action name="hidepanospotsaction">
+		set(hotspot[spot1].visible, false);
+	</action>
+    <action name="showpanospotsaction">
+		set(hotspot[spot1].visible, true);
+	</action>
+    <!-- close all hotspots -->
+</krpano>
