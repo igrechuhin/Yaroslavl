@@ -153,13 +153,13 @@ var menu = {
 	},
 	set_menu_state: function() {
 		$('#Menu').removeClass('invisible');
-		$('.menu_icon').addClass('invert_icon').removeClass('normal_icon');
+//		$('.menu_icon').addClass('invert_icon').removeClass('normal_icon');
 		$('.video,.map').addClass('invisible');
 		$('.icon:not(.menu_icon),.page_content,.header,#Contents,img').addClass('disabled');
 },
 	restore_init_state: function() {
 		$('#Menu').addClass('invisible');
-		$('.menu_icon').removeClass('invert_icon').addClass('normal_icon');
+//		$('.menu_icon').removeClass('invert_icon').addClass('normal_icon');
 		$('.video,.map').removeClass('invisible');
 		$('.icon:not(.menu_icon),.page_content,.header,#Contents,img').removeClass('disabled');
 

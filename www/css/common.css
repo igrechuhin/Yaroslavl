@@ -30,6 +30,11 @@ h1 {
 	top: 7px;
 }
 
+tr {
+	vertical-align: bottom;
+}
+
+
 #Body {
 	margin: 0px;
 	background-color: white;
@@ -76,6 +81,20 @@ h1 {
 	z-index: 203;
 }
 
+.temples_select {
+	left: 20px;
+	right: 100px;
+	bottom: 0px;
+	height: 125px;
+	position: fixed;
+	background-color: white;
+	z-index: 301;
+}
+
+.page_content_temples {
+	bottom: 125px !important;
+}
+
 .bottom_hint .audio p {
 	font-family: "PT Sans Pro Narrow Demi Regular";
 	font-size: 12pt;
@@ -104,7 +123,7 @@ h1 {
 .gallery li img { display: block; width: 100%; height: auto; }
 #Gallery .ui-content { overflow: hidden; }
 
-input.ui-slider-input { display : none !important; }
+input.ui-slider-input { display: none !important; }
 /*
 .ui-mobile [data-role=page], .ui-mobile [data-role=dialog], .ui-page { top: 0; left: 0; width: 100%; min-height: 100%; position: absolute; display: none; border: 0; }
 .ui-mobile .ui-page-active { display: block; overflow: visible; }
@@ -169,6 +188,7 @@ input.ui-slider-input { display : none !important; }
 
 .disabled {
 	opacity: 0.3;
+	overflow-y: hidden !important;
 }
 
 .button_text {
@@ -177,7 +197,7 @@ input.ui-slider-input { display : none !important; }
 	line-height: 15px;
 	position: relative;
 	left: -10px;
-	bottom: -60px;
+	bottom: -55px;
 	text-align: center;
 	width: 100px;
 }
@@ -202,20 +222,28 @@ input.ui-slider-input { display : none !important; }
 }
 
 .plan_icon {
-	top: 430px;
+	top: 445px;
 }
 
 .audio_icon, .map_get_route_icon {
-	top: 530px;
+	top: 565px;
+}
+
+.photo_icon {
+	top: 675px;
 }
 
 .panorama_icon, .map_get_location_icon {
-	top: 730px;
+	top: 800px;
+}
+
+.temples_icon {
+	bottom: 50px;
 }
 
 .play_pause {
 	height: 44px;
-	width: 30px;
+	width: 29px;
 	background-size: contain;
 	float: left;
 }
@@ -251,3 +279,39 @@ input.ui-slider-input { display : none !important; }
 
 #PlayPauseIcon.normal_icon { background-image: url(../img/audio/play.png); }
 #PlayPauseIcon.invert_icon { background-image: url(../img/audio/pause.png); }
+
+#PhotoIcon.normal_icon { background-image: url(../img/buttons/photo.png); }
+#PhotoIcon.invert_icon { background-image: url(../img/buttons/photo_invert.png); }
+
+#TemplesIcon.normal_icon { background-image: url(../img/buttons/hramy.png); }
+#TemplesIcon.invert_icon { background-image: url(../img/buttons/closed.png); color: #fff; !important; }
+
+#TempleIcon1 { left: 20px; }
+#TempleIcon1.normal_icon { background-image: url(../img/buttons/1.png); }
+#TempleIcon1.invert_icon { background-image: url(../img/buttons/1_invert.png); }
+
+#TempleIcon2 { left: 128px; }
+#TempleIcon2.normal_icon { background-image: url(../img/buttons/2.png); }
+#TempleIcon2.invert_icon { background-image: url(../img/buttons/2_invert.png); }
+
+#TempleIcon3 { left: 236px; }
+#TempleIcon3.normal_icon { background-image: url(../img/buttons/3.png); }
+#TempleIcon3.invert_icon { background-image: url(../img/buttons/3_invert.png); }
+
+#TempleIcon4 { left: 344px; }
+#TempleIcon4.normal_icon { background-image: url(../img/buttons/4.png); }
+#TempleIcon4.invert_icon { background-image: url(../img/buttons/4_invert.png); }
+
+#TempleIcon5 { left: 452px; }
+#TempleIcon5.normal_icon { background-image: url(../img/buttons/5.png); }
+#TempleIcon5.invert_icon { background-image: url(../img/buttons/5_invert.png); }
+
+#TempleIcon6 { left: 560px; }
+#TempleIcon6.normal_icon { background-image: url(../img/buttons/6.png); }
+#TempleIcon6.invert_icon { background-image: url(../img/buttons/6_invert.png); }
+
+
+#PlanContent img {
+	position: absolute;
+	top: 90px;
+}

@@ -12,17 +12,22 @@ var audio = {
 	
 	SliderLength: 1000,
 
-	initialize: function(playPauseButton, position, label) {
-		audio.PlayPauseBtn = playPauseButton;
-		audio.PositionSlider = position;
-		audio.Label = label;
+	initialize: function(guiElements) {
+		audio.PlayPauseBtn = guiElements.hasOwnProperty('playPause') ? guiElements.playPause : null;
+		audio.PositionSlider = guiElements.hasOwnProperty('position') ? guiElements.position : null;
+		audio.Label = guiElements.hasOwnProperty('label') ? guiElements.label : null;
 		
 		audio.PositionSlider.attr('min', 0).attr('max', audio.SliderLength).attr('value', 0).slider('refresh');	
 	},
 	
-	setSource: function(src, label) {
-		audio.MyMedia = new Media(src, function() {
-			audio.PlayPauseBtn.removeClass('invert_icon').addClass('normal_icon');
+	setSource: function(source) {
+        if (!source.hasOwnProperty('url') || source.url == null || source.url == '')
+            return;
+        if (typeof Media === 'undefined') {
+            console.log('Media undefined');
+            return;
+        }
+		audio.MyMedia = new Media(source.url, function() {
 			audio.MyMedia.seekTo(1);
 			audio.PositionSlider.attr('value', 0).slider('refresh');
 			audio.MyMedia.pause();
@@ -31,7 +36,8 @@ var audio = {
 			clearInterval(audio.MediaTimer);
 			audio.MediaTimer = null;
 		}
-		audio.Label.text(label);
+        if (audio.Label != null && source.hasOwnProperty('label'))
+            audio.Label.text(source.label);
 		
 		audio.MyMedia.play();
 		audio.MyMedia.pause();
@@ -47,7 +53,6 @@ var audio = {
 		audio.PlayPauseBtn.bind('click', function() {
 			var doPlay = audio.PlayPauseBtn.hasClass('normal_icon');
 			if (doPlay && audio.MyMedia) {
-				audio.PlayPauseBtn.removeClass('normal_icon').addClass('invert_icon');
 				audio.MyMedia.play();
 				audio.IsPlaying = true;
 				if (audio.MediaTimer == null) {

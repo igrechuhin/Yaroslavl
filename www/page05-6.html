@@ -18,6 +18,7 @@
 <script type="text/javascript" src="js/cordova-2.2.0.js"></script>
 <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="js/jquery.transit.min.js"></script>
+<script type="text/javascript" src="js/audio.js"></script>
 <script type="text/javascript" src="js/menu-opacity.js"></script>
 <script type="text/javascript" src="js/klass.min.js"></script>
 <script type="text/javascript" src="js/code.photoswipe.jquery-3.0.5.js"></script>
@@ -26,16 +27,84 @@
 <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
 <script type="text/javascript" src="js/map.js"></script>
 <script type="text/javascript" src="js/jquery.mobile-1.2.0.min.js"></script>
+
+<script type="text/javascript" src="js/swfkrpano.js"></script>
+<script type="text/javascript" src="js/krpanoiphone.license.js"></script>
+<script type="text/javascript" src="js/krpanoiphone.js"></script>
 </head>
 <body id="Body">
-	<div class="page" id="Page05" data-role="page" data-theme="b">
+	<div class="page" id="Page05-6" data-role="page" data-theme="b">
 		<a id="PrevPage" class="swipe_links" href="page05-5.html"></a>
 		<a id="NextPage" class="swipe_links" href="page06.html"></a>
         <div id="MenuIcon" class="icon menu_icon normal_icon" onClick="menu.icon_click('Page05Button')" >
             <p class="button_text">содержание</p>
         </div>
+        <div id="PlanIcon" class="icon plan_icon normal_icon" onClick="showContent(this, 'Plan')">
+            <p class="button_text">план</p>
+        </div>
+        <div id="AudioIcon" class="icon audio_icon normal_icon" onClick="showAudio(this)">
+            <p class="button_text">аудиогид</p>
+        </div>
+        <div id="PhotoIcon" class="icon photo_icon normal_icon">
+            <p class="button_text">фотографии</p>
+        </div>
+        <div id="PanoramaIcon" class="icon panorama_icon normal_icon" onClick="showContent(this, 'Panorama')">
+            <p class="button_text">панорама</p>
+        </div>
         <h1>Церковь Иоанна Предтечи</h1>
-        <div class="page_content">
+        <div id="MainContent" class="page_content" onscroll="pageScroll(this)">
+            <table width="100%" border="0" class="img_caption">
+              <tr>
+                <td>
+                	<img src="img/page05-6/Ioan_Predtecha_photo.png" width="280" height="280">
+                    <div>фотографии</div>
+                </td>
+                <td>
+                	<img src="img/plans/tserkov Ioanna Predtechi.png" width="275" height="280" onClick="showContent(this, 'Plan')">
+                    <div>план храма</div>
+                </td>
+              </tr>
+            </table>
+            <p>
+                <span class="red_line">Теперь, после знакомства с тремя церквями, построенными тщанием отдельных ярославских семей на берегу Волги, обязательно нужно отправиться на другой берег речки Которосли, к церкви Усекновения главы Иоанна Предтечи в Толчкове. Название слободы было связано с важным в кожевенном производстве процессом толчения ивовой коры. В отличие от памятников на волжской набережной этот храм был построен не одной семьёй, а «мирским строением», то есть в складчину, тем не менее достаточно быстро — с 1671 по 1687 год, а расписан он был всего за год — с 5 июня 1694 по 6 июля 1695 года.</span><br>
+                <span class="red_line">Церковь в Толчкове можно считать одним из символов расцвета города в XVII веке, когда не только отдельные богатые купеческие семьи, но и община, состоящая из купцов и ремесленников, могла возвести такой величественный храм. Причём это была не единственная церковь в этой слободе — недалеко стоит Фёдоровская церковь, построенная примерно в это же время. Здесь явно сказался соревновательный дух, только уже не отдельных купеческих фамилий, а слобод.</span><br>
+                <span class="red_line">Церковь в Толчкове представляет собой целый ансамбль, в который входят отдельно стоящая 45‑метровая колокольня-«свеча» с шатровым завершением и святые ворота, ныне отделяющие территорию церкви от лакокрасочного завода, находящегося с ней в непосредственном соседстве. Особенностью архитектурного решения является то, что приделы храма, по ярославской традиции расположенные на восточных концах галереи, имеют равную с основной частью кровли высоту, и восточный фасад предстаёт единым объёмом, увенчанным сразу пятнадцатью главами. Все пять апсид снаружи покрыты росписью, имитирующей бриллиантовый руст, подобный тому, который украшает фасад Грановитой палаты Московского Кремля. Мастера, возводившие церковь, несомненно, рассчитывали на впечатление, производимое ею со стороны переправы через Которосль, на месте которой стоит и современный мост. Декоративные элементы церкви выполнены с помощью небывалого разнообразия лекального (то есть сделанного по лекалам) кирпича и изразцов. В этом памятнике узорочье, свойственное русской и, в частности, ярославской архитектуре XVII века, достигло апогея. То же можно сказать и о внутренних росписях, избыточно полных по иконографии и включающих в себя такие уникальные для стенописи сюжеты, как Четьи минеи — изображение всех почитавшихся в России святых по месяцам (на нижнем ярусе северной и южной стен церкви). Традиционное изображение Страшного суда на западной стене заменено более поэтическим и светлым ветхозаветным сюжетом из Песни песней царя Соломона. По объёму изображённых сюжетов и их полноте девятиярусная фреска церкви Иоанна Предтечи превосходит росписи всех ярославских храмов. Причём при всей подробности трактовки бытовых деталей обличение человеческих грехов становится лейтмотивом росписей, в которых — то там, то тут — взгляд натыкается на сцены возмездия за грехи, на скелеты, символизирующие смерть. Но благодаря торжественности зрелища расписанных стен и сводов общее впечатление от фресок церкви Иоанна Предтечи — не испуг, а восторг, который вызывает это живописное великолепие.</span>
+            </p>
+        </div>
+        <div id="PlanContent" class="page_content invisible">
+        	<img src="img/plans/tserkov Ioanna Predtechi_Full.png" width="600" height="623">
+    	</div>
+        <div id="PanoramaContent" class="page_content skip_swipe invisible"></div>
+        <div class="bottom_hint">
+	        <img class="arrow" src="img/bottom_hint/arrow_down.png" width="60" height="60">
+            <div id="AudioPlayer" class="audio skip_swipe invisible">
+				<div id="PlayPauseIcon" class="play_pause normal_icon"></div>
+				<input id="Position" class="ui-hide-label" type="range" value="0" min="0" max="100" data-highlight="true"/>
+                <p id="Label" class="red_line"></p>
+            </div>
+        </div>
+        <div id="TemplesIcon" class="icon temples_icon normal_icon" onClick="showTemples(this)">
+            <p class="button_text">храмы</p>
+        </div>
+        <div class="temples_select invisible">
+            <div id="TempleIcon1" class="icon temples_icon normal_icon" onClick="gotoPage(this, 'page05-1.html')">
+                <p class="button_text">1. Спасо-<br>Преображенский<br>собор</p>
+            </div>
+            <div id="TempleIcon2" class="icon temples_icon normal_icon" onClick="gotoPage(this, 'page05-2.html')">
+                <p class="button_text">2. Церковь<br>Ильи Пророка</p>
+            </div>
+            <div id="TempleIcon3" class="icon temples_icon normal_icon" onClick="gotoPage(this, 'page05-3.html')">
+                <p class="button_text">3. Церковь<br>Николы Надеина</p>
+            </div>
+            <div id="TempleIcon4" class="icon temples_icon normal_icon" onClick="gotoPage(this, 'page05-4.html')">
+                <p class="button_text">4. Церковь<br>Рождества<br>Христова</p>
+            </div>
+            <div id="TempleIcon5" class="icon temples_icon normal_icon" onClick="gotoPage(this, 'page05-5.html')">
+                <p class="button_text">5. Церковь<br>Иоанна Предтечи</p>
+            </div>
+            <div id="TempleIcon6" class="icon temples_icon normal_icon" onClick="gotoPage(this, 'page05-6.html')">
+                <p class="button_text">6. Церковь<br>Богоявления</p>
+            </div>        	
         </div>
     </div>
 </body>

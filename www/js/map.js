@@ -82,7 +82,7 @@ var map = {
 																									zIndex: 100
 																									});
 					map.WatchID = navigator.geolocation.watchPosition(map.updateLocation, map.onError, { enableHighAccuracy: true });
-					$('#MapGetLocactionIcon').removeClass('normal_icon').addClass('invert_icon');
+//					$('#MapGetLocactionIcon').removeClass('normal_icon').addClass('invert_icon');
 					$('#MapGetRouteIcon').removeClass('invisible');
 				}, map.onError
 			);
@@ -90,7 +90,7 @@ var map = {
 			map.MyLocationMarker.setMap(null);
 			navigator.geolocation.clearWatch(map.WatchID);
 			map.WatchID = null;
-			$('#MapGetLocactionIcon').addClass('normal_icon').removeClass('invert_icon');
+//			$('#MapGetLocactionIcon').addClass('normal_icon').removeClass('invert_icon');
 			$('#MapGetRouteIcon').addClass('invisible');
 		}
 	},
@@ -125,13 +125,13 @@ var map = {
 				if (status == google.maps.DirectionsStatus.OK) {
 					map.DirectionDisplay.setDirections(response);
 					map.HaveRoute = true;
-					$('#MapGetRouteIcon').removeClass('normal_icon').addClass('invert_icon');				
+//					$('#MapGetRouteIcon').removeClass('normal_icon').addClass('invert_icon');				
 				}
 			});
 		} else {
 			map.DirectionDisplay.setDirections({routes: []});
 			map.HaveRoute = false;
-			$('#MapGetRouteIcon').addClass('normal_icon').removeClass('invert_icon');
+//			$('#MapGetRouteIcon').addClass('normal_icon').removeClass('invert_icon');
 		}
 	},
 	makeMapInfo: function() {
