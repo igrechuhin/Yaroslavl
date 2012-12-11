@@ -1,0 +1,91 @@
+@color-red: #b23917;
+
+.page01 {
+	background-color: @color-red;
+	p {
+		font-family: 'PT Sans Pro Condensed Demi Regular';
+		font-size: 42px;
+		color: white;
+		border-bottom: 3px solid white;
+		position: absolute;
+		left: 52px;
+		letter-spacing: 1px;
+		text-shadow: none;
+		&#Header0 {
+			font-family: "PT Sans Pro Narrow Light Regular";
+			top: -28px;
+			letter-spacing: 2px;
+		}
+	}
+	
+	#Contents {
+		padding-top: 350px;
+		padding-left: 52px;
+		font-family: 'PT Sans Pro Condensed Demi Regular', Arial, Helvetica, sans-serif;
+		font-size: 24px;
+		color: #ffffff;
+		width: 250px;
+		.contents_circle {
+			width: 35px;
+			height: 35px;
+			border: 2px solid white;
+			border-radius: 50%;
+			margin-top: 8px;
+			color: white;
+			
+			.contents_number {
+				position: relative;
+				left: 9px;
+				top: 3px;
+				color: white;
+				text-shadow: none;
+				font-weight: normal;
+				text-decoration: none;
+			}
+			
+			.contents_text {
+				position: relative;
+				left: 50px;
+				top: -28px;
+				color: white;
+				letter-spacing: 1px;
+				width: 220px;
+				text-shadow: none;
+				font-weight: normal;
+				text-decoration: none;
+			}
+		}
+	}
+	
+	img {
+		position: absolute;
+	}
+}
+
+.page02 {
+	font-family: "PT Serif Regular";
+	font-size: 14pt;
+	color: black;
+	#Text {
+		overflow-y: scroll;
+		margin: 120px 130px 60px 35px;
+	}
+	video {
+		margin: 0px 130px 0px 35px;
+		width: 601px;
+		height: 334px;
+	}
+}
+
+.page04 {
+	#Map {
+		position: absolute;
+		top: 120px;
+		left: 35px;
+		right: 130px;
+		bottom: 60px;
+	}
+	#MapMarkers {
+		display: none;
+	}
+}

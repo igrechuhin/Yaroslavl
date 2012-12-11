@@ -1,0 +1,68 @@
+.map_info {
+	font-family: "PT Sans Narrow Regular", Verdana, sans-serif;
+	padding-top: 8px;
+	height: 100%;
+
+	#Name {
+		font-weight: bold;
+	}
+
+	p {
+		padding-left: 10px;
+	}
+	table {
+		font-weight: normal;
+		width: 100%;
+		border: none;
+		vertical-align: bottom;
+		color: white;
+		text-align: center;
+		tr {
+			height: 40px;
+			th {
+				color: #a9a9a9;
+				&.selected {
+					color: #1353a5;
+				}
+			}
+			td {
+				color: white;
+				background-color: #a9a9a9;
+				background-size: 50px;
+				background-position-x: center;
+				background-position-y: center;
+				background-repeat: no-repeat;
+				&.selected {
+					color: white;
+					background-color: #1353a5;
+				}
+				&.month {
+					width: 40%;
+				}
+			}
+			&#Up {
+				td {
+					&.day,&.month,&.year {
+						background-image:url(../img/page04/info_up_triangle_grey.png);
+						background-color: transparent;
+						&.selected {
+							background-image:url(../img/page04/info_up_triangle_blue.png);
+						}
+					}
+				}
+			}
+			&#Down {
+				td {
+					&.day,&.month,&.year {
+						background-image:url(../img/page04/info_down_triangle_grey.png);
+						background-color: transparent;
+						&.selected {
+							background-image:url(../img/page04/info_down_triangle_blue.png);
+						}
+
+					}
+				}
+			}
+		}
+	}
+}

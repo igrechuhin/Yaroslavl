@@ -1,0 +1,42 @@
+body {
+	overflow: hidden;
+	-moz-tap-highlight-color: transparent;
+	-webkit-tap-highlight-color: transparent;
+	-o-tap-highlight-color: transparent;
+	tap-highlight-color: transparent;
+}
+
+/*transition: property duration timing-function delay;*/
+.page-swipe-animation (@duration: 0.3s, @function: ease-in-out) {
+	-moz-transition: -moz-transform @duration @function;
+	-webkit-transition:  -webkit-transform @duration @function;
+	-o-transition: -o-transform @duration @function;
+	transition: transform @duration @function;
+}
+
+.invisible_page {
+	visibility: hidden;
+}
+
+.swipe {
+	.page-swipe-animation;
+}
+
+#Pages, #PreviousPage, #CurrentPage, #NextPage {
+	position: absolute;
+	top: 0%;
+	width: 100%;
+	height: 100%;
+}
+
+#Pages, #CurrentPage {
+	left: 0px;
+}
+
+#PreviousPage {
+	left: -100%;
+}
+
+#NextPage {
+	left: 100%;
+}

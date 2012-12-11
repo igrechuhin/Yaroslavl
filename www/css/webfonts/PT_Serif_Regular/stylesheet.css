@@ -1,0 +1,8 @@
+@font-face {
+	font-family: 'PT Serif Regular';
+	src: url('ptf55f-webfont.eot');
+	src: url('ptf55f-webfont.eot?#iefix') format('embedded-opentype'),
+		url('ptf55f-webfont.woff') format('woff'),
+		url('ptf55f-webfont.ttf') format('truetype'),
+		url('ptf55f-webfont.svg') format('svg');
+}

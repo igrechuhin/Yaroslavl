@@ -1,0 +1,8 @@
+@font-face {
+	font-family: 'PT Sans Pro Narrow Demi Regular';
+	src: url('pts67-webfont.eot');
+	src: url('pts67-webfont.eot?#iefix') format('embedded-opentype'),
+		url('pts67-webfont.woff') format('woff'),
+		url('pts67-webfont.ttf') format('truetype'),
+		url('pts67-webfont.svg') format('svg');
+}
