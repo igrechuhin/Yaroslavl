@@ -1,3 +1,5 @@
+@color-red: #b23917;
+
 .map_info {
 	font-family: "PT Sans Narrow Regular", Verdana, sans-serif;
 	padding-top: 8px;
@@ -22,7 +24,7 @@
 			th {
 				color: #a9a9a9;
 				&.selected {
-					color: #1353a5;
+					color: @color-red;
 				}
 			}
 			td {
@@ -34,7 +36,7 @@
 				background-repeat: no-repeat;
 				&.selected {
 					color: white;
-					background-color: #1353a5;
+					background-color: @color-red;
 				}
 				&.month {
 					width: 40%;
@@ -46,7 +48,7 @@
 						background-image:url(../img/page04/info_up_triangle_grey.png);
 						background-color: transparent;
 						&.selected {
-							background-image:url(../img/page04/info_up_triangle_blue.png);
+							background-image:url(../img/page04/info_up_triangle_red.png);
 						}
 					}
 				}
@@ -57,7 +59,7 @@
 						background-image:url(../img/page04/info_down_triangle_grey.png);
 						background-color: transparent;
 						&.selected {
-							background-image:url(../img/page04/info_down_triangle_blue.png);
+							background-image:url(../img/page04/info_down_triangle_red.png);
 						}
 
 					}

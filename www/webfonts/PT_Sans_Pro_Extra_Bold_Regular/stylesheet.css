@@ -1,0 +1,8 @@
+@font-face {
+    font-family: 'PT Sans Pro Extra Bold Regular';
+    src: url('pts85-webfont.eot');
+    src: url('pts85-webfont.eot?#iefix') format('embedded-opentype'),
+         url('pts85-webfont.woff') format('woff'),
+         url('pts85-webfont.ttf') format('truetype'),
+         url('pts85-webfont.svg#pt_sans_pro_extra_boldregular') format('svg');
+}

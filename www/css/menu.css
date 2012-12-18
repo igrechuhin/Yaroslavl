@@ -1,1 +1,315 @@
-.menu-opacity{opacity:0;-moz-transition:.5s ease-in-out;-webkit-transition:.5s ease-in-out;-o-transition:.5s ease-in-out;transition:.5s ease-in-out}.menu-opacity.show{opacity:1;-moz-transition:.5s ease-in-out;-webkit-transition:.5s ease-in-out;-o-transition:.5s ease-in-out;transition:.5s ease-in-out}#Menu div{z-index:1001;position:fixed;opacity:0;-moz-transition:.5s ease-in-out;-webkit-transition:.5s ease-in-out;-o-transition:.5s ease-in-out;transition:.5s ease-in-out}#Menu div.show{opacity:1;-moz-transition:.5s ease-in-out;-webkit-transition:.5s ease-in-out;-o-transition:.5s ease-in-out;transition:.5s ease-in-out}#Menu div.circle{cursor:pointer;border-radius:50%}#Menu div.circle div{position:relative;font-family:'PT Sans Pro Condensed Demi Regular';font-weight:normal;text-decoration:none;font-style:normal;text-align:left;opacity:1;visibility:visible}#Menu div.normal{color:white}#Menu div.invert{background-color:white;border-width:2px;border-style:solid}#Menu div.green.normal{background-color:#93c357}#Menu div.green.invert{border-color:#93c357;color:#93c357}#Menu div.purple.normal{background-color:#745aa3}#Menu div.purple.invert{border-color:#745aa3;color:#745aa3}#Menu div.blue.normal{background-color:#165faa}#Menu div.blue.invert{border-color:#165faa;color:#165faa}#Menu div.cyan.normal{background-color:#00a7bd}#Menu div.cyan.invert{border-color:#00a7bd;color:#00a7bd}#Menu div.rotate{-moz-transform:rotate(-45deg);-webkit-transform:rotate(-45deg);-o-transform:rotate(-45deg);transform:rotate(-45deg)}#Menu div.small{width:78px;height:78px}#Menu div.medium{width:105px;height:105px}#Menu div.large{width:138px;height:138px}#Page01Button{left:318px;top:580px}#Page01Button div{left:18px;top:12px;font-size:43px}#Page02Button{left:129px;top:596px}#Page02Button div{left:18px;top:12px;font-size:20px}#Page03Button{left:318px;top:376px}#Page03Button div{left:20px;top:15px;font-size:26px}#Page04Button{left:421px;top:478px}#Page04Button div{left:20px;top:15px;font-size:38px}#Page05Button{left:215px;top:478px}#Page05Button div{left:20px;top:15px;font-size:45px}#Page06Button{left:40px;top:509px}#Page06Button div{left:6px;top:15px;font-size:17px}#Page07Button{left:40px;top:713px}#Page07Button div{left:9px;top:13px;font-size:20px}#Page08Button{left:656px;top:508px}#Page08Button div{left:12px;top:13px;font-size:20px}#Page09Button{left:142px;top:816px}#Page09Button div{left:12px;top:11px;font-size:22px}#Page10Button{left:348px;top:816px}#Page10Button div{left:9px;top:9px;font-size:22px}#Page11Button{left:438px;top:700px}#Page11Button div{left:7px;top:20px;font-size:22px}#Page12Button{left:232px;top:290px}#Page12Button div{left:22px;top:13px;font-size:16px}#Page13Button{left:348px;top:200px}#Page13Button div{left:16px;top:7px;font-size:16px}#MenuCircle01{left:440px;top:290px}#MenuCircle02{left:656px;top:713px}#MenuCircle03{left:142px;top:200px}#MenuCircle04{left:129px;top:392px}#MenuRect01{left:595px;top:356px;width:10px;height:185px}#MenuRect02{left:568px;top:542px;width:80px;height:10px}#MenuRect03{left:485px;top:625px;width:10px;height:65px}#MenuRect04{left:550px;top:748px;width:100px;height:10px}#MenuRect05{left:690px;top:595px;width:10px;height:110px}#MenuRect06{left:381px;top:726px;width:10px;height:82px}#MenuRect07{left:192px;top:758px;width:165px;height:10px}#MenuRect08{left:174px;top:709px;width:10px;height:100px}#MenuRect09{left:126px;top:542px;width:80px;height:10px}#MenuRect10{left:76px;top:595px;width:10px;height:110px}#MenuRect11{left:380px;top:287px;width:10px;height:80px}#MenuRect12{left:322px;top:281px;width:35px;height:10px}#MenuRect13{left:224px;top:266px;width:10px;height:35px}#MenuRect14{left:177px;top:285px;width:10px;height:100px}
+.menu-opacity {
+  opacity: 0;
+  -moz-transition: 0.5s ease-in-out;
+  -webkit-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+}
+.menu-opacity.show {
+  opacity: 1;
+  -moz-transition: 0.5s ease-in-out;
+  -webkit-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+}
+#Menu div {
+  z-index: 1001;
+  position: fixed;
+  opacity: 0;
+  -moz-transition: 0.5s ease-in-out;
+  -webkit-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+}
+#Menu div.show {
+  opacity: 1;
+  -moz-transition: 0.5s ease-in-out;
+  -webkit-transition: 0.5s ease-in-out;
+  -o-transition: 0.5s ease-in-out;
+  transition: 0.5s ease-in-out;
+}
+#Menu div.circle {
+  cursor: pointer;
+  border-radius: 50%;
+}
+#Menu div.circle div {
+  position: relative;
+  font-family: 'PT Sans Pro Condensed Demi Regular';
+  font-weight: normal;
+  text-decoration: none;
+  font-style: normal;
+  text-align: left;
+  opacity: 1;
+  visibility: visible;
+}
+#Menu div.normal {
+  color: white;
+}
+#Menu div.invert {
+  background-color: white;
+  border-width: 2px;
+  border-style: solid;
+}
+#Menu div.green.normal {
+  background-color: #93c357;
+}
+#Menu div.green.invert {
+  border-color: #93c357;
+  color: #93c357;
+}
+#Menu div.purple.normal {
+  background-color: #745aa3;
+}
+#Menu div.purple.invert {
+  border-color: #745aa3;
+  color: #745aa3;
+}
+#Menu div.blue.normal {
+  background-color: #165faa;
+}
+#Menu div.blue.invert {
+  border-color: #165faa;
+  color: #165faa;
+}
+#Menu div.cyan.normal {
+  background-color: #00a7bd;
+}
+#Menu div.cyan.invert {
+  border-color: #00a7bd;
+  color: #00a7bd;
+}
+#Menu div.rotate {
+  -moz-transform: rotate(-45deg);
+  -webkit-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+#Menu div.small {
+  width: 78px;
+  height: 78px;
+}
+#Menu div.medium {
+  width: 105px;
+  height: 105px;
+}
+#Menu div.large {
+  width: 138px;
+  height: 138px;
+}
+#Page01Button {
+  left: 318px;
+  top: 580px;
+}
+#Page01Button div {
+  left: 18px;
+  top: 12px;
+  font-size: 43px;
+}
+#Page02Button {
+  left: 129px;
+  top: 596px;
+}
+#Page02Button div {
+  left: 18px;
+  top: 12px;
+  font-size: 20px;
+}
+#Page03Button {
+  left: 318px;
+  top: 376px;
+}
+#Page03Button div {
+  left: 20px;
+  top: 15px;
+  font-size: 26px;
+}
+#Page04Button {
+  left: 421px;
+  top: 478px;
+}
+#Page04Button div {
+  left: 20px;
+  top: 15px;
+  font-size: 38px;
+}
+#Page05Button {
+  left: 215px;
+  top: 478px;
+}
+#Page05Button div {
+  left: 20px;
+  top: 15px;
+  font-size: 45px;
+}
+#Page06Button {
+  left: 40px;
+  top: 509px;
+}
+#Page06Button div {
+  left: 6px;
+  top: 15px;
+  font-size: 17px;
+}
+#Page07Button {
+  left: 40px;
+  top: 713px;
+}
+#Page07Button div {
+  left: 9px;
+  top: 13px;
+  font-size: 20px;
+}
+#Page08Button {
+  left: 656px;
+  top: 508px;
+}
+#Page08Button div {
+  left: 12px;
+  top: 13px;
+  font-size: 20px;
+}
+#Page09Button {
+  left: 142px;
+  top: 816px;
+}
+#Page09Button div {
+  left: 12px;
+  top: 11px;
+  font-size: 22px;
+}
+#Page10Button {
+  left: 348px;
+  top: 816px;
+}
+#Page10Button div {
+  left: 9px;
+  top: 9px;
+  font-size: 22px;
+}
+#Page11Button {
+  left: 438px;
+  top: 700px;
+}
+#Page11Button div {
+  left: 7px;
+  top: 20px;
+  font-size: 22px;
+}
+#Page12Button {
+  left: 232px;
+  top: 290px;
+}
+#Page12Button div {
+  left: 22px;
+  top: 13px;
+  font-size: 16px;
+}
+#Page13Button {
+  left: 348px;
+  top: 200px;
+}
+#Page13Button div {
+  left: 16px;
+  top: 7px;
+  font-size: 16px;
+}
+#MenuCircle01 {
+  left: 440px;
+  top: 290px;
+}
+#MenuCircle02 {
+  left: 656px;
+  top: 713px;
+}
+#MenuCircle03 {
+  left: 142px;
+  top: 200px;
+}
+#MenuCircle04 {
+  left: 129px;
+  top: 392px;
+}
+#MenuRect01 {
+  left: 595px;
+  top: 356px;
+  width: 10px;
+  height: 185px;
+}
+#MenuRect02 {
+  left: 568px;
+  top: 542px;
+  width: 80px;
+  height: 10px;
+}
+#MenuRect03 {
+  left: 485px;
+  top: 625px;
+  width: 10px;
+  height: 65px;
+}
+#MenuRect04 {
+  left: 550px;
+  top: 748px;
+  width: 100px;
+  height: 10px;
+}
+#MenuRect05 {
+  left: 690px;
+  top: 595px;
+  width: 10px;
+  height: 110px;
+}
+#MenuRect06 {
+  left: 381px;
+  top: 726px;
+  width: 10px;
+  height: 82px;
+}
+#MenuRect07 {
+  left: 192px;
+  top: 758px;
+  width: 165px;
+  height: 10px;
+}
+#MenuRect08 {
+  left: 174px;
+  top: 709px;
+  width: 10px;
+  height: 100px;
+}
+#MenuRect09 {
+  left: 126px;
+  top: 542px;
+  width: 80px;
+  height: 10px;
+}
+#MenuRect10 {
+  left: 76px;
+  top: 595px;
+  width: 10px;
+  height: 110px;
+}
+#MenuRect11 {
+  left: 380px;
+  top: 287px;
+  width: 10px;
+  height: 80px;
+}
+#MenuRect12 {
+  left: 322px;
+  top: 281px;
+  width: 35px;
+  height: 10px;
+}
+#MenuRect13 {
+  left: 224px;
+  top: 266px;
+  width: 10px;
+  height: 35px;
+}
+#MenuRect14 {
+  left: 177px;
+  top: 285px;
+  width: 10px;
+  height: 100px;
+}

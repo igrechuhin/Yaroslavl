@@ -13,10 +13,14 @@ Map.infoWindow = null;
 Map.checkDate = null;
 Map.templeDef = null;
 Map.displayDirection = null;
+Map.watchID = null;
+Map.registered = false;
 
 Map.register = function(Parameters) {
 	console.assert(Parameters.hasOwnProperty('target'), 'Map.register -- target undefined');
-	
+	//Map.unregister();
+	if (Map.registered) return;
+
 	Map.target  = Parameters.target;
 	
 	var mapCenter = new google.maps.LatLng(Map.center.latitude, Map.center.longitude);
@@ -44,10 +48,10 @@ Map.register = function(Parameters) {
 		var latitude = marker.data('latitude');
 		var longitude = marker.data('longitude');
 		var name = marker.text();
-		var image = [imageTemplate, imageExtension].join(zIndex);
+		var imageNormal = [imageTemplate, imageExtension].join(zIndex);
 		var imageInvert = [imageInvertTemplate, imageExtension].join(zIndex);
 
-		var image = {normal: new google.maps.MarkerImage(image, Map.markers.size, Map.markers.origin, Map.markers.anchor, Map.markers.size),
+		var image = {normal: new google.maps.MarkerImage(imageNormal, Map.markers.size, Map.markers.origin, Map.markers.anchor, Map.markers.size),
 							  invert: new google.maps.MarkerImage(imageInvert, Map.markers.size, Map.markers.origin, Map.markers.anchor, Map.markers.size)};
 		var object = new google.maps.Marker({position: new google.maps.LatLng(latitude, longitude),
 																		map: Map.google,
@@ -86,7 +90,7 @@ Map.register = function(Parameters) {
                         ,pane: "overlayMouseTarget"
                         ,enableEventPropagation: false
 						,alignBottom: false
-                };
+						};
 	Map.infoWindow = new InfoBox(myOptions);
 	//ib.open(theMap, marker);
 	//Map.infoWindow = new google.maps.InfoWindow({maxWidth: 270});
@@ -95,6 +99,30 @@ Map.register = function(Parameters) {
 	Map.target.bind('touchstart', function(event) {
 		event.stopPropagation();
 	});
+	Map.registered = true;
+}
+
+Map.unregister = function() {
+	if (Map.google !== null) {
+		Map.google.unbindAll();
+		delete Map.google;
+		Map.google = null;
+		
+		for(index in Map.markers.objects) {
+			Map.markers.objects[index].unbindAll();
+			delete Map.markers.objects[index];
+		}
+		for(index in Map.markers.images) {
+			delete Map.markers.images[index].normal;
+			delete Map.markers.images[index].invert;
+			delete Map.markers.images[index];
+		}
+		Map.infoWindow.unbindAll();
+		delete Map.infoWindow;
+		
+		Map.displayDirection.unbindAll();
+		delete Map.displayDirection;
+	}
 }
 
 Map.reInitMarkers = function() {
@@ -112,9 +140,9 @@ Map.makeInfoWindow = function(marker) {
 	var mm = date.getMonth();
 	var yyyy = date.getFullYear();
 
-	var imagesPath = Map.target .data('imagespath');
+	var imagesPath = Map.target.data('imagespath');
 
-	var markersDefs = Map.target .parent().children('#MapMarkers');
+	var markersDefs = Map.target.parent().children('#MapMarkers');
 	Map.templeDef = markersDefs.children(['li:nth-child(',')'].join(marker.zIndex));
 
 	var infoImage = imagesPath + markersDefs.data('infoimage') + marker.zIndex + markersDefs.data('imageextension');
@@ -160,14 +188,16 @@ Map.getWorkState = function() {
 	var date = Map.checkDate;
 	var dd = date.getDate();
 	var mm = date.getMonth();
+	
+	var colorRed = "#b23917";
 
 	var startMonth = Map.templeDef.data('startmonth');
 	var endMonth = Map.templeDef.data('endmonth');
 	if (mm < startMonth || mm > endMonth) {
-		return {text: Map.templeDef.data('notworkmonth'), color: 'red'};
+		return {text: Map.templeDef.data('notworkmonth'), color: colorRed};
 	}
 	if (Map.templeDef.data('days').search(dd) != -1) {
-		return {text: Map.templeDef.data('notworkday'), color: 'red'};
+		return {text: Map.templeDef.data('notworkday'), color: colorRed};
 	}
 	return {text: Map.templeDef.data('worktext'), color: 'green'};
 }
@@ -213,77 +243,91 @@ Map.setWorkStateText = function() {
 	Map.target.find('#MapInfoState').html(state.text).css('color', state.color);
 }
 
-Map.watchMyLocation: function() {
-	if (map.WatchID == null && navigator.geolocation) {
+Map.location = null;
+Map.locationMarker = null;
+Map.watchLocation = function() {
+	if (Map.watchID == null && navigator.geolocation) {
+		var imagesPath = Map.target.data('imagespath');
+		var markersDefs = Map.target.parent().children('#MapMarkers');
+		var locationImage = imagesPath + markersDefs.data('location') + markersDefs.data('imageextension');
+		var locationIcon = new google.maps.MarkerImage(locationImage, Map.markers.size, Map.markers.origin, Map.markers.anchor, Map.markers.size)
+
 		navigator.geolocation.getCurrentPosition(
 			function(position) {
-				map.MyLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-				map.GoogleMap.setCenter(map.MyLocation);
-				var image = new google.maps.MarkerImage(map.MyLocationIcon, map.MarkerImageSize, map.MarkerImageOrigin, map.MarkerImageAnchor, map.MarkerImageSize);
-
-				map.MyLocationMarker =  new google.maps.Marker({	position: map.MyLocation,
-																								map: map.GoogleMap,
-																								icon: image,
-																								zIndex: 100
-																								});
-				map.WatchID = navigator.geolocation.watchPosition(map.updateLocation, map.onError, { enableHighAccuracy: true });
-//					$('#MapGetLocactionIcon').removeClass('normal_icon').addClass('invert_icon');
-				$('#MapGetRouteIcon').removeClass('invisible');
-			}, map.onError
+				Map.location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+				Map.google.setCenter(Map.location);
+				Map.locationMarker = new google.maps.Marker({
+					 position: Map.location
+					,map: Map.google
+					,icon: locationIcon
+					,zIndex: 100
+					,animation: google.maps.Animation.DROP
+					});
+				Map.watchID = navigator.geolocation.watchPosition(Map.updateLocation, Map.onError, { enableHighAccuracy: true });
+				Buttons.showRoute();
+			}, Map.onError
 		);
 	} else {
-		map.MyLocationMarker.setMap(null);
-		navigator.geolocation.clearWatch(map.WatchID);
-		map.WatchID = null;
-//			$('#MapGetLocactionIcon').addClass('normal_icon').removeClass('invert_icon');
-		$('#MapGetRouteIcon').addClass('invisible');
+		Map.locationMarker.setMap(null);
+		navigator.geolocation.clearWatch(Map.watchID);
+		Map.watchID = null;
+		Buttons.hideRoute();
 	}
 }
-/*
-	,
-	updateLocation: function(position) {
-		map.MyLocation = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
-		map.MyLocationMarker.setPosition(map.MyLocation);
-	},
-	onError: function(error){
-	},
-	getRoute: function() {
-		if (map.HaveRoute == false) {
-			var temples = map.Temples;
-			var lastTemple = temples[temples.length-1];
-			var start = new google.maps.LatLng(57.62984, 39.87359);
-			var end = new google.maps.LatLng(lastTemple[1], lastTemple[2]);
-			var waypts = [];
-			for (var i = 0; i < temples.length-1; i++) {
-				var temple = temples[i];
-				var myLatLng = new google.maps.LatLng(temple[1], temple[2]);
-				waypts.push({location: myLatLng,
-									stopover: false
-									});
-			}
-			var directionsService = new google.maps.DirectionsService();
-			var request = {	origin: start,
-									destination: end,
-									waypoints: waypts,
-									optimizeWaypoints: false,
-									travelMode: google.maps.TravelMode.WALKING
-									};
-			directionsService.route(request, function(response, status) {
+
+Map.isWatchingLocation = function() {
+	return Map.watchID !== null; 
+}
+
+Map.updateLocation = function(position) {
+	Map.location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+	Map.locationMarker.setPosition(Map.location);
+}
+
+Map.onError = function() {
+}
+
+Map.haveRoute = false;
+Map.	getRoute = function() {
+	if (Map.haveRoute === false) {
+		var markers = Map.target.parent().children('#MapMarkers');
+		var markersCount = markers.children().size();
+
+		var start = Map.location;
+		var end = null;
+		var waypts = [];
+		for (var i = 0; i < markersCount; i++) {
+			var zIndex = i+1;
+			var markerSelector = ['li:nth-child(',')'].join(zIndex);
+			var marker = markers.children(markerSelector);
+			
+			var latitude = marker.data('latitude');
+			var longitude = marker.data('longitude');
+			var end = new google.maps.LatLng(latitude, longitude);
+			waypts.push({
+				 location: end
+				,stopover: false
+				});
+		}
+		
+		var directionsService = new google.maps.DirectionsService();
+		var request = {	
+			 origin: start
+			,destination: end
+			,waypoints: waypts
+			,optimizeWaypoints: false
+			,travelMode: google.maps.TravelMode.WALKING
+			};
+		directionsService.route(
+			request
+			,function(response, status) {
 				if (status == google.maps.DirectionsStatus.OK) {
-					map.DirectionDisplay.setDirections(response);
-					map.HaveRoute = true;
-//					$('#MapGetRouteIcon').removeClass('normal_icon').addClass('invert_icon');				
+					Map.displayDirection.setDirections(response);
+					Map.haveRoute = true;
 				}
 			});
-		} else {
-			map.DirectionDisplay.setDirections({routes: []});
-			map.HaveRoute = false;
-//			$('#MapGetRouteIcon').addClass('normal_icon').removeClass('invert_icon');
-		}
-	},
-,
-,
-,
-
+	} else {
+		Map.displayDirection.setDirections({routes: []});
+		Map.haveRoute = false;
+	}
 }
-*/

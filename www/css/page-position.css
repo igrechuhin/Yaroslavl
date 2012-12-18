@@ -1,1 +1,58 @@
-body{overflow:hidden;-moz-tap-highlight-color:transparent;-webkit-tap-highlight-color:transparent;-o-tap-highlight-color:transparent;tap-highlight-color:transparent}.invisible_page{visibility:hidden}.swipe{-moz-transition:-moz-transform .3s ease-in-out;-webkit-transition:-webkit-transform .3s ease-in-out;-o-transition:-o-transform .3s ease-in-out;transition:transform .3s ease-in-out}#Pages,#PreviousPage,#CurrentPage,#NextPage{position:absolute;top:0;width:100%;height:100%}#Pages,#CurrentPage{left:0}#PreviousPage{left:-100%}#NextPage{left:100%}
+body {
+  overflow: hidden;
+  -moz-tap-highlight-color: transparent;
+  -webkit-tap-highlight-color: transparent;
+  -o-tap-highlight-color: transparent;
+  tap-highlight-color: transparent;
+  margin: 0px;
+}
+#Pages,
+#MainContent03,
+#MainContent05-1,
+.plan,
+#PanoramaContent {
+  position: absolute;
+  z-index: 1;
+  top: 0px;
+  bottom: 0px;
+  left: 0px;
+  right: 0px;
+  overflow: hidden;
+}
+.plan {
+  z-index: 2 !important;
+  background-color: white;
+}
+.plan img {
+  position: relative;
+  padding-top: 120px;
+  padding-left: 52px;
+  width: 600px;
+}
+#PanoramaContent {
+  z-index: 2000 !important;
+}
+#PanoramaContent img {
+  z-index: 2001;
+  position: fixed;
+  width: 50px;
+  left: 26px;
+  top: 26px;
+}
+.page {
+  float: left;
+  -webkit-transform: translate3d(0, 0, 0);
+  height: 100%;
+  padding: 0px;
+}
+.scroller {
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  padding: 0px;
+}
+.screen {
+  -webkit-transform: translate3d(0, 0, 0);
+  width: 100%;
+  padding: 0px;
+}

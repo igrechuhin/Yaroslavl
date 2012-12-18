@@ -1,1 +1,110 @@
-.page01{background-color:#b23917}.page01 p{font-family:'PT Sans Pro Condensed Demi Regular';font-size:42px;color:white;border-bottom:3px solid white;position:absolute;left:52px;letter-spacing:1px;text-shadow:none}.page01 p#Header0{font-family:"PT Sans Pro Narrow Light Regular";top:-28px;letter-spacing:2px}.page01 #Contents{padding-top:350px;padding-left:52px;font-family:'PT Sans Pro Condensed Demi Regular',Arial,Helvetica,sans-serif;font-size:24px;color:#fff;width:250px}.page01 #Contents .contents_circle{width:35px;height:35px;border:2px solid white;border-radius:50%;margin-top:8px;color:white}.page01 #Contents .contents_circle .contents_number{position:relative;left:9px;top:3px;color:white;text-shadow:none;font-weight:normal;text-decoration:none}.page01 #Contents .contents_circle .contents_text{position:relative;left:50px;top:-28px;color:white;letter-spacing:1px;width:220px;text-shadow:none;font-weight:normal;text-decoration:none}.page01 img{position:absolute}.page02{font-family:"PT Serif Regular";font-size:14pt;color:black}.page02 #Text{overflow-y:scroll;margin:120px 130px 60px 35px}.page02 video{margin:0 130px 0 35px;width:601px;height:334px}.page04 #Map{position:absolute;top:120px;left:35px;right:130px;bottom:60px}.page04 #MapMarkers{display:none}
+#Page01 {
+  background-color: #b23917;
+}
+#Page01 p {
+  font-family: 'PT Sans Pro Condensed Demi Regular';
+  font-size: 42px;
+  color: white;
+  border-bottom: 3px solid white;
+  position: absolute;
+  left: 52px;
+  letter-spacing: 1px;
+  text-shadow: none;
+}
+#Page01 p#Header0 {
+  font-family: "PT Sans Pro Narrow Light Regular";
+  top: -28px;
+  letter-spacing: 2px;
+}
+#Page01 #Contents {
+  padding-top: 350px;
+  padding-left: 52px;
+  font-family: 'PT Sans Pro Condensed Demi Regular', Arial, Helvetica, sans-serif;
+  font-size: 24px;
+  color: #ffffff;
+  width: 250px;
+}
+#Page01 #Contents .contents_circle {
+  width: 35px;
+  height: 35px;
+  border: 2px solid white;
+  border-radius: 50%;
+  margin-top: 8px;
+  color: white;
+}
+#Page01 #Contents .contents_circle .contents_number {
+  position: relative;
+  left: 9px;
+  top: 3px;
+  color: white;
+  text-shadow: none;
+  font-weight: normal;
+  text-decoration: none;
+}
+#Page01 #Contents .contents_circle .contents_text {
+  position: relative;
+  left: 50px;
+  top: -28px;
+  color: white;
+  letter-spacing: 1px;
+  width: 220px;
+  text-shadow: none;
+  font-weight: normal;
+  text-decoration: none;
+}
+#Page01 img {
+  position: absolute;
+}
+#Page02 article {
+  padding-top: 120px;
+  padding-bottom: 60px;
+}
+#Page02 video {
+  margin: 70px 130px 0px 35px;
+  width: 601px;
+  height: 334px;
+}
+#Page03 img {
+  padding: 116px 0px 0px 26px;
+  height: 840px;
+}
+#Page03 article {
+  padding-top: 116px;
+  font-size: 10pt;
+  line-height: 14pt;
+  -webkit-column-count: 2;
+  -webkit-column-rule-width: 0px;
+}
+#Page03 article p {
+  -webkit-column-break-inside: avoid;
+  margin-top: 0px;
+}
+#Page03 article p span.templeName {
+  font-size: 11pt;
+  font-family: 'PT Serif Caption Italic';
+}
+#Page03 article p span.templeHeader {
+  font-family: 'PT Sans Pro Extra Bold Regular';
+}
+#Page03 article p span.templeText {
+  font-family: 'PT Serif Caption Regular';
+}
+#Page04 #Map {
+  position: absolute;
+  top: 148px;
+  left: 26px;
+  right: 120px;
+  bottom: 26px;
+  border: 1px double black;
+}
+#Page04 #MapMarkers {
+  display: none;
+}
+#Page05-1 .screen table {
+  padding: 85px 130px 0px 52px;
+  font-family: "PT Sans Pro Narrow Demi Regular";
+  text-align: center;
+}
+#Page05-1 .screen table tr {
+  vertical-align: bottom;
+}

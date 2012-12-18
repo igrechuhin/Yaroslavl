@@ -24,7 +24,7 @@
   color: #a9a9a9;
 }
 .map_info table tr th.selected {
-  color: #1353a5;
+  color: #b23917;
 }
 .map_info table tr td {
   color: white;
@@ -36,7 +36,7 @@
 }
 .map_info table tr td.selected {
   color: white;
-  background-color: #1353a5;
+  background-color: #b23917;
 }
 .map_info table tr td.month {
   width: 40%;
@@ -50,7 +50,7 @@
 .map_info table tr#Up td.day.selected,
 .map_info table tr#Up td.month.selected,
 .map_info table tr#Up td.year.selected {
-  background-image: url(../img/page04/info_up_triangle_blue.png);
+  background-image: url(../img/page04/info_up_triangle_red.png);
 }
 .map_info table tr#Down td.day,
 .map_info table tr#Down td.month,
@@ -61,5 +61,5 @@
 .map_info table tr#Down td.day.selected,
 .map_info table tr#Down td.month.selected,
 .map_info table tr#Down td.year.selected {
-  background-image: url(../img/page04/info_down_triangle_blue.png);
+  background-image: url(../img/page04/info_down_triangle_red.png);
 }

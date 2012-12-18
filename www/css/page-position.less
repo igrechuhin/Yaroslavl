@@ -4,39 +4,57 @@ body {
 	-webkit-tap-highlight-color: transparent;
 	-o-tap-highlight-color: transparent;
 	tap-highlight-color: transparent;
+	margin: 0px;
 }
 
-/*transition: property duration timing-function delay;*/
-.page-swipe-animation (@duration: 0.3s, @function: ease-in-out) {
-	-moz-transition: -moz-transform @duration @function;
-	-webkit-transition:  -webkit-transform @duration @function;
-	-o-transition: -o-transform @duration @function;
-	transition: transform @duration @function;
+#Pages, #MainContent03, #MainContent05-1, .plan, #PanoramaContent {
+    position: absolute;
+    z-index: 1;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: hidden;
 }
 
-.invisible_page {
-	visibility: hidden;
+.plan {
+	z-index: 2 !important;
+	background-color: white;
+	img {
+		position: relative;
+		padding-top: 120px;
+		padding-left: 52px;
+		width: 600px;
+	}
 }
 
-.swipe {
-	.page-swipe-animation;
+#PanoramaContent {
+	z-index: 2000 !important;
+	img {
+		z-index: 2001;
+		position: fixed;
+		width: 50px;
+		left: 26px;
+		top: 26px;
+	}
 }
 
-#Pages, #PreviousPage, #CurrentPage, #NextPage {
+.page {
+    float: left;
+    -webkit-transform: translate3d(0,0,0);
+    height: 100%;
+    padding: 0px;
+}
+
+.scroller {
 	position: absolute;
-	top: 0%;
+	z-index: 1;
 	width: 100%;
-	height: 100%;
+	padding: 0px;
 }
 
-#Pages, #CurrentPage {
-	left: 0px;
-}
-
-#PreviousPage {
-	left: -100%;
-}
-
-#NextPage {
-	left: 100%;
+.screen {
+	-webkit-transform: translate3d(0,0,0);
+	width: 100%;
+	padding: 0px;
 }

@@ -1,6 +1,6 @@
 @color-red: #b23917;
 
-.page01 {
+#Page01 {
 	background-color: @color-red;
 	p {
 		font-family: 'PT Sans Pro Condensed Demi Regular';
@@ -62,30 +62,69 @@
 	}
 }
 
-.page02 {
-	font-family: "PT Serif Regular";
-	font-size: 14pt;
-	color: black;
-	#Text {
-		overflow-y: scroll;
-		margin: 120px 130px 60px 35px;
+#Page02 {
+	article {
+		padding-top: 120px;
+		padding-bottom: 60px;
 	}
 	video {
-		margin: 0px 130px 0px 35px;
+		margin: 70px 130px 0px 35px;
 		width: 601px;
 		height: 334px;
 	}
 }
 
-.page04 {
+#Page03 {
+	img {
+		padding: 116px 0px 0px 26px;
+		height: 840px;
+	}
+	article {
+		padding-top: 116px;
+		font-size: 10pt;
+		line-height: 14pt;
+		-webkit-column-count: 2;
+		-webkit-column-rule-width: 0px;
+		p {
+			-webkit-column-break-inside: avoid;
+			margin-top: 0px;
+			span.templeName {
+				font-size: 11pt;
+				font-family: 'PT Serif Caption Italic';
+			}
+			span.templeHeader {
+				font-family: 'PT Sans Pro Extra Bold Regular';
+			}
+			span.templeText {
+				font-family: 'PT Serif Caption Regular';
+			}
+		}
+	}
+}
+
+#Page04 {
 	#Map {
 		position: absolute;
-		top: 120px;
-		left: 35px;
-		right: 130px;
-		bottom: 60px;
+		top: 148px;
+		left: 26px;
+		right: 120px;
+		bottom: 26px;
+		border: 1px double black;
 	}
 	#MapMarkers {
 		display: none;
+	}
+}
+
+#Page05-1 {
+	.screen {
+		table {
+			padding: 85px 130px 0px 52px;
+			font-family: "PT Sans Pro Narrow Demi Regular";
+			text-align: center;
+			tr {
+				vertical-align: bottom;
+			}
+		}
 	}
 }

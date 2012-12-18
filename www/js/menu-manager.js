@@ -4,9 +4,14 @@ Menu.register = function() {
 	$('#Menu').addClass('invisible').children('.button').bind('touchstart', Menu.touch);
 }
 
+Menu.registerPage01 = function() {
+	var target = $('#Pages > #CurrentPage > #Contents > .contents_circle');
+	target.bind('touchstart', Menu.touch);
+}
+
 Menu.setup = function(Parameters) {
-	console.assert(Parameters.hasOwnProperty('pageClass'), 'Menu.setup -- pageClass undefined');
-	var currentButtonID = ['#Page', 'Button'].join(Parameters.pageClass.substring(4, 6));
+	console.assert(Parameters.hasOwnProperty('pageID'), 'Menu.setup -- pageID undefined');
+	var currentButtonID = ['#Page', 'Button'].join(Parameters.pageID.substring(4, 6));
 	
 	var menu = $('#Menu');
 	menu.children().removeClass('invert').addClass('normal');
@@ -15,7 +20,7 @@ Menu.setup = function(Parameters) {
 }
 
 Menu.show = function() {
-	$('video').addClass('invisible');
+	$('video').addClass('invisible2');
 	var menu = $('#Menu');
 	menu.removeClass('invisible');
 	setTimeout(function() {
@@ -29,21 +34,20 @@ Menu.show = function() {
 Menu.hide = function() {
 	var menu = $('#Menu');
 	menu.children().removeClass('show');
-	$('video').removeClass('invisible');
+	$('video').removeClass('invisible2');
 	setTimeout(function() {
 		menu.addClass('invisible');
 	}, 500);
 }
 
 Menu.touch = function(event) {
-	var target = event.currentTarget;
-	var targetObj = $(target);
-	switch (target.id) {
-		case 'Menu':
-			targetObj.hasClass('normal') ? Menu.show() : Menu.hide();
-		break;
-	}
-	targetObj.toggleClass('normal invert');
-	Loader.getContent({url: Parameters.url, target: this.currentPage });
+	Menu.gotoPage($("#"+$(event.currentTarget).data("page")));
 	event.stopPropagation();
+}
+
+Menu.gotoPage = function(target) {
+	Loader.getContent({
+		 target: target
+		,loadNext: true});
+	mainScroller.scrollToPage(target.index(), 0, 200);
 }

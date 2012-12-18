@@ -2,7 +2,7 @@
 @color-invert: #a64124;
 @color-bown: #562a1d;
 
-@buttons-width: 110px;
+@buttons-width: 100px;
 @button-size: 80px;
 
 #Buttons {
@@ -13,19 +13,33 @@
 	width: @buttons-width;
 	height: 100%;
 	div {
-		position: relative;
+		position: absolute;
 		background-size: contain;
 		width: @button-size;
 		height: @button-size;
 		p {
 			font-family: "PT Sans Pro Narrow Demi Regular";
-			font-size: 12pt;
-			line-height: 10px;
-			bottom: -80px;
+			font-size: 10pt;
+			letter-spacing: 0.5px;
+			line-height: 13px;
+			bottom: -60px;
+			left: -10px;
 			text-align: center;
 			position: relative;
-			width: 100%;
+			width: 130%;
 		}
+/*
+		p {
+			font-family: "PT Sans Pro Narrow Demi Regular";
+			font-size: 11pt;
+			letter-spacing: 0.5px;
+			line-height: 13px;
+			bottom: -60px;
+			left: -4px;
+			text-align: center;
+			position: relative;
+			width: 118%;
+		}*/
 		&.normal {
 			color: @color-normal;
 		}
@@ -36,9 +50,18 @@
 			opacity: 1;
 			z-index: 1000;
 		}
+		
+		&#Menu {top: 40px / 2;}
+		&#Eye {top: 296px / 2;}
+		&#Text {top: 531px / 2;}
+		&#Plan {top: 919px / 2;}
+		&#Audio {top: 1145px / 2;}
+		&#Route,&#Photo {top: 1372px / 2;}
+		&#Panorama,&#Location {top: 1597px / 2;}
+		&#Temple {top: 1822px / 2;}
+		
 		&#Menu {
 			display: block;
-			top: 14px;
 			&.normal {
 				background-image: url(../img/buttons/contents.png);
 				transform:translate3d(0,0,0);
@@ -55,8 +78,23 @@
 				}
 			}
 		}
+		&#Eye {
+			&.normal {
+				background-image: url(../img/buttons/eye.png);
+			}
+			&.invert {
+				background-image: url(../img/buttons/eye_invert.png);
+			}
+		}
+		&#Text {
+			&.normal {
+				background-image: url(../img/buttons/text.png);
+			}
+			&.invert {
+				background-image: url(../img/buttons/text_invert.png);
+			}
+		}
 		&#Plan {
-			top: 445px;
 			&.normal {
 				background-image: url(../img/buttons/plan.png);
 			}
@@ -65,7 +103,6 @@
 			}
 		}
 		&#Audio {
-			top: 565px;
 			&.normal {
 				background-image: url(../img/buttons/audio.png);
 			}
@@ -74,7 +111,6 @@
 			}
 		}
 		&#Route {
-			top: 565px;
 			&.normal {
 				background-image: url(../img/buttons/marshrut.png);
 			}
@@ -83,7 +119,6 @@
 			}
 		}
 		&#Photo {
-			top: 675px;
 			&.normal {
 				background-image: url(../img/buttons/photo.png);
 			}
@@ -92,7 +127,6 @@
 			}
 		}
 		&#Panorama {
-			top: 800px;
 			&.normal {
 				background-image: url(../img/buttons/panorama.png);
 			}
@@ -101,7 +135,6 @@
 			}
 		}
 		&#Location {
-			top: 800px;
 			&.normal {
 				background-image: url(../img/buttons/mesto.png);
 			}
@@ -109,8 +142,7 @@
 				background-image: url(../img/buttons/mesto_invert.png);
 			}
 		}
-		&#Temples {
-			top: 800px;
+		&#Temple {
 			&.normal {
 				background-image: url(../img/buttons/hramy.png);
 			}

@@ -19,6 +19,8 @@ function Swipe(Parameters) {
 	this.target.append(this.previousPage, [this.currentPage, this.nextPage]);
 	
 	this.hideElements = Parameters.hasOwnProperty('hide') ? Parameters.hide : $();
+	
+	this.scrollContent = null
 
 	this.resetVars();
 
@@ -30,7 +32,9 @@ function Swipe(Parameters) {
 
 Swipe.prototype.resetVars = function() {
 	this.isTouching = false;
+	this.isMoving = false;
 	this.touchStartX = 0;
+	this.touchStartY = 0;
 	this.currentStartX = 0;
 	this.previousLength = 0;
 	this.nextLength = 0;
@@ -49,22 +53,21 @@ Swipe.prototype.hide = function() {
 Swipe.prototype.touchHandler = function(event) {
 	switch (event.type) {
 		case 'touchstart':
-//			this.nextPage.removeClass('invisible_page');
-//			this.previousPage.removeClass('invisible_page');
-			
-			var pageX = event.originalEvent.touches[0].pageX;
+			var touch = event.originalEvent.touches[0];
 			this.isTouching = true;
+			this.isMoving = false;
+			this.touchStartX = touch.pageX;
+			this.touchStartY = touch.pageY;
+			this.currentStartX = this.target.offset().left;
 			this.previousLength = this.previousPage.html().length;
 			this.nextLength = this.nextPage.html().length;
-			this.currentStartX = this.target.offset().left;
-			this.touchStartX = pageX; 
 			this.startTime = new Date().getTime();
 		break;
 		case 'touchmove':
-			var pageX = event.originalEvent.touches[0].pageX;
-			var shift = pageX - this.touchStartX;
-			if (this.isTouching && Math.abs(shift) > this.shiftThreshold) {
-				var currentX = this.currentStartX+shift;
+			var shiftX = event.originalEvent.touches[0].pageX - this.touchStartX;
+			var threshold = Math.max(this.shiftThreshold, Math.abs(event.originalEvent.touches[0].pageY - this.touchStartY));
+			if (this.isTouching && Math.abs(shiftX) > threshold) {
+				var currentX = this.currentStartX+shiftX;
 				var canSwipe = false;
 				if (currentX < 0 && this.nextLength > 0) { // Swipe left -- show next page
 					if (this.direction != this.LEFT) {
@@ -85,13 +88,14 @@ Swipe.prototype.touchHandler = function(event) {
 				}
 				if (canSwipe) {
 					this.target.css('-webkit-transform', 'translate3d('+currentX+'px,0px,0px)');
+					//this.target.css('-webkit-transform', 'translate('+currentX+'px,0px)');
 				}
 			}
+			this.isMoving = true;
 		break;
 		case 'touchend':
-			if (this.isTouching) {
-				var pageX = event.originalEvent.changedTouches[0].pageX;
-				var elapsedSwipe = pageX - this.touchStartX;
+			if (this.isTouching && this.isMoving) {
+				var elapsedSwipe = event.originalEvent.changedTouches[0].pageX - this.touchStartX;
 				var elapsedTime = new Date().getTime() - this.startTime;
 				var currentX = this.target.offset().left;
 				var currentWidth_2 = $(window).width() / 2;
@@ -101,15 +105,16 @@ Swipe.prototype.touchHandler = function(event) {
 					swipeShow = (elapsedSwipe > this.swipeThreshold) ? this.RIGHT : swipeShow;
 				}
 				this.target.addClass('swipe');
-				var shift = 0;
+				var shiftX = 0;
 				if ((currentX < -currentWidth_2 || swipeShow === this.LEFT) && this.nextLength > 0) { // Swipe left -- show next page
-					shift = -$(window).width();
+					shiftX = -$(window).width();
 				} else if ((currentX > currentWidth_2 || swipeShow === this.RIGHT) && this.previousLength > 0) { // Swipe right -- show prev page
-					shift = $(window).width();
+					shiftX = $(window).width();
 				} else {
 					this.direction = this.CURRENT;
 				}
-				this.target.css('-webkit-transform', 'translate3d('+shift+'px,0px,0px)');
+				this.target.css('-webkit-transform', 'translate3d('+shiftX+'px,0px,0px)');
+				//this.target.css('-webkit-transform', 'translate('+shiftX+'px,0px)');
 			}
 		break;
 		case 'webkitTransitionEnd':
@@ -119,7 +124,7 @@ Swipe.prototype.touchHandler = function(event) {
 			this.resetVars();
 		break;
 	}
-	event.preventDefault();
+	//event.preventDefault();
 }
 
 Swipe.prototype.changePage = function() {
@@ -138,11 +143,14 @@ Swipe.prototype.changePage = function() {
 			var classEnd = className.indexOf(' ', classStart + 1);
 			return ((classEnd === -1) ? className.substring(classStart) : className.substring(classStart, classEnd));
 		}
-		var newClass = getClass(newPage);
-		var oldClass = getClass(newPage);
+		var oldClass = getClass(this.currentPage);
 		oldPage.html(this.currentPage.html()).removeClass().addClass(oldClass);
+		
+		var newClass = getClass(newPage);
 		this.currentPage.html(newPage.html()).removeClass().addClass(newClass);
+		
 		this.target.css('-webkit-transform', 'translate3d(0px,0px,0px)');
+		//this.target.css('-webkit-transform', 'translate(0px,0px)');
 		Loader.setContent({url: newClass+'.html', target: this.currentPage, data: newPage.html()});
 	}
 }

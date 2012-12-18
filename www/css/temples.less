@@ -1,0 +1,77 @@
+@color-normal: #a7a9ac;
+@color-invert: #a64124;
+@color-bown: #562a1d;
+
+@button-size: 80px;
+
+#Temples {
+	position: fixed;
+	z-index: 1001;
+	bottom: 0px;
+	right: 100px;
+	left: 26px;
+	height: 120px;
+	background-color: white;
+	div:first-child {
+		margin-left: 0px;
+	}
+	div {
+		z-index: 1001;
+		background-size: contain;
+		width: @button-size;
+		height: @button-size;
+		color: @color-normal;
+		margin-left: 27px;
+		float: left;
+		p {
+			font-family: "PT Sans Pro Narrow Demi Regular";
+			font-size: 10pt;
+			letter-spacing: 0.5px;
+			line-height: 13px;
+			bottom: -60px;
+			left: -10px;
+			text-align: center;
+			position: relative;
+			width: 130%;
+		}
+		&.invert {
+			color: @color-invert;
+		}
+		&#Temple1 {
+			background-image: url(../img/buttons/1.png);
+			&.invert {
+				background-image: url(../img/buttons/1_invert.png);
+			}
+		}
+		&#Temple2 {
+			background-image: url(../img/buttons/2.png);
+			&.invert {
+				background-image: url(../img/buttons/2_invert.png);
+			}
+		}
+		&#Temple3 {
+			background-image: url(../img/buttons/3.png);
+			&.invert {
+				background-image: url(../img/buttons/3_invert.png);
+			}
+		}
+		&#Temple4 {
+			background-image: url(../img/buttons/4.png);
+			&.invert {
+				background-image: url(../img/buttons/4_invert.png);
+			}
+		}
+		&#Temple5 {
+			background-image: url(../img/buttons/5.png);
+			&.invert {
+				background-image: url(../img/buttons/5_invert.png);
+			}
+		}
+		&#Temple6 {
+			background-image: url(../img/buttons/6.png);
+			&.invert {
+				background-image: url(../img/buttons/6_invert.png);
+			}
+		}
+	}
+}
