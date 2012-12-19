@@ -5,13 +5,13 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-<!--        
+<!--        -->
         <link rel="stylesheet/less" type="text/css" href="css/styles.less">
         <script type="text/javascript" src="js/less-1.3.1.min.js"></script>
--->
-        <link rel="stylesheet" type="text/css" href="css/styles.css">
 
-<!---->
+<!--
+        <link rel="stylesheet" type="text/css" href="css/styles.css">
+-->
         <script type="text/javascript" src="js/cordova-2.2.0.js"></script>
         <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
         <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
@@ -22,9 +22,9 @@
         <script type="text/javascript" src="js/buttons-manager.js"></script>
         <script type="text/javascript" src="js/temples-manager.js"></script>
         <script type="text/javascript" src="js/content-loader.js"></script>
-
-        <!--<script type="text/javascript" src="js/swipe-manager.js"></script>-->
-        <script type="text/javascript" src="js/iscroll.js"></script>
+        
+        <!--<script type="text/javascript" src="js/iscroll.js"></script>-->
+        <script type="text/javascript" src="js/iscroll.min.js"></script>
         <script type="text/javascript" src="js/scroll-manager.js"></script>
         
         <!--<script type="text/javascript" src="js/jquery.mobile-1.2.0.min.js"></script>-->
@@ -35,93 +35,100 @@
 
 		<script type="text/javascript">
             $(document).ready(function(e) {
-                Loader.getContent({target: $('#Menu')});
-                Loader.getContent({target: $('#Buttons')});
-				Loader.getContent({target: $('#Temples')});
+                Loader.getContent({target: $("#Menu")});
+                Loader.getContent({target: $("#Buttons")});
+				Loader.getContent({target: $("#Temples")});
+				Loader.getContent({target: $("#PanoramaContent")});
                 
-				var buttons = $('#Buttons');
-				var target = $('#Pages');
-				var scroller = target.children('#PagesScroller');
+				var buttons = $("#MenuButton,#Buttons");
+				var target = $("#Pages");
+				var scroller = target.children("#PagesScroller");
 				var wrapperWidth = target.width();
 				wrapperHeight = target.height();
 				var pages = scroller.children();
 
-				scroller.css('width', wrapperWidth * pages.length);
-				pages.css('width', wrapperWidth).css('min-height', wrapperHeight);
+				scroller.css("width", wrapperWidth * pages.length);
+				pages.css("width", wrapperWidth).css("min-height", wrapperHeight);
 
 				Loader.getContent({
 					 target: pages.first()
 					,loadNext: true});
 
 				var currentPageIndex = -1;
-				mainScroller = new iScroll(target.attr('id'), {
+				mainScroller = new iScroll(target.attr("id"), {
 					 snap: true
 					,momentum: false
-					,hThreshold: 100
+					,hThreshold: 200
 					,hScroll: true
 					,vScroll: false
 					,hScrollbar: false
 					,vScrollbar: false
 					,lockDirection: true
 					,onScrollMove: function(event) {
-						if (!buttons.hasClass('invisible')) {
-							buttons.addClass('invisible');
+						if (!buttons.hasClass("invisible")) {
+							buttons.addClass("invisible");
 						}
 					}
 					,onScrollEnd: function(event) {
-						if (buttons.hasClass('invisible')) {
-							buttons.removeClass('invisible');
+						if (buttons.hasClass("invisible")) {
+							buttons.removeClass("invisible");
 						}
 					}
 					,onTouchEnd: function() {
 						if (currentPageIndex !== this.currPageX) {
 							currentPageIndex = this.currPageX;
 							var pages = $(this.wrapper).children().children();
-							Loader.getContent({
-								 target: pages.eq(currentPageIndex)
-								,loadNext: true});
+							setTimeout(function () {
+								Loader.getContent({
+									 target: pages.eq(currentPageIndex)
+									,loadNext: true});
+							}, 300);
 						}
 					}
 				});
 				pageScroller = [];			
 				panoramaViewer = null;
+				
+				$("video").live("click", function(event) {
+					$(event.target).css("background-color","white");
+					event.target.play();
+				});
             });
         </script>
     </head>
     <body>
-        <div id='Menu' data-url='menu.html'></div>
-        <div id='Buttons' data-url='buttons.html'></div>
-        <div id='Temples' data-url='temples.html'></div>
-        <div id='Pages'>
-        	<div id='PagesScroller'>
-                <div id='Page01' class='page' data-url='page01.html'></div>
-                <div id='Page02' class='page' data-url='page02.html'></div>
-                <div id='Page03' class='page' data-url='page03.html'></div>
-                <div id='Page04' class='page' data-url='page04.html'></div>
-                <div id='Page05-1' class='page' data-url='page05-1.html'></div>
-                <div id='Page05-2' class='page' data-url='page05-2.html'></div>
-                <div id='Page05-3' class='page' data-url='page05-3.html'></div>
-                <div id='Page05-4' class='page' data-url='page05-4.html'></div>
-                <div id='Page05-5' class='page' data-url='page05-5.html'></div>
-                <div id='Page05-6' class='page' data-url='page05-6.html'></div>
-                <div id='Page06' class='page' data-url='page06.html'></div>
-                <div id='Page07' class='page' data-url='page07.html'></div>
-                <div id='Page08' class='page' data-url='page08.html'></div>
-                <div id='Page09' class='page' data-url='page09.html'></div>
-                <div id='Page10' class='page' data-url='page10.html'></div>
-                <div id='Page11' class='page' data-url='page11.html'></div>
-                <div id='Page12' class='page' data-url='page12.html'></div>
-                <div id='Page13' class='page' data-url='page13.html'></div>
+    	<div id="MenuButton" class="brown"><p>содержание</p></div>
+        <div id="Menu" class="invisible" data-url="menu.html"></div>
+        <div id="Buttons" data-url="buttons.html"></div>
+        <div id="Temples" class="invisible" data-url="temples.html"></div>
+        <div id="Pages">
+        	<div id="PagesScroller">
+                <div id="Page01" class="page" data-url="page01.html"></div>
+                <div id="Page02" class="page" data-url="page02.html"></div>
+                <div id="Page03" class="page" data-url="page03.html"></div>
+                <div id="Page04" class="page" data-url="page04.html"></div>
+                <div id="Page05-1" class="page" data-url="page05-1.html"></div>
+                <div id="Page05-2" class="page" data-url="page05-2.html"></div>
+                <div id="Page05-3" class="page" data-url="page05-3.html"></div>
+                <div id="Page05-4" class="page" data-url="page05-4.html"></div>
+                <div id="Page05-5" class="page" data-url="page05-5.html"></div>
+                <div id="Page05-6" class="page" data-url="page05-6.html"></div>
+                <div id="Page06" class="page" data-url="page06.html"></div>
+                <div id="Page07" class="page" data-url="page07.html"></div>
+                <div id="Page08" class="page" data-url="page08.html"></div>
+                <div id="Page09" class="page" data-url="page09.html"></div>
+                <div id="Page10" class="page" data-url="page10.html"></div>
+                <div id="Page11" class="page" data-url="page11.html"></div>
+                <div id="Page12" class="page" data-url="page12.html"></div>
+                <div id="Page13" class="page" data-url="page13.html"></div>
             </div>
         </div>
-        <div id="Hint">
+        <div id="Hint" class="invisible">
         	<div id="UpDown">
                 <div id="Up"></div>
                 <div id="Down"></div>
             </div>
         </div>
-        <div id="PanoramaContent" class="invisible">
-        	<img id="ClosePanorama" src="img/buttons/closed_panorama.png">
-        </div>
+        <div id="PanoramaContent" class="invisible" data-url="panorama.html"></div>
     </body>
 </html>

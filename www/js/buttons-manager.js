@@ -1,21 +1,25 @@
 function Buttons() {}
 
 Buttons.register = function() {
-	$("#Buttons").children().bind("touchstart", Buttons.touch);
-	$("#Hint").children("#UpDown").children().bind("touchstart", Buttons.touch);
-	$("#PanoramaContent").children("#ClosePanorama").bind("touchstart", Buttons.touch);
+	setTimeout(function () {
+		$("#Buttons").children()
+			.add("#MenuButton")
+			.add($("#Hint").children("#UpDown").children())
+			.add($("#PanoramaContent").children("#ClosePanorama,#Gyroscope"))
+			.unbind("touchstart").bind("touchstart", Buttons.touch);
+	}, 0);
 }
 
 Buttons.setup = function(Parameters) {
 	console.assert(Parameters.hasOwnProperty("pageID"), "Buttons.setup -- pageID undefined");
-	var buttons = $("#Buttons");
-	var hint = $("#Hint");
-	buttons.children().removeClass().addClass("invisible");
-	buttons.children("#Menu").removeClass("invisible");
-	hint.addClass("invisible");
+	var	 buttons = $("#Buttons")
+			,hint = $("#Hint")
+			,menuButton = $("#MenuButton");
+	buttons.children().removeClass().add(hint).addClass("invisible");
+	menuButton.removeClass();
 	switch(Parameters.pageID) {
 		case "Page01":
-			buttons.children("#Menu").toggleClass("brown");
+			menuButton.addClass("brown");
 		break;
 		case "Page02":
 			buttons.children("#Temple").removeClass("invisible");
@@ -34,18 +38,19 @@ Buttons.setup = function(Parameters) {
 		case "Page05-4":
 		case "Page05-5":
 		case "Page05-6":
-			hint.removeClass("invisible");
-			buttons.children("#Temple,#Plan,#Audio,#Photo,#Panorama").removeClass("invisible");
+			buttons.children("#Temple,#Plan,#Audio,#Photo,#Panorama").add(hint).removeClass("invisible");
 		break;
 	}
 }
 
 Buttons.touch = function(event) {
 	event.stopPropagation();
-	var target = event.currentTarget;
-	var targetObj = $(target);
-	var plan = null
-		,currentScroller = pageScroller[mainScroller.currPageX];
+	var	 target = event.currentTarget
+			,targetObj = $(target)
+			,plan = null
+			,currentScroller = pageScroller[mainScroller.currPageX]
+			,scrollDuration = 200;
+	var scrollHeight = (currentScroller !== undefined) ? currentScroller.wrapperH - 40 : 0;
 	switch (mainScroller.currPageX) {
 		case 4: //Page05-1
 			plan = $("#Page05-1").children("#PlanContent");
@@ -53,7 +58,7 @@ Buttons.touch = function(event) {
 	}
 
 	switch (target.id) {
-		case "Menu":
+		case "MenuButton":
 			targetObj.hasClass("invert") ? Menu.hide() : Menu.show();
 		break;
 		case "Location":
@@ -69,16 +74,16 @@ Buttons.touch = function(event) {
 			targetObj.hasClass("invert") ? Temples.hide() : Temples.show();
 		break;
 		case "Eye":
-			currentScroller.scrollToPage(0, 0, 200);
+			currentScroller.scrollToPage(0, 0, scrollDuration);
 		return;
 		case "Text":
-			currentScroller.scrollToPage(0, 1, 200);
+			currentScroller.scrollToPage(0, 1, scrollDuration);
 		return;
 		case "Up":
-			currentScroller.scrollTo(0, -currentScroller.wrapperH + 40, 200, true);
+			currentScroller.scrollTo(0, -scrollHeight, scrollDuration, true);
 		break;
 		case "Down":
-			currentScroller.scrollTo(0, currentScroller.wrapperH - 40, 200, true);
+			currentScroller.scrollTo(0, scrollHeight, scrollDuration, true);
 		break;
 		case "Plan":
 			if (targetObj.hasClass("invert")) {
@@ -108,6 +113,11 @@ Buttons.touch = function(event) {
 			}
 			$("#PanoramaContent").addClass("invisible");
 			targetObj = $("#Buttons").children("#Panorama");
+		break;
+		case "Gyroscope":
+			var krpano = document.getElementById("krpanoSWFObject");
+			var gyroState = krpano.get("plugin[gyro].enabled");
+			krpano.set("plugin[gyro].enabled", !gyroState);
 		break;
 	}
 	targetObj.toggleClass("invert");

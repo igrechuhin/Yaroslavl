@@ -1,7 +1,9 @@
 function Temples() {}
 
 Temples.register = function() {
-	$('#Temples').children().bind('touchstart', Temples.touch);
+	setTimeout(function () {
+		$('#Temples').children().bind('touchstart', Temples.touch);
+	}, 0);
 }
 
 Temples.setup = function(Parameters) {

@@ -16,7 +16,7 @@
     <!--************** Fonts **********************************************************************-->
     <textstyle name="DEFAULT" bold="false" font="Arial Narrow" fontsize="16" italic="false" textcolor="0xff000000"/>
     <!--************** Plugin map *****************************************************************-->
-    <plugin name="map" url="virtualtourdata/map/map.png" keep="true" align="leftbottom" x="10" y="10" width="10%" height="prop" handcursor="false" onloaded="hidemapspot();" onclick="openmap"/>
+    <plugin name="map" url="virtualtourdata/map/map.png" keep="true" align="leftbottom" x="10" y="10" width="100" height="prop" handcursor="false" onloaded="hidemapspot();" onclick="openmap"/>
     <plugin keep="true" visible="false" name="mapspot0" onclick="mainloadpano(virtualtour1.xml);" url="virtualtourdata/graphics/spots/spot0.png" blingCounter="0" align="lefttop" edge="center" parent="map" x="86.2486%" y="53.0178%"/>
     <plugin keep="true" visible="false" name="mapspot1" onclick="mainloadpano(virtualtour0.xml);" url="virtualtourdata/graphics/spots/spot0.png" blingCounter="0" align="lefttop" edge="center" parent="map" x="44.1144%" y="53.7278%"/>
     <plugin name="mapradar" parent="map" edge="center" align="lefttop" keep="true" url="virtualtourdata/map/radar.swf" alturl="virtualtourdata/map/radar.js" visible="false" width="70" height="70" linecolor="0xffffff" linealpha="0.494118" linewidth="2" fillcolor="0xffffff" fillalpha="0.494118"/>
@@ -37,14 +37,14 @@
 		set(plugin[mapradar].visible,false);
 		hidemapspot();
 		set(plugin[map].onclick,openmap);
-		tween(plugin[map].width,10%);
+		tween(plugin[map].width,100);
 	</action>
     <!-- open the map -->
     <action name="openmap">
 		if(plugin[mapradar].shouldbevisible == true, set(plugin[mapradar].visible,true););
 		set(plugin[map].onclick, closemap);
 		set(plugin[map].height, prop);
-		tween(plugin[map].width, 30%, 0.5, easeoutquad, showmapspot(););
+		tween(plugin[map].width, 300, 0.5, easeoutquad, showmapspot(););
 		set(plugin[map].align, leftbottom);
 		set(plugin[map].x    , 10);
 		set(plugin[map].y    , 10);

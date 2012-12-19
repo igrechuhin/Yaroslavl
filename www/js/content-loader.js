@@ -34,6 +34,7 @@ Loader.setContent = function(Parameters) {
 	var pageID = target.attr("id");
 	switch (pageID) {
 		case "Buttons":
+		case "PanoramaContent":
 			Buttons.register();
 		break;
 		case "Menu":
@@ -110,11 +111,7 @@ Loader.setContent = function(Parameters) {
 							pageScroller[index] = null;
 						}
 					}
-					var toClear = target.prevAll(":gt(0)").add(target.nextAll(":gt(0)"));
-					/*if (toClear.filter("#Page04").length !== 0) {
-						Map.unregister();
-					}*/
-					toClear = toClear.not("#Page04");
+					var toClear = target.prevAll(":gt(0)").add(target.nextAll(":gt(0)")).not("#Page04");
 					toClear.children().remove();
 					toClear.html("");
 				}, 500);

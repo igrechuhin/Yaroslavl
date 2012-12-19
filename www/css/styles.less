@@ -11,7 +11,7 @@
 @color-blue:				#165FAA;
 @color-cyan:				#00A7BD;
 @color-red:					#B23917;
-@color-bown:				#562A1D;
+@color-bown:				#58291D;
 
 @color-normal:			#A7A9AC;
 @color-invert:				#A64124;
@@ -20,8 +20,9 @@
 @hint-zindex:				2;
 @plan-zindex:				3;
 @buttons-zindex:		1000;
-@menu-zindex:			1001;
-@panorama-zindex:	2000;
+@menu-zindex:			1100;
+@menuButton-zindex:	1150;
+@panorama-zindex:	1200;
 
 @buttons-width:			100px;
 @buttons-size:				80px;
@@ -37,6 +38,10 @@
 @padding-left-thick:	52px;
 
 @header-top:				32px;
+
+@width-portrait:			768px;
+
+@coord-divisor:			2;
 
 .size (@size) {
 	width: @size;
@@ -76,11 +81,11 @@
 	transition: @duration @function;
 }
 
-.menu-opacity {
+.menu-opacity(@max-opacity: 1) {
 	opacity: 0;
 	.menu-opacity-animation;
 	&.show {
-		opacity: 1;
+		opacity: @max-opacity;
 		.menu-opacity-animation;
 	}
 }
@@ -114,6 +119,15 @@
 	}
 }
 
+.full-screen {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: hidden;
+}
+
 body {
 	overflow: hidden;
 	-moz-tap-highlight-color: transparent;
@@ -122,6 +136,33 @@ body {
 	tap-highlight-color: transparent;
 	margin: 0px;
 	padding: 0px;
+}
+
+#MenuButton {
+	position: absolute;
+	z-index: @menuButton-zindex;
+	background-size: contain;
+	.size (@buttons-size);
+	top: 40px / @coord-divisor;
+	right: @buttons-width - @buttons-size;
+	p {
+		position: relative;
+		font-family: "PT Sans Pro Narrow Demi Regular";
+		font-size: 10pt;
+		letter-spacing: 0.5px;
+		line-height: 13px;
+		bottom: -60px;
+		left: -10px;
+		text-align: center;
+		width: 130%;
+	}
+	
+	color: @color-normal;
+	&.invert {color: @color-invert;}
+	&.brown,&.brown.invert {color: @color-bown;}
+	
+	&.brown {.buttons-define("contents_brown");}
+	.buttons-define("contents");
 }
 
 #Menu {
@@ -193,7 +234,16 @@ body {
 		&.rotate {.rotate;}
 		&.small {.size(@small-size);}
 		&.medium {.size(@medium-size);}
-		&.large {.size(@large-size);}
+		&.large {.size(@large-size);}	
+		
+		&#Dim {
+			.full-screen;
+			background-color: white;
+			z-index: @menu-zindex - 1;
+			&.show {
+				opacity: 0.74;
+			}
+		}
 	}
 }
 
@@ -220,20 +270,16 @@ body {
 			width: 130%;
 		}
 		color: @color-normal;
-		&.brown,&.brown.invert {color: black;}
 		&.invert {color: @color-invert;}
 
-		&#Menu {top: 40px / 2;}
-		&#Eye {top: 296px / 2;}
-		&#Text {top: 531px / 2;}
-		&#Plan {top: 919px / 2;}
-		&#Audio {top: 1145px / 2;}
-		&#Route,&#Photo {top: 1372px / 2;}
-		&#Panorama,&#Location {top: 1597px / 2;}
-		&#Temple {top: 1822px / 2;}
+		&#Eye {top: 296px / @coord-divisor;}
+		&#Text {top: 531px / @coord-divisor;}
+		&#Plan {top: 919px / @coord-divisor;}
+		&#Audio {top: 1145px / @coord-divisor;}
+		&#Route,&#Photo {top: 1372px / @coord-divisor;}
+		&#Panorama,&#Location {top: 1597px / @coord-divisor;}
+		&#Temple {top: 1822px / @coord-divisor;}
 		
-		&#Menu {.buttons-define("contents");}
-		&#Menu.brown {.buttons-define("contents_brown");}
 		&#Eye {.buttons-define("eye");}
 		&#Text {.buttons-define("text");}
 		&#Plan {.buttons-define("plan");}
@@ -242,7 +288,7 @@ body {
 		&#Photo {.buttons-define("photo");}
 		&#Panorama {.buttons-define("panorama");}
 		&#Location {.buttons-define("mesto");}
-		&#Temple {.buttons-define("hramy");}
+		&#Temple {.buttons-define("hramy");}	
 	}
 }
 
@@ -252,7 +298,7 @@ body {
 	bottom: 0px;
 	right: 100px;
 	left: @padding-left-thin;
-	height: 120px;
+	height: 113px;
 	background-color: white;
 	div {
 		z-index: @buttons-zindex;
@@ -287,17 +333,9 @@ body {
 	}
 }
 
-.full-screen {
-    position: absolute;
-    z-index: @page-zindex;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    overflow: hidden;
-}
 #Pages {
 	.full-screen;
+	z-index: @page-zindex;
 	div {
 		.page {
 			float: left;
@@ -326,7 +364,7 @@ body {
 			}
 			.plan {
 				.full-screen;
-				z-index: @plan-zindex !important;
+				z-index: @plan-zindex;
 				background-color: white;
 				img {
 					position: relative;
@@ -376,8 +414,9 @@ body {
 				}
 				video {
 					padding: @padding-top-thin @padding-right 0px @padding-left-thin;
-					width: 601px;
-					height: 334px;
+					width: @width-portrait - @padding-left-thin - @padding-right;
+					height: @width-portrait - @padding-left-thin - @padding-right;
+				//height: (@width-portrait - @padding-left-thin - @padding-right)*1080/1920;
 				}
 			}
 			&#Page03 {
@@ -477,7 +516,7 @@ body {
 	position: fixed;
 	bottom: 0px;
 	padding-left: @padding-left-thick;
-	width: 638px;
+	width: @width-portrait - @padding-right;
 	height: 50px;
 	background-color: white;
 	z-index: @hint-zindex;
@@ -502,12 +541,18 @@ body {
 
 #PanoramaContent {
 	.full-screen;
-	z-index: @panorama-zindex !important;
+	z-index: @panorama-zindex;
 	img {
 		z-index: @panorama-zindex + 1;
 		position: fixed;
 		width: 50px;
-		left: 26px;
-		top: 26px;
+		&#ClosePanorama {
+			left: @padding-left-thin;
+			top: @padding-left-thin;
+		}
+		&#Gyroscope {
+			right: @padding-left-thin;
+			bottom: @padding-left-thin;
+		}
 	}
 }
