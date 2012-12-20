@@ -19,7 +19,7 @@
     <!-- @File="virtualtour1.xml" @PanoName="trans_2_Panorama" @FilePath="/Users/Ilya/Desktop/Ярославль - панорамы/Trans 1/trans_2_Panorama.psd" -->
     <panoview h="180" v="0" fov="90"/>
     <!-- view parameters -->
-    <view fisheye="0" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-90" vlookatmax="90" maxpixelzoom="1.0" fov="90" hlookat="180" vlookat="0"/>
+    <view fisheye="0" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-90" vlookatmax="90" maxpixelzoom="1.0" fovmax="128.571" fov="90" hlookat="180" vlookat="0"/>
     <autorotate horizon="0" tofov="90" waittime="1" speed="5"/>
     <!-- preview image -->
     <preview url="virtualtourdata/virtualtour1/preview.jpg" type="CUBESTRIP" striporder="FRBLUD" details="16"/>

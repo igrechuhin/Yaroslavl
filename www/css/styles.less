@@ -16,9 +16,10 @@
 @color-normal:			#A7A9AC;
 @color-invert:				#A64124;
 
-@page-zindex:				1;
-@hint-zindex:				2;
-@plan-zindex:				3;
+@page-zindex:				10;
+@header-zindex:			15;
+@hint-zindex:				20;
+@plan-zindex:				30;
 @buttons-zindex:		1000;
 @menu-zindex:			1100;
 @menuButton-zindex:	1150;
@@ -68,16 +69,12 @@
 }
 
 .rotate (@angle: -45deg) {
-	-moz-transform: rotate(@angle);
 	-webkit-transform: rotate(@angle);
-	-o-transform: rotate(@angle);
 	transform: rotate(@angle);
 }
 
 .menu-opacity-animation (@duration: 0.5s, @function: ease-in-out) {
-	-moz-transition: @duration @function;
 	-webkit-transition: @duration @function;
-	-o-transition: @duration @function;
 	transition: @duration @function;
 }
 
@@ -130,9 +127,7 @@
 
 body {
 	overflow: hidden;
-	-moz-tap-highlight-color: transparent;
 	-webkit-tap-highlight-color: transparent;
-	-o-tap-highlight-color: transparent;
 	tap-highlight-color: transparent;
 	margin: 0px;
 	padding: 0px;
@@ -339,7 +334,8 @@ body {
 	div {
 		.page {
 			float: left;
-			-webkit-transform: translate3d(0,0,0);
+			-webkit-transform: translate3d(0px, 0px, 0px);
+			-webkit-overflow-scrolling: touch;
 			height: 100%;
 			padding: 0px;
 			h1 {
@@ -348,10 +344,13 @@ body {
 				font-weight: normal;
 				letter-spacing: 1px;
 				position: relative;
-				left: @padding-left-thick;
-				top: @header-top;
 				margin: 0px;
+				padding-left: @padding-left-thick;
+				padding-top: @header-top;
+				width: @width-portrait - @padding-left-thick - @buttons-width;
 				span {border-bottom: 1px solid black;}
+				z-index: @header-zindex;
+				background-color: white;
 			}		
 			article {
 				padding-left: @padding-left-thick;
@@ -370,7 +369,7 @@ body {
 					position: relative;
 					padding-top: @padding-top-thick;
 					padding-left: @padding-left-thick;
-					width: 600px;
+					width: @width-portrait - @padding-left-thick - @padding-right;
 				}
 			}
 			.content {
@@ -381,7 +380,8 @@ body {
 					width: 100%;
 					padding: 0px;
 					.screen {
-						-webkit-transform: translate3d(0,0,0);
+						-webkit-transform: translate3d(0px, 0px, 0px);
+						-webkit-overflow-scrolling: touch;
 						width: 100%;
 						padding: 0px;
 					}
@@ -421,11 +421,11 @@ body {
 			}
 			&#Page03 {
 				img {
-					padding: @padding-top-thick 0px 0px @padding-left-thin;
+					padding: 150px 0px 0px @padding-left-thin;
 					height: 840px;
 				}
 				article {
-					padding-top: @padding-top-thick;
+					padding-top: 150px;
 					font-size: 10pt;
 					line-height: 14pt;
 					-webkit-column-count: 2;
@@ -498,10 +498,10 @@ body {
 				}
 				#MapMarkers {display: none;}
 			}
-			&#Page05-1 {
+			&#Page05-1,&#Page05-2,&#Page05-3,&#Page05-4,&#Page05-5,&#Page05-6 {
 				.screen {
 					table {
-						padding: @padding-top-thin @padding-right 0px @padding-left-thick;
+						padding: 80px @padding-right 0px @padding-left-thick;
 						font-family: "PT Sans Pro Narrow Demi Regular";
 						text-align: center;
 						tr {vertical-align: bottom;}
@@ -517,7 +517,7 @@ body {
 	bottom: 0px;
 	padding-left: @padding-left-thick;
 	width: @width-portrait - @padding-right;
-	height: 50px;
+	height: 45px;
 	background-color: white;
 	z-index: @hint-zindex;
 	#UpDown {

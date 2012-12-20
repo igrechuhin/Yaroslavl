@@ -23,9 +23,8 @@
         <script type="text/javascript" src="js/temples-manager.js"></script>
         <script type="text/javascript" src="js/content-loader.js"></script>
         
-        <!--<script type="text/javascript" src="js/iscroll.js"></script>-->
-        <script type="text/javascript" src="js/iscroll.min.js"></script>
-        <script type="text/javascript" src="js/scroll-manager.js"></script>
+        <script type="text/javascript" src="js/iscroll.js"></script>
+        <!--<script type="text/javascript" src="js/iscroll.min.js"></script>-->
         
         <!--<script type="text/javascript" src="js/jquery.mobile-1.2.0.min.js"></script>-->
 
@@ -33,21 +32,49 @@
 		<script type="text/javascript" src="js/krpanoiphone.license.js"></script>
 		<script type="text/javascript" src="js/krpanoiphone.js"></script>
 
+		<script type="text/javascript" src="js/jquery.css3caching.js"></script>
+
 		<script type="text/javascript">
             $(document).ready(function(e) {
-                Loader.getContent({target: $("#Menu")});
-                Loader.getContent({target: $("#Buttons")});
-				Loader.getContent({target: $("#Temples")});
-				Loader.getContent({target: $("#PanoramaContent")});
-                
-				var buttons = $("#MenuButton,#Buttons");
-				var target = $("#Pages");
-				var scroller = target.children("#PagesScroller");
-				var wrapperWidth = target.width();
-				wrapperHeight = target.height();
-				var pages = scroller.children();
+				_Menu = $("#Menu");
+				_Buttons = $("#Buttons");
+				_Temples = $("#Temples");
+				_PanoramaContent = $("#PanoramaContent");
+				_Hint = $("#Hint");
+				_MenuButton = $("#MenuButton");
+				_Pages = $("#Pages");
+				_PagesScroller = _Pages.children("#PagesScroller");
+				
+				_Page01 = _PagesScroller.children("#Page01");
+                _Page02 = _PagesScroller.children("#Page02");
+                _Page03 = _PagesScroller.children("#Page03");
+                _Page04 = _PagesScroller.children("#Page04");
+                _Page051 = _PagesScroller.children("#Page05-1");
+                _Page052 = _PagesScroller.children("#Page05-2");
+                _Page053 = _PagesScroller.children("#Page05-3");
+                _Page054 = _PagesScroller.children("#Page05-4");
+                _Page055 = _PagesScroller.children("#Page05-5");
+                _Page056 = _PagesScroller.children("#Page05-6");
+                _Page06 = _PagesScroller.children("#Page06");
+                _Page07 = _PagesScroller.children("#Page07");
+                _Page08 = _PagesScroller.children("#Page08");
+                _Page09 = _PagesScroller.children("#Page09");
+                _Page10 = _PagesScroller.children("#Page10");
+                _Page11 = _PagesScroller.children("#Page11");
+                _Page12 = _PagesScroller.children("#Page12");
+                _Page13 = _PagesScroller.children("#Page13");
 
-				scroller.css("width", wrapperWidth * pages.length);
+                Loader.getContent({target: _Menu});
+                Loader.getContent({target: _Buttons});
+				Loader.getContent({target: _Temples});
+				Loader.getContent({target: _PanoramaContent});
+				Loader.getContent({target: _Hint});
+                
+				var wrapperWidth = _Pages.width();
+				wrapperHeight = _Pages.height();
+				var pages = _PagesScroller.children();
+
+				_PagesScroller.css("width", wrapperWidth * pages.length);
 				pages.css("width", wrapperWidth).css("min-height", wrapperHeight);
 
 				Loader.getContent({
@@ -55,7 +82,7 @@
 					,loadNext: true});
 
 				var currentPageIndex = -1;
-				mainScroller = new iScroll(target.attr("id"), {
+				mainScroller = new iScroll(_Pages.get(0), {
 					 snap: true
 					,momentum: false
 					,hThreshold: 200
@@ -65,14 +92,8 @@
 					,vScrollbar: false
 					,lockDirection: true
 					,onScrollMove: function(event) {
-						if (!buttons.hasClass("invisible")) {
-							buttons.addClass("invisible");
-						}
-					}
-					,onScrollEnd: function(event) {
-						if (buttons.hasClass("invisible")) {
-							buttons.removeClass("invisible");
-						}
+						_MenuButton.addClass("invisible");
+						_Buttons.addClass("invisible");
 					}
 					,onTouchEnd: function() {
 						if (currentPageIndex !== this.currPageX) {
@@ -88,11 +109,6 @@
 				});
 				pageScroller = [];			
 				panoramaViewer = null;
-				
-				$("video").live("click", function(event) {
-					$(event.target).css("background-color","white");
-					event.target.play();
-				});
             });
         </script>
     </head>
@@ -123,12 +139,7 @@
                 <div id="Page13" class="page" data-url="page13.html"></div>
             </div>
         </div>
-        <div id="Hint" class="invisible">
-        	<div id="UpDown">
-                <div id="Up"></div>
-                <div id="Down"></div>
-            </div>
-        </div>
+        <div id="Hint" class="invisible" data-url="hint.html"></div>
         <div id="PanoramaContent" class="invisible" data-url="panorama.html"></div>
     </body>
 </html>

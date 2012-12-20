@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- for xml compliance -->
+<krpano version="1.0.8.14">
+    <!-- actions to perform while loading -->
+    <events onxmlcomplete="onxmlcompleteaction();"/>
+    <action name="onxmlcompleteaction">
+		unselectmapspotsbutpassed();
+		selectmapspot(mapspot0,356);
+	</action>
+    <action name="playpanosounds">
+		playbackgroundsound(none);
+	</action>
+    <action name="stoppanosounds">
+		stopbackgroundsound();
+	</action>
+    <action name="closepanoobjects">
+	</action>
+    <!--************** Панорама *******************************************************************-->
+    <!-- @File="virtualtour0.xml" @PanoName="ioann_5_Panorama" @FilePath="/Users/Ilya/Desktop/Ярославль - панорамы/John 5/ioann_5_Panorama.psd" -->
+    <panoview h="0" v="0" fov="90"/>
+    <!-- view parameters -->
+    <view fisheye="0" limitview="range" hlookatmin="-180" hlookatmax="180" vlookatmin="-90" vlookatmax="90" maxpixelzoom="1.0" fovmax="128.571" fov="90" hlookat="0" vlookat="0"/>
+    <autorotate horizon="0" tofov="90" waittime="1" speed="5"/>
+    <!-- preview image -->
+    <preview url="virtualtourdata/virtualtour0/preview.jpg" type="CUBESTRIP" striporder="FRBLUD" details="16"/>
+    <!-- the pano itself -->
+    <image type="CUBE" multires="true" tilesize="2879" baseindex="0">
+        <!-- mobile phone / iphone images -->
+        <mobile>
+            <left url="virtualtourdata/virtualtour0/3/mobile_face.jpg"/>
+            <front url="virtualtourdata/virtualtour0/0/mobile_face.jpg"/>
+            <right url="virtualtourdata/virtualtour0/1/mobile_face.jpg"/>
+            <back url="virtualtourdata/virtualtour0/2/mobile_face.jpg"/>
+            <up url="virtualtourdata/virtualtour0/4/mobile_face.jpg"/>
+            <down url="virtualtourdata/virtualtour0/5/mobile_face.jpg"/>
+        </mobile>
+        <!-- tablet pc / ipad images -->
+        <tablet>
+            <left url="virtualtourdata/virtualtour0/3/tablet_face.jpg"/>
+            <front url="virtualtourdata/virtualtour0/0/tablet_face.jpg"/>
+            <right url="virtualtourdata/virtualtour0/1/tablet_face.jpg"/>
+            <back url="virtualtourdata/virtualtour0/2/tablet_face.jpg"/>
+            <up url="virtualtourdata/virtualtour0/4/tablet_face.jpg"/>
+            <down url="virtualtourdata/virtualtour0/5/tablet_face.jpg"/>
+        </tablet>
+    </image>
+    <!--************** Hotspots and lensflares ****************************************************-->
+    <hotspot name="spot0" onclick="mainloadpano(virtualtour2.xml);" url="virtualtourdata/graphics/spots/spot0.png" ath="-83.7298" atv="-2.53521"/>
+    <hotspot name="spot1" onclick="mainloadpano(virtualtour4.xml);" url="virtualtourdata/graphics/spots/spot0.png" ath="178.48" atv="-0.760563"/>
+    <action name="hidepanospotsaction">
+		set(hotspot[spot0].visible, false);
+		set(hotspot[spot1].visible, false);
+	</action>
+    <action name="showpanospotsaction">
+		set(hotspot[spot0].visible, true);
+		set(hotspot[spot1].visible, true);
+	</action>
+    <!-- close all hotspots -->
+</krpano>

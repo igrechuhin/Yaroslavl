@@ -69,9 +69,13 @@ Loader.setContent = function(Parameters) {
 				switch (pageID) {
 					case "Page03":
 						if (pageScroller[target.index()] === undefined || pageScroller[target.index()] === null) {
-							scrollerOptions.onScrollEnd = Buttons.toggleEyeText;
 							setTimeout(function () {
+								scrollerOptions.onScrollEnd = function() {
+									Buttons.toggleEyeText.call(pageScroller[target.index()]);
+									Buttons.refreshScroll.call(pageScroller[target.index()]);
+								}
 								pageScroller[target.index()] = new iScroll(target.children("#MainContent").get(0), scrollerOptions);
+								Buttons.refreshScroll.call(pageScroller[target.index()]);
 								Buttons.toggleEyeText();
 							}, 0);
 						}
@@ -85,12 +89,17 @@ Loader.setContent = function(Parameters) {
 						}, 400);
 					break;
 					case "Page05-1":
+					case "Page05-2":
+					case "Page05-3":
+					case "Page05-4":
+					case "Page05-5":
+					case "Page05-6":
 						if (pageScroller[target.index()] === undefined || pageScroller[target.index()] === null) {
 							setTimeout(function () {
 								scrollerOptions.snap = false;
 								scrollerOptions.onScrollEnd = Buttons.refreshScroll;
 								pageScroller[target.index()] = new iScroll(target.children("#MainContent").get(0), scrollerOptions);
-								Buttons.refreshScroll.call(pageScroller[target.index()], pageID);
+								Buttons.refreshScroll.call(pageScroller[target.index()]);
 							}, 0);
 						}
 					break;
@@ -111,7 +120,7 @@ Loader.setContent = function(Parameters) {
 							pageScroller[index] = null;
 						}
 					}
-					var toClear = target.prevAll(":gt(0)").add(target.nextAll(":gt(0)")).not("#Page04");
+					var toClear = target.prevAll(":gt(0)").add(target.nextAll(":gt(0)")).not(_Page04);
 					toClear.children().remove();
 					toClear.html("");
 				}, 500);

@@ -93,6 +93,7 @@ var m = Math,
 		that.options = {
 			hThreshold: 6,
 			vThreshold: 6,
+			skipScrollRatio: 0.5,
 			hScroll: true,
 			vScroll: true,
 			x: 0,
@@ -466,11 +467,11 @@ iScroll.prototype = {
 		if (that.absDistX < that.options.hThreshold && that.absDistY < that.options.vThreshold) {
 			return;
 		}
-		if (that.absDistY > that.absDistX) {
+		if (that.absDistY > that.options.skipScrollRatio*that.absDistX) {
 			if (!that.options.vScroll) {
 				return;
 			}
-		} else {
+		} else if (that.absDistX > that.options.skipScrollRatio*that.absDistY) {
 			if (!that.options.hScroll) {
 				return;
 			}
