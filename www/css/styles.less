@@ -62,10 +62,8 @@
 }
 
 .unselectable {
-	-moz-user-select: none; 
-	-khtml-user-select: none; 
-	-webkit-user-select: none; 
-	-o-user-select: none; 
+	-webkit-user-select: none;
+	-khtml-user-select: none;
 }
 
 .rotate (@angle: -45deg) {
@@ -334,7 +332,7 @@ body {
 	div {
 		.page {
 			float: left;
-			-webkit-transform: translate3d(0px, 0px, 0px);
+			-webkit-transform: translate3d(0,0,0);
 			-webkit-overflow-scrolling: touch;
 			height: 100%;
 			padding: 0px;
@@ -380,7 +378,7 @@ body {
 					width: 100%;
 					padding: 0px;
 					.screen {
-						-webkit-transform: translate3d(0px, 0px, 0px);
+						-webkit-transform: translate3d(0,0,0);
 						-webkit-overflow-scrolling: touch;
 						width: 100%;
 						padding: 0px;
