@@ -62,7 +62,8 @@ Map.register = function(Parameters) {
       title: name,
       icon: image.normal,
       zIndex: zIndex,
-      animation: google.maps.Animation.DROP});
+      animation: google.maps.Animation.DROP,
+	  optimized: true});
     google.maps.event.addListener(object, 'click', Map.templeClickHandler);
     Map.markers.images[i] = image;
     Map.markers.objects[i] = object;
