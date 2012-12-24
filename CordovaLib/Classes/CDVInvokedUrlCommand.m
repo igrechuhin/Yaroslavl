@@ -34,11 +34,11 @@
 
 - (id)initFromJson:(NSArray*)jsonEntry
 {
-    id tmp = [jsonEntry objectAtIndex:0];
+    id tmp = jsonEntry[0];
     NSString* callbackId = tmp == [NSNull null] ? nil : tmp;
-    NSString* className = [jsonEntry objectAtIndex:1];
-    NSString* methodName = [jsonEntry objectAtIndex:2];
-    NSMutableArray* arguments = [jsonEntry objectAtIndex:3];
+    NSString* className = jsonEntry[1];
+    NSString* methodName = jsonEntry[2];
+    NSMutableArray* arguments = jsonEntry[3];
 
     return [self initWithArguments:arguments
                         callbackId:callbackId
@@ -66,9 +66,9 @@
     NSMutableArray* newArguments = [NSMutableArray arrayWithArray:_arguments];
 
     for (NSUInteger i = 0; i < [newArguments count]; ++i) {
-        if ([[newArguments objectAtIndex:i] isKindOfClass:[NSDictionary class]]) {
+        if ([newArguments[i] isKindOfClass:[NSDictionary class]]) {
             if (legacyDict != NULL) {
-                *legacyDict = [newArguments objectAtIndex:i];
+                *legacyDict = newArguments[i];
             }
             [newArguments removeObjectAtIndex:i];
             break;

@@ -63,13 +63,13 @@
 - (void)captureAudio:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    NSDictionary* options = [command.arguments objectAtIndex:0];
+    NSDictionary* options = (command.arguments)[0];
 
     if ([options isKindOfClass:[NSNull class]]) {
-        options = [NSDictionary dictionary];
+        options = @{};
     }
 
-    NSNumber* duration = [options objectForKey:@"duration"];
+    NSNumber* duration = options[@"duration"];
     // the default value of duration is 0 so use nil (no duration) if default value
     if (duration) {
         duration = [duration doubleValue] == 0 ? nil : duration;
@@ -104,12 +104,12 @@
 - (void)captureImage:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    NSDictionary* options = [command.arguments objectAtIndex:0];
+    NSDictionary* options = (command.arguments)[0];
 
     if ([options isKindOfClass:[NSNull class]]) {
-        options = [NSDictionary dictionary];
+        options = @{};
     }
-    NSString* mode = [options objectForKey:@"mode"];
+    NSString* mode = options[@"mode"];
 
     // options could contain limit and mode neither of which are supported at this time
     // taking more than one picture (limit) is only supported if provide own controls via cameraOverlayView property
@@ -129,7 +129,7 @@
         pickerController.allowsEditing = NO;
         if ([pickerController respondsToSelector:@selector(mediaTypes)]) {
             // iOS 3.0
-            pickerController.mediaTypes = [NSArray arrayWithObjects:(NSString*)kUTTypeImage, nil];
+            pickerController.mediaTypes = @[(NSString*)kUTTypeImage];
         }
 
         /*if ([pickerController respondsToSelector:@selector(cameraCaptureMode)]){
@@ -190,7 +190,7 @@
         // create MediaFile object
 
         NSDictionary* fileDict = [self getMediaDictionaryFromPath:filePath ofType:mimeType];
-        NSArray* fileArray = [NSArray arrayWithObject:fileDict];
+        NSArray* fileArray = @[fileDict];
 
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:fileArray];
     }
@@ -201,10 +201,10 @@
 - (void)captureVideo:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    NSDictionary* options = [command.arguments objectAtIndex:0];
+    NSDictionary* options = (command.arguments)[0];
 
     if ([options isKindOfClass:[NSNull class]]) {
-        options = [NSDictionary dictionary];
+        options = @{};
     }
 
     // options could contain limit, duration and mode, only duration is supported (but is not due to apple bug)
@@ -239,7 +239,7 @@
         pickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
         pickerController.allowsEditing = NO;
         // iOS 3.0
-        pickerController.mediaTypes = [NSArray arrayWithObjects:mediaType, nil];
+        pickerController.mediaTypes = @[mediaType];
 
         /*if ([mediaType isEqualToString:(NSString*)kUTTypeMovie]){
             if (duration) {
@@ -279,7 +279,7 @@
     }*/
     // create MediaFile object
     NSDictionary* fileDict = [self getMediaDictionaryFromPath:moviePath ofType:nil];
-    NSArray* fileArray = [NSArray arrayWithObject:fileDict];
+    NSArray* fileArray = @[fileDict];
 
     return [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:fileArray];
 }
@@ -299,36 +299,28 @@
         /* can't find a way to get the default height and width and other info
          * for images/movies taken with UIImagePickerController
          */
-        NSDictionary* jpg = [NSDictionary dictionaryWithObjectsAndKeys:
-            [NSNumber numberWithInt:0], kW3CMediaFormatHeight,
-            [NSNumber numberWithInt:0], kW3CMediaFormatWidth,
-            @"image/jpeg", kW3CMediaModeType,
-            nil];
-        NSDictionary* png = [NSDictionary dictionaryWithObjectsAndKeys:
-            [NSNumber numberWithInt:0], kW3CMediaFormatHeight,
-            [NSNumber numberWithInt:0], kW3CMediaFormatWidth,
-            @"image/png", kW3CMediaModeType,
-            nil];
-        imageArray = [NSArray arrayWithObjects:jpg, png, nil];
+        NSDictionary* jpg = @{kW3CMediaFormatHeight: @0,
+            kW3CMediaFormatWidth: @0,
+            kW3CMediaModeType: @"image/jpeg"};
+        NSDictionary* png = @{kW3CMediaFormatHeight: @0,
+            kW3CMediaFormatWidth: @0,
+            kW3CMediaModeType: @"image/png"};
+        imageArray = @[jpg, png];
 
         if ([UIImagePickerController respondsToSelector:@selector(availableMediaTypesForSourceType:)]) {
             NSArray* types = [UIImagePickerController availableMediaTypesForSourceType:UIImagePickerControllerSourceTypeCamera];
 
             if ([types containsObject:(NSString*)kUTTypeMovie]) {
-                NSDictionary* mov = [NSDictionary dictionaryWithObjectsAndKeys:
-                    [NSNumber numberWithInt:0], kW3CMediaFormatHeight,
-                    [NSNumber numberWithInt:0], kW3CMediaFormatWidth,
-                    @"video/quicktime", kW3CMediaModeType,
-                    nil];
-                movieArray = [NSArray arrayWithObject:mov];
+                NSDictionary* mov = @{kW3CMediaFormatHeight: @0,
+                    kW3CMediaFormatWidth: @0,
+                    kW3CMediaModeType: @"video/quicktime"};
+                movieArray = @[mov];
             }
         }
     }
-    NSDictionary* modes = [NSDictionary dictionaryWithObjectsAndKeys:
-        imageArray ? (NSObject*)                          imageArray:[NSNull null], @"image",
-        movieArray ? (NSObject*)                          movieArray:[NSNull null], @"video",
-        audioArray ? (NSObject*)                          audioArray:[NSNull null], @"audio",
-        nil];
+    NSDictionary* modes = @{@"image": imageArray ? (NSObject*)                          imageArray:[NSNull null],
+        @"video": movieArray ? (NSObject*)                          movieArray:[NSNull null],
+        @"audio": audioArray ? (NSObject*)                          audioArray:[NSNull null]};
     NSString* jsString = [NSString stringWithFormat:@"navigator.device.capture.setSupportedModes(%@);", [modes cdvjk_JSONString]];
     [self.commandDelegate evalJs:jsString];
 }
@@ -337,12 +329,12 @@
 {
     NSString* callbackId = command.callbackId;
     // existence of fullPath checked on JS side
-    NSString* fullPath = [command.arguments objectAtIndex:0];
+    NSString* fullPath = (command.arguments)[0];
     // mimeType could be null
     NSString* mimeType = nil;
 
     if ([command.arguments count] > 1) {
-        mimeType = [command.arguments objectAtIndex:1];
+        mimeType = (command.arguments)[1];
     }
     BOOL bError = NO;
     CDVCaptureError errorCode = CAPTURE_INTERNAL_ERR;
@@ -365,27 +357,27 @@
     if (!bError) {
         // create and initialize return dictionary
         NSMutableDictionary* formatData = [NSMutableDictionary dictionaryWithCapacity:5];
-        [formatData setObject:[NSNull null] forKey:kW3CMediaFormatCodecs];
-        [formatData setObject:[NSNumber numberWithInt:0] forKey:kW3CMediaFormatBitrate];
-        [formatData setObject:[NSNumber numberWithInt:0] forKey:kW3CMediaFormatHeight];
-        [formatData setObject:[NSNumber numberWithInt:0] forKey:kW3CMediaFormatWidth];
-        [formatData setObject:[NSNumber numberWithInt:0] forKey:kW3CMediaFormatDuration];
+        formatData[kW3CMediaFormatCodecs] = [NSNull null];
+        formatData[kW3CMediaFormatBitrate] = @0;
+        formatData[kW3CMediaFormatHeight] = @0;
+        formatData[kW3CMediaFormatWidth] = @0;
+        formatData[kW3CMediaFormatDuration] = @0;
 
         if ([mimeType rangeOfString:@"image/"].location != NSNotFound) {
             UIImage* image = [UIImage imageWithContentsOfFile:fullPath];
             if (image) {
                 CGSize imgSize = [image size];
-                [formatData setObject:[NSNumber numberWithInteger:imgSize.width] forKey:kW3CMediaFormatWidth];
-                [formatData setObject:[NSNumber numberWithInteger:imgSize.height] forKey:kW3CMediaFormatHeight];
+                formatData[kW3CMediaFormatWidth] = [NSNumber numberWithInteger:imgSize.width];
+                formatData[kW3CMediaFormatHeight] = [NSNumber numberWithInteger:imgSize.height];
             }
         } else if (([mimeType rangeOfString:@"video/"].location != NSNotFound) && (NSClassFromString(@"AVURLAsset") != nil)) {
             NSURL* movieURL = [NSURL fileURLWithPath:fullPath];
             AVURLAsset* movieAsset = [[AVURLAsset alloc] initWithURL:movieURL options:nil];
             CMTime duration = [movieAsset duration];
-            [formatData setObject:[NSNumber numberWithFloat:CMTimeGetSeconds(duration)]  forKey:kW3CMediaFormatDuration];
+            formatData[kW3CMediaFormatDuration] = [NSNumber numberWithFloat:CMTimeGetSeconds(duration)];
             CGSize size = [movieAsset naturalSize];
-            [formatData setObject:[NSNumber numberWithFloat:size.height] forKey:kW3CMediaFormatHeight];
-            [formatData setObject:[NSNumber numberWithFloat:size.width] forKey:kW3CMediaFormatWidth];
+            formatData[kW3CMediaFormatHeight] = @(size.height);
+            formatData[kW3CMediaFormatWidth] = @(size.width);
             // not sure how to get codecs or bitrate???
             // AVMetadataItem
             // AudioFile
@@ -397,12 +389,12 @@
                 AVAudioPlayer* avPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:fileURL error:&err];
                 if (!err) {
                     // get the data
-                    [formatData setObject:[NSNumber numberWithDouble:[avPlayer duration]] forKey:kW3CMediaFormatDuration];
+                    formatData[kW3CMediaFormatDuration] = @([avPlayer duration]);
                     if ([avPlayer respondsToSelector:@selector(settings)]) {
                         NSDictionary* info = [avPlayer settings];
-                        NSNumber* bitRate = [info objectForKey:AVEncoderBitRateKey];
+                        NSNumber* bitRate = info[AVEncoderBitRateKey];
                         if (bitRate) {
-                            [formatData setObject:bitRate forKey:kW3CMediaFormatBitrate];
+                            formatData[kW3CMediaFormatBitrate] = bitRate;
                         }
                     }
                 } // else leave data init'ed to 0
@@ -424,22 +416,22 @@
     NSFileManager* fileMgr = [[NSFileManager alloc] init];
     NSMutableDictionary* fileDict = [NSMutableDictionary dictionaryWithCapacity:5];
 
-    [fileDict setObject:[fullPath lastPathComponent] forKey:@"name"];
-    [fileDict setObject:fullPath forKey:@"fullPath"];
+    fileDict[@"name"] = [fullPath lastPathComponent];
+    fileDict[@"fullPath"] = fullPath;
     // determine type
     if (!type) {
         id command = [self.commandDelegate getCommandInstance:@"File"];
         if ([command isKindOfClass:[CDVFile class]]) {
             CDVFile* cdvFile = (CDVFile*)command;
             NSString* mimeType = [cdvFile getMimeTypeFromPath:fullPath];
-            [fileDict setObject:(mimeType != nil ? (NSObject*)mimeType:[NSNull null]) forKey:@"type"];
+            fileDict[@"type"] = (mimeType != nil ? (NSObject*)mimeType:[NSNull null]);
         }
     }
     NSDictionary* fileAttrs = [fileMgr attributesOfItemAtPath:fullPath error:nil];
-    [fileDict setObject:[NSNumber numberWithUnsignedLongLong:[fileAttrs fileSize]] forKey:@"size"];
+    fileDict[@"size"] = @([fileAttrs fileSize]);
     NSDate* modDate = [fileAttrs fileModificationDate];
-    NSNumber* msDate = [NSNumber numberWithDouble:[modDate timeIntervalSince1970] * 1000];
-    [fileDict setObject:msDate forKey:@"lastModifiedDate"];
+    NSNumber* msDate = @([modDate timeIntervalSince1970] * 1000);
+    fileDict[@"lastModifiedDate"] = msDate;
 
     return fileDict;
 }
@@ -473,14 +465,14 @@
     CDVPluginResult* result = nil;
 
     UIImage* image = nil;
-    NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+    NSString* mediaType = info[UIImagePickerControllerMediaType];
     if (!mediaType || [mediaType isEqualToString:(NSString*)kUTTypeImage]) {
         // mediaType is nil then only option is UIImagePickerControllerOriginalImage
         if ([UIImagePickerController respondsToSelector:@selector(allowsEditing)] &&
-            (cameraPicker.allowsEditing && [info objectForKey:UIImagePickerControllerEditedImage])) {
-            image = [info objectForKey:UIImagePickerControllerEditedImage];
+            (cameraPicker.allowsEditing && info[UIImagePickerControllerEditedImage])) {
+            image = info[UIImagePickerControllerEditedImage];
         } else {
-            image = [info objectForKey:UIImagePickerControllerOriginalImage];
+            image = info[UIImagePickerControllerOriginalImage];
         }
     }
     if (image != nil) {
@@ -488,7 +480,7 @@
         result = [self processImage:image type:cameraPicker.mimeType forCallbackId:callbackId];
     } else if ([mediaType isEqualToString:(NSString*)kUTTypeMovie]) {
         // process video
-        NSString* moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] path];
+        NSString* moviePath = [info[UIImagePickerControllerMediaURL] path];
         if (moviePath) {
             result = [self processVideo:moviePath forCallbackId:callbackId];
         }
@@ -819,7 +811,7 @@
         NSString* filePath = [avRecorder.url path];
         // NSLog(@"filePath: %@", filePath);
         NSDictionary* fileDict = [captureCommand getMediaDictionaryFromPath:filePath ofType:@"audio/wav"];
-        NSArray* fileArray = [NSArray arrayWithObject:fileDict];
+        NSArray* fileArray = @[fileDict];
 
         self.pluginResult = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsArray:fileArray];
     } else {

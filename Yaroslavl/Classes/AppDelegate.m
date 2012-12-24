@@ -54,7 +54,7 @@
  */
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
-    NSURL* url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+    NSURL* url = launchOptions[UIApplicationLaunchOptionsURLKey];
     NSString* invokeString = nil;
 
     if (url && [url isKindOfClass:[NSURL class]]) {
@@ -63,10 +63,10 @@
     }
 
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    self.window = [[[UIWindow alloc] initWithFrame:screenBounds] autorelease];
+    self.window = [[UIWindow alloc] initWithFrame:screenBounds];
     self.window.autoresizesSubviews = YES;
 
-    self.viewController = [[[MainViewController alloc] init] autorelease];
+    self.viewController = [[MainViewController alloc] init];
     self.viewController.useSplashScreen = YES;
     self.viewController.wwwFolderName = @"www";
     self.viewController.startPage = @"index.html";

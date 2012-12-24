@@ -123,7 +123,7 @@
 - (void)displayContact:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    ABRecordID recordID = [[command.arguments objectAtIndex:0] intValue];
+    ABRecordID recordID = [(command.arguments)[0] intValue];
     NSDictionary* options = [command.arguments objectAtIndex:1 withDefault:[NSNull null]];
     bool bEdit = [options isKindOfClass:[NSNull class]] ? false : [options existsValue:@"true" forKey:@"allowsEditing"];
 
@@ -190,7 +190,7 @@
     pickerController.peoplePickerDelegate = self;
     pickerController.callbackId = callbackId;
     pickerController.options = options;
-    pickerController.pickedContactDictionary = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:kABRecordInvalidID], kW3ContactId, nil];
+    pickerController.pickedContactDictionary = @{kW3ContactId: @kABRecordInvalidID};
     pickerController.allowsEditing = (BOOL)[options existsValue : @"true" forKey : @"allowsEditing"];
 
     if ([self.viewController respondsToSelector:@selector(presentViewController:::)]) {
@@ -204,7 +204,7 @@
       shouldContinueAfterSelectingPerson:(ABRecordRef)person
 {
     CDVContactsPicker* picker = (CDVContactsPicker*)peoplePicker;
-    NSNumber* pickedId = [NSNumber numberWithInt:ABRecordGetRecordID(person)];
+    NSNumber* pickedId = @(ABRecordGetRecordID(person));
 
     if (picker.allowsEditing) {
         ABPersonViewController* personController = [[ABPersonViewController alloc] init];
@@ -212,13 +212,13 @@
         personController.personViewDelegate = self;
         personController.allowsEditing = picker.allowsEditing;
         // store id so can get info in peoplePickerNavigationControllerDidCancel
-        picker.pickedContactDictionary = [NSDictionary dictionaryWithObjectsAndKeys:pickedId, kW3ContactId, nil];
+        picker.pickedContactDictionary = @{kW3ContactId: pickedId};
 
         [peoplePicker pushViewController:personController animated:YES];
     } else {
         // Retrieve and return pickedContact information
         CDVContact* pickedContact = [[CDVContact alloc] initFromABRecord:(ABRecordRef)person];
-        NSArray* fields = [picker.options objectForKey:@"fields"];
+        NSArray* fields = (picker.options)[@"fields"];
         NSDictionary* returnFields = [[CDVContact class] calcReturnFields:fields];
         picker.pickedContactDictionary = [pickedContact toDictionary:returnFields];
 
@@ -259,10 +259,10 @@
             // iOS 4 & 5
             addrBook = ABAddressBookCreate();
         }
-        ABRecordRef person = ABAddressBookGetPersonWithRecordID(addrBook, [[picker.pickedContactDictionary objectForKey:kW3ContactId] integerValue]);
+        ABRecordRef person = ABAddressBookGetPersonWithRecordID(addrBook, [(picker.pickedContactDictionary)[kW3ContactId] integerValue]);
         if (person) {
             CDVContact* pickedContact = [[CDVContact alloc] initFromABRecord:(ABRecordRef)person];
-            NSArray* fields = [picker.options objectForKey:@"fields"];
+            NSArray* fields = (picker.options)[@"fields"];
             NSDictionary* returnFields = [[CDVContact class] calcReturnFields:fields];
             picker.pickedContactDictionary = [pickedContact toDictionary:returnFields];
         }
@@ -281,7 +281,7 @@
 - (void)search:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    NSArray* fields = [command.arguments objectAtIndex:0];
+    NSArray* fields = (command.arguments)[0];
     NSDictionary* findOptions = [command.arguments objectAtIndex:1 withDefault:[NSNull null]];
 
     [self.commandDelegate runInBackground:^{
@@ -305,8 +305,8 @@
                     NSString* filter = nil;
                     if (![findOptions isKindOfClass:[NSNull class]]) {
                         id value = nil;
-                        filter = (NSString*)[findOptions objectForKey:@"filter"];
-                        value = [findOptions objectForKey:@"multiple"];
+                        filter = (NSString*)findOptions[@"filter"];
+                        value = findOptions[@"multiple"];
                         if ([value isKindOfClass:[NSNumber class]]) {
                             // multiple is a boolean that will come through as an NSNumber
                             multiple = [(NSNumber*) value boolValue];
@@ -327,7 +327,7 @@
                             matches = [NSMutableArray arrayWithCapacity:xferCount];
 
                             for (int k = 0; k < xferCount; k++) {
-                                CDVContact* xferContact = [[CDVContact alloc] initFromABRecord:(__bridge ABRecordRef)[foundRecords objectAtIndex:k]];
+                                CDVContact* xferContact = [[CDVContact alloc] initFromABRecord:(__bridge ABRecordRef)foundRecords[k]];
                                 [matches addObject:xferContact];
                                 xferContact = nil;
                             }
@@ -339,7 +339,7 @@
                         int testCount = [foundRecords count];
 
                         for (int j = 0; j < testCount; j++) {
-                            CDVContact* testContact = [[CDVContact alloc] initFromABRecord:(__bridge ABRecordRef)[foundRecords objectAtIndex:j]];
+                            CDVContact* testContact = [[CDVContact alloc] initFromABRecord:(__bridge ABRecordRef)foundRecords[j]];
                             if (testContact) {
                                 bFound = [testContact foundValue:filter inFields:returnFields];
                                 if (bFound) {
@@ -358,7 +358,7 @@
                             int count = multiple == YES ? [matches count]:1;
 
                             for (int i = 0; i < count; i++) {
-                                CDVContact* newContact = [matches objectAtIndex:i];
+                                CDVContact* newContact = matches[i];
                                 NSDictionary* aContact = [newContact toDictionary:returnFields];
                                 [returnContacts addObject:aContact];
                             }
@@ -381,7 +381,7 @@
 - (void)save:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    NSDictionary* contactDict = [command.arguments objectAtIndex:0];
+    NSDictionary* contactDict = (command.arguments)[0];
 
     [self.commandDelegate runInBackground:^{
             CDVAddressBookHelper* abHelper = [[CDVAddressBookHelper alloc] init];
@@ -453,7 +453,7 @@
 - (void)remove:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    NSNumber* cId = [command.arguments objectAtIndex:0];
+    NSNumber* cId = (command.arguments)[0];
 
     CDVAddressBookHelper* abHelper = [[CDVAddressBookHelper alloc] init];
     CDVContacts* __unsafe_unretained weakSelf = self;  // play it safe to avoid retain cycles

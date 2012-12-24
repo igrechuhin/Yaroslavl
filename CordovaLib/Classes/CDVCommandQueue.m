@@ -86,7 +86,7 @@
 
         for (NSUInteger i = 0; i < [_queue count]; ++i) {
             // Parse the returned JSON array.
-            NSArray* commandBatch = [[_queue objectAtIndex:i] cdvjk_mutableObjectFromJSONString];
+            NSArray* commandBatch = [_queue[i] cdvjk_mutableObjectFromJSONString];
 
             // Iterate over and execute all of the commands.
             for (NSArray* jsonEntry in commandBatch) {

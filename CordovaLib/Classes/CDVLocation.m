@@ -223,7 +223,7 @@
     }
     if (self.locationData.watchCallbacks.count > 0) {
         for (NSString* timerId in self.locationData.watchCallbacks) {
-            [self returnLocationInfo:[self.locationData.watchCallbacks objectForKey:timerId] andKeepCallback:YES];
+            [self returnLocationInfo:(self.locationData.watchCallbacks)[timerId] andKeepCallback:YES];
         }
     } else {
         // No callbacks waiting on us anymore, turn off listening.
@@ -234,12 +234,12 @@
 - (void)getLocation:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    BOOL enableHighAccuracy = [[command.arguments objectAtIndex:0] boolValue];
+    BOOL enableHighAccuracy = [(command.arguments)[0] boolValue];
 
     if ([self isLocationServicesEnabled] == NO) {
         NSMutableDictionary* posError = [NSMutableDictionary dictionaryWithCapacity:2];
-        [posError setObject:[NSNumber numberWithInt:PERMISSIONDENIED] forKey:@"code"];
-        [posError setObject:@"Location services are disabled." forKey:@"message"];
+        posError[@"code"] = @(PERMISSIONDENIED);
+        posError[@"message"] = @"Location services are disabled.";
         CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:posError];
         [self.commandDelegate sendPluginResult:result callbackId:callbackId];
     } else {
@@ -267,8 +267,8 @@
 - (void)addWatch:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    NSString* timerId = [command.arguments objectAtIndex:0];
-    BOOL enableHighAccuracy = [[command.arguments objectAtIndex:1] boolValue];
+    NSString* timerId = (command.arguments)[0];
+    BOOL enableHighAccuracy = [(command.arguments)[1] boolValue];
 
     if (!self.locationData) {
         self.locationData = [[CDVLocationData alloc] init];
@@ -280,12 +280,12 @@
     }
 
     // add the callbackId into the dictionary so we can call back whenever get data
-    [lData.watchCallbacks setObject:callbackId forKey:timerId];
+    (lData.watchCallbacks)[timerId] = callbackId;
 
     if ([self isLocationServicesEnabled] == NO) {
         NSMutableDictionary* posError = [NSMutableDictionary dictionaryWithCapacity:2];
-        [posError setObject:[NSNumber numberWithInt:PERMISSIONDENIED] forKey:@"code"];
-        [posError setObject:@"Location services are disabled." forKey:@"message"];
+        posError[@"code"] = @(PERMISSIONDENIED);
+        posError[@"message"] = @"Location services are disabled.";
         CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:posError];
         [self.commandDelegate sendPluginResult:result callbackId:callbackId];
     } else {
@@ -298,9 +298,9 @@
 
 - (void)clearWatch:(CDVInvokedUrlCommand*)command
 {
-    NSString* timerId = [command.arguments objectAtIndex:0];
+    NSString* timerId = (command.arguments)[0];
 
-    if (self.locationData && self.locationData.watchCallbacks && [self.locationData.watchCallbacks objectForKey:timerId]) {
+    if (self.locationData && self.locationData.watchCallbacks && (self.locationData.watchCallbacks)[timerId]) {
         [self.locationData.watchCallbacks removeObjectForKey:timerId];
     }
 }
@@ -321,15 +321,15 @@
     } else if (lData && lData.locationInfo) {
         CLLocation* lInfo = lData.locationInfo;
         NSMutableDictionary* returnInfo = [NSMutableDictionary dictionaryWithCapacity:8];
-        NSNumber* timestamp = [NSNumber numberWithDouble:([lInfo.timestamp timeIntervalSince1970] * 1000)];
-        [returnInfo setObject:timestamp forKey:@"timestamp"];
-        [returnInfo setObject:[NSNumber numberWithDouble:lInfo.speed] forKey:@"velocity"];
-        [returnInfo setObject:[NSNumber numberWithDouble:lInfo.verticalAccuracy] forKey:@"altitudeAccuracy"];
-        [returnInfo setObject:[NSNumber numberWithDouble:lInfo.horizontalAccuracy] forKey:@"accuracy"];
-        [returnInfo setObject:[NSNumber numberWithDouble:lInfo.course] forKey:@"heading"];
-        [returnInfo setObject:[NSNumber numberWithDouble:lInfo.altitude] forKey:@"altitude"];
-        [returnInfo setObject:[NSNumber numberWithDouble:lInfo.coordinate.latitude] forKey:@"latitude"];
-        [returnInfo setObject:[NSNumber numberWithDouble:lInfo.coordinate.longitude] forKey:@"longitude"];
+        NSNumber* timestamp = @([lInfo.timestamp timeIntervalSince1970] * 1000);
+        returnInfo[@"timestamp"] = timestamp;
+        returnInfo[@"velocity"] = @(lInfo.speed);
+        returnInfo[@"altitudeAccuracy"] = @(lInfo.verticalAccuracy);
+        returnInfo[@"accuracy"] = @(lInfo.horizontalAccuracy);
+        returnInfo[@"heading"] = @(lInfo.course);
+        returnInfo[@"altitude"] = @(lInfo.altitude);
+        returnInfo[@"latitude"] = @(lInfo.coordinate.latitude);
+        returnInfo[@"longitude"] = @(lInfo.coordinate.longitude);
 
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnInfo];
         [result setKeepCallbackAsBool:keepCallback];
@@ -343,8 +343,8 @@
 {
     NSMutableDictionary* posError = [NSMutableDictionary dictionaryWithCapacity:2];
 
-    [posError setObject:[NSNumber numberWithInt:errorCode] forKey:@"code"];
-    [posError setObject:message ? message:@"" forKey:@"message"];
+    posError[@"code"] = [NSNumber numberWithInt:errorCode];
+    posError[@"message"] = message ? message:@"";
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:posError];
 
     for (NSString* callbackId in self.locationData.locationCallbacks) {
@@ -444,12 +444,12 @@
         // if there is heading info, return it
         CLHeading* hInfo = hData.headingInfo;
         NSMutableDictionary* returnInfo = [NSMutableDictionary dictionaryWithCapacity:4];
-        NSNumber* timestamp = [NSNumber numberWithDouble:([hInfo.timestamp timeIntervalSince1970] * 1000)];
-        [returnInfo setObject:timestamp forKey:@"timestamp"];
-        [returnInfo setObject:[NSNumber numberWithDouble:hInfo.magneticHeading] forKey:@"magneticHeading"];
-        id trueHeading = __locationStarted ? (id)[NSNumber numberWithDouble : hInfo.trueHeading] : (id)[NSNull null];
-        [returnInfo setObject:trueHeading forKey:@"trueHeading"];
-        [returnInfo setObject:[NSNumber numberWithDouble:hInfo.headingAccuracy] forKey:@"headingAccuracy"];
+        NSNumber* timestamp = @([hInfo.timestamp timeIntervalSince1970] * 1000);
+        returnInfo[@"timestamp"] = timestamp;
+        returnInfo[@"magneticHeading"] = @(hInfo.magneticHeading);
+        id trueHeading = __locationStarted ? (id)@(hInfo.trueHeading) : (id)[NSNull null];
+        returnInfo[@"trueHeading"] = trueHeading;
+        returnInfo[@"headingAccuracy"] = @(hInfo.headingAccuracy);
 
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:returnInfo];
         [result setKeepCallbackAsBool:bRetain];

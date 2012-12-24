@@ -80,7 +80,7 @@
 - (BOOL)typeValueForKey:(NSString*)key isArray:(BOOL*)bArray isNull:(BOOL*)bNull isNumber:(BOOL*)bNumber isString:(BOOL*)bString
 {
     BOOL bExists = YES;
-    NSObject* value = [self objectForKey:key];
+    NSObject* value = self[key];
 
     if (value) {
         bExists = YES;
@@ -103,7 +103,7 @@
 - (BOOL)valueForKeyIsArray:(NSString*)key
 {
     BOOL bArray = NO;
-    NSObject* value = [self objectForKey:key];
+    NSObject* value = self[key];
 
     if (value) {
         bArray = [value isKindOfClass:[NSArray class]];
@@ -114,7 +114,7 @@
 - (BOOL)valueForKeyIsNull:(NSString*)key
 {
     BOOL bNull = NO;
-    NSObject* value = [self objectForKey:key];
+    NSObject* value = self[key];
 
     if (value) {
         bNull = [value isKindOfClass:[NSNull class]];
@@ -125,7 +125,7 @@
 - (BOOL)valueForKeyIsString:(NSString*)key
 {
     BOOL bString = NO;
-    NSObject* value = [self objectForKey:key];
+    NSObject* value = self[key];
 
     if (value) {
         bString = [value isKindOfClass:[NSString class]];
@@ -136,7 +136,7 @@
 - (BOOL)valueForKeyIsNumber:(NSString*)key
 {
     BOOL bNumber = NO;
-    NSObject* value = [self objectForKey:key];
+    NSObject* value = self[key];
 
     if (value) {
         bNumber = [value isKindOfClass:[NSNumber class]];
@@ -150,7 +150,7 @@
     NSString* key;
 
     for (key in self) {
-        [result setObject:[self objectForKey:key] forKey:[key lowercaseString]];
+        result[[key lowercaseString]] = self[key];
     }
 
     return result;

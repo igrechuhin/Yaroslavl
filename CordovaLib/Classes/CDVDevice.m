@@ -50,11 +50,11 @@
     UIDevice* device = [UIDevice currentDevice];
     NSMutableDictionary* devProps = [NSMutableDictionary dictionaryWithCapacity:4];
 
-    [devProps setObject:[device model] forKey:@"platform"];
-    [devProps setObject:[device systemVersion] forKey:@"version"];
-    [devProps setObject:[device uniqueAppInstanceIdentifier] forKey:@"uuid"];
-    [devProps setObject:[device name] forKey:@"name"];
-    [devProps setObject:[[self class] cordovaVersion] forKey:@"cordova"];
+    devProps[@"platform"] = [device model];
+    devProps[@"version"] = [device systemVersion];
+    devProps[@"uuid"] = [device uniqueAppInstanceIdentifier];
+    devProps[@"name"] = [device name];
+    devProps[@"cordova"] = [[self class] cordovaVersion];
 
     NSDictionary* devReturn = [NSDictionary dictionaryWithDictionary:devProps];
     return devReturn;

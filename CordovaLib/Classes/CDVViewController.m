@@ -72,7 +72,7 @@
 
         // read from UISupportedInterfaceOrientations (or UISupportedInterfaceOrientations~iPad, if its iPad) from -Info.plist
         self.supportedOrientations = [self parseInterfaceOrientations:
-            [[[NSBundle mainBundle] infoDictionary] objectForKey:@"UISupportedInterfaceOrientations"]];
+            [[NSBundle mainBundle] infoDictionary][@"UISupportedInterfaceOrientations"]];
 
         self.wwwFolderName = @"www";
         self.startPage = @"index.html";
@@ -85,7 +85,7 @@
         // load Cordova.plist settings
         [self loadSettings];
         // set the whitelist
-        self.whitelist = [[CDVWhitelist alloc] initWithArray:[self.settings objectForKey:@"ExternalHosts"]];
+        self.whitelist = [[CDVWhitelist alloc] initWithArray:(self.settings)[@"ExternalHosts"]];
         // register this viewcontroller with the NSURLProtocol
         [CDVURLProtocol registerViewController:self];
     }
@@ -125,7 +125,7 @@
 
     NSNumber* exitsOnSuspend = [[NSBundle mainBundle] objectForInfoDictionaryKey:@"UIApplicationExitsOnSuspend"];
     if (exitsOnSuspend == nil) { // if it's missing, it should be NO (i.e. multi-tasking on by default)
-        exitsOnSuspend = [NSNumber numberWithBool:NO];
+        exitsOnSuspend = @NO;
     }
 
     NSLog(@"Multi-tasking -> Device: %@, App: %@", (backgroundSupported ? @"YES" : @"NO"), (![exitsOnSuspend intValue]) ? @"YES" : @"NO");
@@ -146,7 +146,7 @@
 
     // read from Plugins dict in Cordova.plist in the app bundle
     NSString* pluginsKey = @"Plugins";
-    NSDictionary* pluginsDict = [self.settings objectForKey:@"Plugins"];
+    NSDictionary* pluginsDict = (self.settings)[@"Plugins"];
     if (pluginsDict == nil) {
         NSLog(@"WARNING: %@ key in %@.plist is missing! Cordova will not work, you need to have this key.", pluginsKey, appPlistName);
         return;
@@ -177,7 +177,7 @@
 
     NSString* backupWebStorageType = @"cloud"; // default value
 
-    id backupWebStorage = [self.settings objectForKey:@"BackupWebStorage"];
+    id backupWebStorage = (self.settings)[@"BackupWebStorage"];
     if ([backupWebStorage isKindOfClass:[NSString class]]) {
         backupWebStorageType = backupWebStorage;
     } else if ([backupWebStorage isKindOfClass:[NSNumber class]]) {
@@ -195,12 +195,12 @@
 
     // /////////////////
 
-    NSNumber* enableLocation = [self.settings objectForKey:@"EnableLocation"];
-    NSString* enableViewportScale = [self.settings objectForKey:@"EnableViewportScale"];
-    NSNumber* allowInlineMediaPlayback = [self.settings objectForKey:@"AllowInlineMediaPlayback"];
+    NSNumber* enableLocation = (self.settings)[@"EnableLocation"];
+    NSString* enableViewportScale = (self.settings)[@"EnableViewportScale"];
+    NSNumber* allowInlineMediaPlayback = (self.settings)[@"AllowInlineMediaPlayback"];
     BOOL mediaPlaybackRequiresUserAction = YES;  // default value
-    if ([self.settings objectForKey:@"MediaPlaybackRequiresUserAction"]) {
-        mediaPlaybackRequiresUserAction = [(NSNumber*)[settings objectForKey:@"MediaPlaybackRequiresUserAction"] boolValue];
+    if ((self.settings)[@"MediaPlaybackRequiresUserAction"]) {
+        mediaPlaybackRequiresUserAction = [(NSNumber*)settings[@"MediaPlaybackRequiresUserAction"] boolValue];
     }
 
     self.webView.scalesPageToFit = [enableViewportScale boolValue];
@@ -218,8 +218,7 @@
      */
     if (IsAtLeastiOSVersion(@"5.1") && (([backupWebStorage isEqualToString:@"local"]) ||
             ([backupWebStorage isEqualToString:@"cloud"] && !IsAtLeastiOSVersion(@"6.0")))) {
-        [self registerPlugin:[[CDVLocalStorage alloc] initWithWebView:self.webView settings:[NSDictionary dictionaryWithObjectsAndKeys:
-                    @"backupType", backupWebStorageType, nil]] withClassName:NSStringFromClass([CDVLocalStorage class])];
+        [self registerPlugin:[[CDVLocalStorage alloc] initWithWebView:self.webView settings:@{backupWebStorageType: @"backupType"}] withClassName:NSStringFromClass([CDVLocalStorage class])];
     }
 
     /*
@@ -233,7 +232,7 @@
     }
 
     // UIWebViewBounce property - defaults to true
-    NSNumber* bouncePreference = [self.settings objectForKey:@"UIWebViewBounce"];
+    NSNumber* bouncePreference = (self.settings)[@"UIWebViewBounce"];
     BOOL bounceAllowed = (bouncePreference == nil || [bouncePreference boolValue]);
 
     // prevent webView from bouncing
@@ -255,27 +254,27 @@
      */
     if (IsAtLeastiOSVersion(@"6.0")) {
         BOOL keyboardDisplayRequiresUserAction = YES; // KeyboardDisplayRequiresUserAction - defaults to YES
-        if ([self.settings objectForKey:@"KeyboardDisplayRequiresUserAction"] != nil) {
-            if ([self.settings objectForKey:@"KeyboardDisplayRequiresUserAction"]) {
-                keyboardDisplayRequiresUserAction = [(NSNumber*)[self.settings objectForKey:@"KeyboardDisplayRequiresUserAction"] boolValue];
+        if ((self.settings)[@"KeyboardDisplayRequiresUserAction"] != nil) {
+            if ((self.settings)[@"KeyboardDisplayRequiresUserAction"]) {
+                keyboardDisplayRequiresUserAction = [(NSNumber*)(self.settings)[@"KeyboardDisplayRequiresUserAction"] boolValue];
             }
         }
 
         // property check for compiling under iOS < 6
         if ([self.webView respondsToSelector:@selector(setKeyboardDisplayRequiresUserAction:)]) {
-            [self.webView setValue:[NSNumber numberWithBool:keyboardDisplayRequiresUserAction] forKey:@"keyboardDisplayRequiresUserAction"];
+            [self.webView setValue:@(keyboardDisplayRequiresUserAction) forKey:@"keyboardDisplayRequiresUserAction"];
         }
 
         BOOL suppressesIncrementalRendering = NO; // SuppressesIncrementalRendering - defaults to NO
-        if ([self.settings objectForKey:@"SuppressesIncrementalRendering"] != nil) {
-            if ([self.settings objectForKey:@"SuppressesIncrementalRendering"]) {
-                suppressesIncrementalRendering = [(NSNumber*)[self.settings objectForKey:@"SuppressesIncrementalRendering"] boolValue];
+        if ((self.settings)[@"SuppressesIncrementalRendering"] != nil) {
+            if ((self.settings)[@"SuppressesIncrementalRendering"]) {
+                suppressesIncrementalRendering = [(NSNumber*)(self.settings)[@"SuppressesIncrementalRendering"] boolValue];
             }
         }
 
         // property check for compiling under iOS < 6
         if ([self.webView respondsToSelector:@selector(setSuppressesIncrementalRendering:)]) {
-            [self.webView setValue:[NSNumber numberWithBool:suppressesIncrementalRendering] forKey:@"suppressesIncrementalRendering"];
+            [self.webView setValue:@(suppressesIncrementalRendering) forKey:@"suppressesIncrementalRendering"];
         }
     }
 
@@ -300,20 +299,20 @@
 
         while (orientationString = [enumerator nextObject]) {
             if ([orientationString isEqualToString:@"UIInterfaceOrientationPortrait"]) {
-                [result addObject:[NSNumber numberWithInt:UIInterfaceOrientationPortrait]];
+                [result addObject:@(UIInterfaceOrientationPortrait)];
             } else if ([orientationString isEqualToString:@"UIInterfaceOrientationPortraitUpsideDown"]) {
-                [result addObject:[NSNumber numberWithInt:UIInterfaceOrientationPortraitUpsideDown]];
+                [result addObject:@(UIInterfaceOrientationPortraitUpsideDown)];
             } else if ([orientationString isEqualToString:@"UIInterfaceOrientationLandscapeLeft"]) {
-                [result addObject:[NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft]];
+                [result addObject:@(UIInterfaceOrientationLandscapeLeft)];
             } else if ([orientationString isEqualToString:@"UIInterfaceOrientationLandscapeRight"]) {
-                [result addObject:[NSNumber numberWithInt:UIInterfaceOrientationLandscapeRight]];
+                [result addObject:@(UIInterfaceOrientationLandscapeRight)];
             }
         }
     }
 
     // default
     if ([result count] == 0) {
-        [result addObject:[NSNumber numberWithInt:UIInterfaceOrientationPortrait]];
+        [result addObject:@(UIInterfaceOrientationPortrait)];
     }
 
     return result;
@@ -478,7 +477,7 @@
      */
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 
-    id autoHideSplashScreenValue = [self.settings objectForKey:@"AutoHideSplashScreen"];
+    id autoHideSplashScreenValue = (self.settings)[@"AutoHideSplashScreen"];
     // if value is missing, default to yes
     if ((autoHideSplashScreenValue == nil) || [autoHideSplashScreenValue boolValue]) {
         self.imageView.hidden = YES;
@@ -524,7 +523,7 @@
         return YES;
     } else if ([self.whitelist schemeIsAllowed:[url scheme]]) {
         if ([self.whitelist URLIsAllowed:url] == YES) {
-            NSNumber* openAllInWhitelistSetting = [self.settings objectForKey:@"OpenAllWhitelistURLsInWebView"];
+            NSNumber* openAllInWhitelistSetting = (self.settings)[@"OpenAllWhitelistURLsInWebView"];
             if ((nil != openAllInWhitelistSetting) && [openAllInWhitelistSetting boolValue]) {
                 NSLog(@"OpenAllWhitelistURLsInWebView set: opening in webview");
                 return YES;
@@ -624,7 +623,7 @@
 + (NSString*)applicationDocumentsDirectory
 {
     NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString* basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+    NSString* basePath = ([paths count] > 0) ? paths[0] : nil;
 
     return basePath;
 }
@@ -717,7 +716,7 @@
      *     gray       = UIActivityIndicatorViewStyleGray
      *
      */
-    NSString* topActivityIndicator = [self.settings objectForKey:@"TopActivityIndicator"];
+    NSString* topActivityIndicator = (self.settings)[@"TopActivityIndicator"];
     UIActivityIndicatorViewStyle topActivityIndicatorStyle = UIActivityIndicatorViewStyleGray;
 
     if ([topActivityIndicator isEqualToString:@"whiteLarge"]) {
@@ -731,7 +730,7 @@
     self.activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:topActivityIndicatorStyle];
     self.activityView.tag = 2;
 
-    id showSplashScreenSpinnerValue = [self.settings objectForKey:@"ShowSplashScreenSpinner"];
+    id showSplashScreenSpinnerValue = (self.settings)[@"ShowSplashScreenSpinner"];
     // backwards compatibility - if key is missing, default to true
     if ((showSplashScreenSpinnerValue == nil) || [showSplashScreenSpinnerValue boolValue]) {
         [self.view.superview addSubview:self.activityView];
@@ -766,7 +765,7 @@ BOOL gSplashScreenShown = NO;
         [plugin setCommandDelegate:_commandDelegate];
     }
 
-    [self.pluginObjects setObject:plugin forKey:className];
+    (self.pluginObjects)[className] = plugin;
 }
 
 /**
@@ -779,16 +778,16 @@ BOOL gSplashScreenShown = NO;
     // NOTE: plugin names are matched as lowercase to avoid problems - however, a
     // possible issue is there can be duplicates possible if you had:
     // "org.apache.cordova.Foo" and "org.apache.cordova.foo" - only the lower-cased entry will match
-    NSString* className = [self.pluginsMap objectForKey:[pluginName lowercaseString]];
+    NSString* className = (self.pluginsMap)[[pluginName lowercaseString]];
 
     if (className == nil) {
         return nil;
     }
 
-    id obj = [self.pluginObjects objectForKey:className];
+    id obj = (self.pluginObjects)[className];
     if (!obj) {
         // attempt to load the settings for this command class
-        NSDictionary* classSettings = [self.settings objectForKey:className];
+        NSDictionary* classSettings = (self.settings)[className];
 
         if (classSettings) {
             obj = [[NSClassFromString (className)alloc] initWithWebView:webView settings:classSettings];
@@ -811,14 +810,14 @@ BOOL gSplashScreenShown = NO;
 {
     NSString* URLScheme = nil;
 
-    NSArray* URLTypes = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleURLTypes"];
+    NSArray* URLTypes = [[NSBundle mainBundle] infoDictionary][@"CFBundleURLTypes"];
 
     if (URLTypes != nil) {
-        NSDictionary* dict = [URLTypes objectAtIndex:0];
+        NSDictionary* dict = URLTypes[0];
         if (dict != nil) {
-            NSArray* URLSchemes = [dict objectForKey:@"CFBundleURLSchemes"];
+            NSArray* URLSchemes = dict[@"CFBundleURLSchemes"];
             if (URLSchemes != nil) {
-                URLScheme = [URLSchemes objectAtIndex:0];
+                URLScheme = URLSchemes[0];
             }
         }
     }

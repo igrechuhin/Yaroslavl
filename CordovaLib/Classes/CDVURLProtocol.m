@@ -58,13 +58,13 @@ static NSMutableSet* gRegisteredControllers = nil;
         }
     }
     @synchronized(gRegisteredControllers) {
-        [gRegisteredControllers addObject:[NSNumber numberWithLongLong:(long long)viewController]];
+        [gRegisteredControllers addObject:@((long long)viewController)];
     }
 }
 
 + (void)unregisterViewController:(CDVViewController*)viewController
 {
-    [gRegisteredControllers removeObject:[NSNumber numberWithLongLong:(long long)viewController]];
+    [gRegisteredControllers removeObject:@((long long)viewController)];
 }
 
 + (BOOL)canInitWithRequest:(NSURLRequest*)theRequest
@@ -82,7 +82,7 @@ static NSMutableSet* gRegisteredControllers = nil;
         // Ensure that the CDVViewController has not been dealloc'ed.
         CDVViewController* viewController = nil;
         @synchronized(gRegisteredControllers) {
-            if (![gRegisteredControllers containsObject:[NSNumber numberWithLongLong:viewControllerAddress]]) {
+            if (![gRegisteredControllers containsObject:@(viewControllerAddress)]) {
                 return NO;
             }
             viewController = (__bridge CDVViewController*)(void*)viewControllerAddress;
@@ -100,7 +100,7 @@ static NSMutableSet* gRegisteredControllers = nil;
             [viewController.commandQueue performSelectorOnMainThread:sel withObject:queuedCommandsJSON waitUntilDone:NO];
         } else {
             SEL sel = @selector(maybeFetchCommandsFromJs:);
-            [viewController.commandQueue performSelectorOnMainThread:sel withObject:[NSNumber numberWithInteger:[requestId integerValue]] waitUntilDone:NO];
+            [viewController.commandQueue performSelectorOnMainThread:sel withObject:@([requestId integerValue]) waitUntilDone:NO];
         }
         // Returning NO here would be 20% faster, but it spams WebInspector's console with failure messages.
         // If JS->Native bridge speed is really important for an app, they should use the iframe bridge.

@@ -83,7 +83,7 @@
     if ([self soundCache] == nil) {
         [self setSoundCache:[NSMutableDictionary dictionaryWithCapacity:1]];
     } else {
-        audioFile = [[self soundCache] objectForKey:mediaId];
+        audioFile = [self soundCache][mediaId];
     }
     if (audioFile == nil) {
         // validate resourcePath and create
@@ -109,7 +109,7 @@
             audioFile = [[CDVAudioFile alloc] init];
             audioFile.resourcePath = resourcePath;
             audioFile.resourceURL = resourceURL;
-            [[self soundCache] setObject:audioFile forKey:mediaId];
+            [self soundCache][mediaId] = audioFile;
         }
     }
     return audioFile;
@@ -139,15 +139,15 @@
 {
     NSMutableDictionary* errorDict = [NSMutableDictionary dictionaryWithCapacity:2];
 
-    [errorDict setObject:[NSNumber numberWithUnsignedInt:code] forKey:@"code"];
-    [errorDict setObject:message ? message:@"" forKey:@"message"];
+    errorDict[@"code"] = @(code);
+    errorDict[@"message"] = message ? message:@"";
     return [errorDict cdvjk_JSONString];
 }
 
 - (void)create:(CDVInvokedUrlCommand*)command
 {
-    NSString* mediaId = [command.arguments objectAtIndex:0];
-    NSString* resourcePath = [command.arguments objectAtIndex:1];
+    NSString* mediaId = (command.arguments)[0];
+    NSString* resourcePath = (command.arguments)[1];
 
     CDVAudioFile* audioFile = [self audioFileForResource:resourcePath withId:mediaId];
 
@@ -166,16 +166,16 @@
     NSString* callbackId = command.callbackId;
 
 #pragma unused(callbackId)
-    NSString* mediaId = [command.arguments objectAtIndex:0];
-    NSNumber* volume = [command.arguments objectAtIndex:1 withDefault:[NSNumber numberWithFloat:1.0]];
+    NSString* mediaId = (command.arguments)[0];
+    NSNumber* volume = [command.arguments objectAtIndex:1 withDefault:@1.0f];
 
     CDVAudioFile* audioFile;
     if ([self soundCache] == nil) {
         [self setSoundCache:[NSMutableDictionary dictionaryWithCapacity:1]];
     } else {
-        audioFile = [[self soundCache] objectForKey:mediaId];
+        audioFile = [self soundCache][mediaId];
         audioFile.volume = volume;
-        [[self soundCache] setObject:audioFile forKey:mediaId];
+        [self soundCache][mediaId] = audioFile;
     }
 
     // don't care for any callbacks
@@ -186,8 +186,8 @@
     NSString* callbackId = command.callbackId;
 
 #pragma unused(callbackId)
-    NSString* mediaId = [command.arguments objectAtIndex:0];
-    NSString* resourcePath = [command.arguments objectAtIndex:1];
+    NSString* mediaId = (command.arguments)[0];
+    NSString* resourcePath = (command.arguments)[1];
     NSDictionary* options = [command.arguments objectAtIndex:2 withDefault:nil];
 
     BOOL bError = NO;
@@ -204,7 +204,7 @@
             // get the audioSession and set the category to allow Playing when device is locked or ring/silent switch engaged
             if ([self hasAudioSession]) {
                 NSError* __autoreleasing err = nil;
-                NSNumber* playAudioWhenScreenIsLocked = [options objectForKey:@"playAudioWhenScreenIsLocked"];
+                NSNumber* playAudioWhenScreenIsLocked = options[@"playAudioWhenScreenIsLocked"];
                 BOOL bPlayAudioWhenScreenIsLocked = YES;
                 if (playAudioWhenScreenIsLocked != nil) {
                     bPlayAudioWhenScreenIsLocked = [playAudioWhenScreenIsLocked boolValue];
@@ -220,7 +220,7 @@
             }
             if (!bError) {
                 NSLog(@"Playing audio sample '%@'", audioFile.resourcePath);
-                NSNumber* loopOption = [options objectForKey:@"numberOfLoops"];
+                NSNumber* loopOption = options[@"numberOfLoops"];
                 NSInteger numberOfLoops = 0;
                 if (loopOption != nil) {
                     numberOfLoops = [loopOption intValue] - 1;
@@ -310,8 +310,8 @@
 
 - (void)stopPlayingAudio:(CDVInvokedUrlCommand*)command
 {
-    NSString* mediaId = [command.arguments objectAtIndex:0];
-    CDVAudioFile* audioFile = [[self soundCache] objectForKey:mediaId];
+    NSString* mediaId = (command.arguments)[0];
+    CDVAudioFile* audioFile = [self soundCache][mediaId];
     NSString* jsString = nil;
 
     if ((audioFile != nil) && (audioFile.player != nil)) {
@@ -327,9 +327,9 @@
 
 - (void)pausePlayingAudio:(CDVInvokedUrlCommand*)command
 {
-    NSString* mediaId = [command.arguments objectAtIndex:0];
+    NSString* mediaId = (command.arguments)[0];
     NSString* jsString = nil;
-    CDVAudioFile* audioFile = [[self soundCache] objectForKey:mediaId];
+    CDVAudioFile* audioFile = [self soundCache][mediaId];
 
     if ((audioFile != nil) && (audioFile.player != nil)) {
         NSLog(@"Paused playing audio sample '%@'", audioFile.resourcePath);
@@ -350,10 +350,10 @@
     // 1 = path to resource
     // 2 = seek to location in milliseconds
 
-    NSString* mediaId = [command.arguments objectAtIndex:0];
+    NSString* mediaId = (command.arguments)[0];
 
-    CDVAudioFile* audioFile = [[self soundCache] objectForKey:mediaId];
-    double position = [[command.arguments objectAtIndex:1] doubleValue];
+    CDVAudioFile* audioFile = [self soundCache][mediaId];
+    double position = [(command.arguments)[1] doubleValue];
 
     if ((audioFile != nil) && (audioFile.player != nil) && position) {
         double posInSeconds = position / 1000;
@@ -368,10 +368,10 @@
 
 - (void)release:(CDVInvokedUrlCommand*)command
 {
-    NSString* mediaId = [command.arguments objectAtIndex:0];
+    NSString* mediaId = (command.arguments)[0];
 
     if (mediaId != nil) {
-        CDVAudioFile* audioFile = [[self soundCache] objectForKey:mediaId];
+        CDVAudioFile* audioFile = [self soundCache][mediaId];
         if (audioFile != nil) {
             if (audioFile.player && [audioFile.player isPlaying]) {
                 [audioFile.player stop];
@@ -392,10 +392,10 @@
 - (void)getCurrentPositionAudio:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    NSString* mediaId = [command.arguments objectAtIndex:0];
+    NSString* mediaId = (command.arguments)[0];
 
 #pragma unused(mediaId)
-    CDVAudioFile* audioFile = [[self soundCache] objectForKey:mediaId];
+    CDVAudioFile* audioFile = [self soundCache][mediaId];
     double position = -1;
 
     if ((audioFile != nil) && (audioFile.player != nil) && [audioFile.player isPlaying]) {
@@ -412,8 +412,8 @@
 
 #pragma unused(callbackId)
 
-    NSString* mediaId = [command.arguments objectAtIndex:0];
-    CDVAudioFile* audioFile = [self audioFileForResource:[command.arguments objectAtIndex:1] withId:mediaId];
+    NSString* mediaId = (command.arguments)[0];
+    CDVAudioFile* audioFile = [self audioFileForResource:(command.arguments)[1] withId:mediaId];
     NSString* jsString = nil;
     NSString* errorMsg = @"";
 
@@ -468,9 +468,9 @@
 
 - (void)stopRecordingAudio:(CDVInvokedUrlCommand*)command
 {
-    NSString* mediaId = [command.arguments objectAtIndex:0];
+    NSString* mediaId = (command.arguments)[0];
 
-    CDVAudioFile* audioFile = [[self soundCache] objectForKey:mediaId];
+    CDVAudioFile* audioFile = [self soundCache][mediaId];
     NSString* jsString = nil;
 
     if ((audioFile != nil) && (audioFile.recorder != nil)) {
@@ -488,7 +488,7 @@
 {
     CDVAudioRecorder* aRecorder = (CDVAudioRecorder*)recorder;
     NSString* mediaId = aRecorder.mediaId;
-    CDVAudioFile* audioFile = [[self soundCache] objectForKey:mediaId];
+    CDVAudioFile* audioFile = [self soundCache][mediaId];
     NSString* jsString = nil;
 
     if (audioFile != nil) {
@@ -510,7 +510,7 @@
 {
     CDVAudioPlayer* aPlayer = (CDVAudioPlayer*)player;
     NSString* mediaId = aPlayer.mediaId;
-    CDVAudioFile* audioFile = [[self soundCache] objectForKey:mediaId];
+    CDVAudioFile* audioFile = [self soundCache][mediaId];
     NSString* jsString = nil;
 
     if (audioFile != nil) {

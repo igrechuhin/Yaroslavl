@@ -1139,13 +1139,9 @@ static void cdvjk_error(CDVJKParseState *parseState, NSString *format, ...) {
 
   if(parseState->error == NULL) {
     parseState->error = [NSError errorWithDomain:@"CDVJKErrorDomain" code:-1L userInfo:
-                                   [NSDictionary dictionaryWithObjectsAndKeys:
-                                                                              formatString,                                             NSLocalizedDescriptionKey,
-                                                                              [NSNumber numberWithUnsignedLong:parseState->atIndex],    @"CDVJKAtIndexKey",
-                                                                              [NSNumber numberWithUnsignedLong:parseState->lineNumber], @"CDVJKLineNumberKey",
-                                                 //lineString,   @"CDVJKErrorLine0Key",
-                                                 //carretString, @"CDVJKErrorLine1Key",
-                                                                              NULL]];
+                                   @{NSLocalizedDescriptionKey: formatString,
+                                                                              @"CDVJKAtIndexKey": @(parseState->atIndex),
+                                                                              @"CDVJKLineNumberKey": @(parseState->lineNumber)}];
   }
 }
 
@@ -1455,7 +1451,7 @@ static int cdvjk_parse_string(CDVJKParseState *parseState) {
         onlySimpleString = 0;
         stringState      = CDVJSONStringStateParsing;
         tokenBufferIdx   = (atStringCharacter - stringStart) - 1L;
-        if(CDVJK_EXPECT_F((tokenBufferIdx + 16UL) > parseState->token.tokenBuffer.bytes.length)) { if((tokenBuffer = cdvjk_managedBuffer_resize(&parseState->token.tokenBuffer, tokenBufferIdx + 1024UL)) == NULL) { cdvjk_error(parseState, @"Internal error: Unable to resize temporary buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; } }
+        if(CDVJK_EXPECT_F((tokenBufferIdx + 16UL) > parseState->token.tokenBuffer.bytes.length)) { if((tokenBuffer = cdvjk_managedBuffer_resize(&parseState->token.tokenBuffer, tokenBufferIdx + 1024UL)) == NULL) { cdvjk_error(parseState, @"Internal error: Unable to resize temporary buffer. %@ line #%ld", @__FILE__, (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; } }
         memcpy(tokenBuffer, stringStart, tokenBufferIdx);
         goto slowMatch;
       }
@@ -1469,7 +1465,7 @@ static int cdvjk_parse_string(CDVJKParseState *parseState) {
  slowMatch:
 
   for(atStringCharacter = (stringStart + ((atStringCharacter - stringStart) - 1L)); (atStringCharacter < endOfBuffer) && (tokenBufferIdx < parseState->token.tokenBuffer.bytes.length); atStringCharacter++) {
-    if((tokenBufferIdx + 16UL) > parseState->token.tokenBuffer.bytes.length) { if((tokenBuffer = cdvjk_managedBuffer_resize(&parseState->token.tokenBuffer, tokenBufferIdx + 1024UL)) == NULL) { cdvjk_error(parseState, @"Internal error: Unable to resize temporary buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; } }
+    if((tokenBufferIdx + 16UL) > parseState->token.tokenBuffer.bytes.length) { if((tokenBuffer = cdvjk_managedBuffer_resize(&parseState->token.tokenBuffer, tokenBufferIdx + 1024UL)) == NULL) { cdvjk_error(parseState, @"Internal error: Unable to resize temporary buffer. %@ line #%ld", @__FILE__, (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; } }
 
     NSCParameterAssert(tokenBufferIdx < parseState->token.tokenBuffer.bytes.length);
 
@@ -1491,7 +1487,7 @@ static int cdvjk_parse_string(CDVJKParseState *parseState) {
           if(CDVJK_EXPECT_F((result = cdvConvertSingleCodePointInUTF8(atStringCharacter, endOfBuffer, (UTF8 const **)&nextValidCharacter, &u32ch)) != conversionOK)) {
             if((result == sourceIllegal) && ((parseState->parseOptionFlags & CDVJKParseOptionLooseUnicode) == 0)) { cdvjk_error(parseState, @"Illegal UTF8 sequence found in \"\" string.");              stringState = CDVJSONStringStateError; goto finishedParsing; }
             if(result == sourceExhausted)                                                                      { cdvjk_error(parseState, @"End of buffer reached while parsing UTF8 in \"\" string."); stringState = CDVJSONStringStateError; goto finishedParsing; }
-            if(cdvjk_string_add_unicodeCodePoint(parseState, u32ch, &tokenBufferIdx, &stringHash))                { cdvjk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; }
+            if(cdvjk_string_add_unicodeCodePoint(parseState, u32ch, &tokenBufferIdx, &stringHash))                { cdvjk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", @__FILE__, (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; }
             atStringCharacter = nextValidCharacter - 1;
             continue;
           } else {
@@ -1572,7 +1568,7 @@ static int cdvjk_parse_string(CDVJKParseState *parseState) {
               if((stringState == CDVJSONStringStateEscapedUnicode4) || (stringState == CDVJSONStringStateEscapedUnicodeSurrogate4)) { 
                 if((cdvisValidCodePoint(&escapedUnicodeCodePoint) == sourceIllegal) && ((parseState->parseOptionFlags & CDVJKParseOptionLooseUnicode) == 0)) { cdvjk_error(parseState, @"Illegal \\u Unicode escape sequence."); stringState = CDVJSONStringStateError; goto finishedParsing; }
                 stringState = CDVJSONStringStateParsing;
-                if(cdvjk_string_add_unicodeCodePoint(parseState, escapedUnicodeCodePoint, &tokenBufferIdx, &stringHash)) { cdvjk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; }
+                if(cdvjk_string_add_unicodeCodePoint(parseState, escapedUnicodeCodePoint, &tokenBufferIdx, &stringHash)) { cdvjk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", @__FILE__, (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; }
               }
               else if((stringState >= CDVJSONStringStateEscapedUnicode1) && (stringState <= CDVJSONStringStateEscapedUnicodeSurrogate4)) { stringState++; }
               break;
@@ -1586,7 +1582,7 @@ static int cdvjk_parse_string(CDVJKParseState *parseState) {
           if(currentChar == '\\') { stringState = CDVJSONStringStateEscapedNeedEscapedUForSurrogate; }
           else { 
             if((parseState->parseOptionFlags & CDVJKParseOptionLooseUnicode) == 0) { cdvjk_error(parseState, @"Required a second \\u Unicode escape sequence following a surrogate \\u Unicode escape sequence."); stringState = CDVJSONStringStateError; goto finishedParsing; }
-            else { stringState = CDVJSONStringStateParsing; atStringCharacter--;    if(cdvjk_string_add_unicodeCodePoint(parseState, CDV_UNI_REPLACEMENT_CHAR, &tokenBufferIdx, &stringHash)) { cdvjk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; } }
+            else { stringState = CDVJSONStringStateParsing; atStringCharacter--;    if(cdvjk_string_add_unicodeCodePoint(parseState, CDV_UNI_REPLACEMENT_CHAR, &tokenBufferIdx, &stringHash)) { cdvjk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", @__FILE__, (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; } }
           }
           break;
 
@@ -1594,11 +1590,11 @@ static int cdvjk_parse_string(CDVJKParseState *parseState) {
           if(currentChar == 'u') { stringState = CDVJSONStringStateEscapedUnicodeSurrogate1; }
           else { 
             if((parseState->parseOptionFlags & CDVJKParseOptionLooseUnicode) == 0) { cdvjk_error(parseState, @"Required a second \\u Unicode escape sequence following a surrogate \\u Unicode escape sequence."); stringState = CDVJSONStringStateError; goto finishedParsing; }
-            else { stringState = CDVJSONStringStateParsing; atStringCharacter -= 2; if(cdvjk_string_add_unicodeCodePoint(parseState, CDV_UNI_REPLACEMENT_CHAR, &tokenBufferIdx, &stringHash)) { cdvjk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; } }
+            else { stringState = CDVJSONStringStateParsing; atStringCharacter -= 2; if(cdvjk_string_add_unicodeCodePoint(parseState, CDV_UNI_REPLACEMENT_CHAR, &tokenBufferIdx, &stringHash)) { cdvjk_error(parseState, @"Internal error: Unable to add UTF8 sequence to internal string buffer. %@ line #%ld", @__FILE__, (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; } }
           }
           break;
 
-        default: cdvjk_error(parseState, @"Internal error: Unknown stringState. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; break;
+        default: cdvjk_error(parseState, @"Internal error: Unknown stringState. %@ line #%ld", @__FILE__, (long)__LINE__); stringState = CDVJSONStringStateError; goto finishedParsing; break;
       }
     }
   }
@@ -1704,7 +1700,7 @@ static int cdvjk_parse_number(CDVJKParseState *parseState) {
           case CDVJKValueTypeDouble:           cdvjk_error(parseState, @"The value '%s' could not be represented as a 'double' due to %s.",           numberTempBuf, (parseState->token.value.number.doubleValue == 0.0) ? "underflow" : "overflow"); break; // see above for == 0.0.
           case CDVJKValueTypeLongLong:         cdvjk_error(parseState, @"The value '%s' exceeded the minimum value that could be represented: %lld.", numberTempBuf, parseState->token.value.number.longLongValue);                                   break;
           case CDVJKValueTypeUnsignedLongLong: cdvjk_error(parseState, @"The value '%s' exceeded the maximum value that could be represented: %llu.", numberTempBuf, parseState->token.value.number.unsignedLongLongValue);                           break;
-          default:                          cdvjk_error(parseState, @"Internal error: Unknown token value type. %@ line #%ld",                     [NSString stringWithUTF8String:__FILE__], (long)__LINE__);                                      break;
+          default:                          cdvjk_error(parseState, @"Internal error: Unknown token value type. %@ line #%ld",                     @__FILE__, (long)__LINE__);                                      break;
         }
       }
     }
@@ -1832,7 +1828,7 @@ static void *cdvjk_parse_array(CDVJKParseState *parseState) {
   void   *parsedArray         = NULL;
 
   while(CDVJK_EXPECT_T((CDVJK_EXPECT_T(stopParsing == 0)) && (CDVJK_EXPECT_T(parseState->atIndex < parseState->stringBuffer.bytes.length)))) {
-    if(CDVJK_EXPECT_F(parseState->objectStack.index > (parseState->objectStack.count - 4UL))) { if(cdvjk_objectStack_resize(&parseState->objectStack, parseState->objectStack.count + 128UL)) { cdvjk_error(parseState, @"Internal error: [array] objectsIndex > %zu, resize failed? %@ line %#ld", (parseState->objectStack.count - 4UL), [NSString stringWithUTF8String:__FILE__], (long)__LINE__); break; } }
+    if(CDVJK_EXPECT_F(parseState->objectStack.index > (parseState->objectStack.count - 4UL))) { if(cdvjk_objectStack_resize(&parseState->objectStack, parseState->objectStack.count + 128UL)) { cdvjk_error(parseState, @"Internal error: [array] objectsIndex > %zu, resize failed? %@ line %#ld", (parseState->objectStack.count - 4UL), @__FILE__, (long)__LINE__); break; } }
 
     if(CDVJK_EXPECT_T((stopParsing = cdvjk_parse_next_token(parseState)) == 0)) {
       void *object = NULL;
@@ -1883,7 +1879,7 @@ static void *cdvjk_parse_dictionary(CDVJKParseState *parseState) {
   void   *parsedDictionary    = NULL;
 
   while(CDVJK_EXPECT_T((CDVJK_EXPECT_T(stopParsing == 0)) && (CDVJK_EXPECT_T(parseState->atIndex < parseState->stringBuffer.bytes.length)))) {
-    if(CDVJK_EXPECT_F(parseState->objectStack.index > (parseState->objectStack.count - 4UL))) { if(cdvjk_objectStack_resize(&parseState->objectStack, parseState->objectStack.count + 128UL)) { cdvjk_error(parseState, @"Internal error: [dictionary] objectsIndex > %zu, resize failed? %@ line #%ld", (parseState->objectStack.count - 4UL), [NSString stringWithUTF8String:__FILE__], (long)__LINE__); break; } }
+    if(CDVJK_EXPECT_F(parseState->objectStack.index > (parseState->objectStack.count - 4UL))) { if(cdvjk_objectStack_resize(&parseState->objectStack, parseState->objectStack.count + 128UL)) { cdvjk_error(parseState, @"Internal error: [dictionary] objectsIndex > %zu, resize failed? %@ line #%ld", (parseState->objectStack.count - 4UL), @__FILE__, (long)__LINE__); break; } }
 
     size_t objectStackIndex = parseState->objectStack.index++;
     parseState->objectStack.keys[objectStackIndex]    = NULL;
@@ -2028,7 +2024,7 @@ static void *cdvjk_cachedObjects(CDVJKParseState *parseState) {
       else { parsedAtom = (void *)parseState->objCImpCache.NSNumberInitWithUnsignedLongLong(parseState->objCImpCache.NSNumberAlloc(parseState->objCImpCache.NSNumberClass, @selector(alloc)), @selector(initWithUnsignedLongLong:), parseState->token.value.number.unsignedLongLongValue); }
       break;
     case CDVJKValueTypeDouble:           parsedAtom = (void *)CFNumberCreate(NULL, kCFNumberDoubleType,   &parseState->token.value.number.doubleValue);                                               break;
-    default: cdvjk_error(parseState, @"Internal error: Unknown token value type. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); break;
+    default: cdvjk_error(parseState, @"Internal error: Unknown token value type. %@ line #%ld", @__FILE__, (long)__LINE__); break;
   }
   
   if(CDVJK_EXPECT_T(setBucket) && (CDVJK_EXPECT_T(parsedAtom != NULL))) {
@@ -2068,7 +2064,7 @@ static void *cdvjk_object_for_token(CDVJKParseState *parseState) {
     case CDVJKTokenTypeTrue:        parsedAtom = (void *)kCFBooleanTrue;          break;
     case CDVJKTokenTypeFalse:       parsedAtom = (void *)kCFBooleanFalse;         break;
     case CDVJKTokenTypeNull:        parsedAtom = (void *)kCFNull;                 break;
-    default: cdvjk_error(parseState, @"Internal error: Unknown token type. %@ line #%ld", [NSString stringWithUTF8String:__FILE__], (long)__LINE__); break;
+    default: cdvjk_error(parseState, @"Internal error: Unknown token type. %@ line #%ld", @__FILE__, (long)__LINE__); break;
   }
   
   return(parsedAtom);
@@ -2335,7 +2331,7 @@ static id _NSStringObjectFromJSONString(NSString *jsonString, CDVJKParseOptionFl
     CFIndex  usedBytes  = 0L, convertedCount = 0L;
     
     convertedCount = CFStringGetBytes((CFStringRef)jsonString, CFRangeMake(0L, stringLength), kCFStringEncodingUTF8, '?', NO, utf8String, (NSUInteger)stringUTF8Length, &usedBytes);
-    if(CDVJK_EXPECT_F(convertedCount != stringLength) || CDVJK_EXPECT_F(usedBytes < 0L)) { if(error != NULL) { *error = [NSError errorWithDomain:@"CDVJKErrorDomain" code:-1L userInfo:[NSDictionary dictionaryWithObject:@"An error occurred converting the contents of a NSString to UTF8." forKey:NSLocalizedDescriptionKey]]; } goto exitNow; }
+    if(CDVJK_EXPECT_F(convertedCount != stringLength) || CDVJK_EXPECT_F(usedBytes < 0L)) { if(error != NULL) { *error = [NSError errorWithDomain:@"CDVJKErrorDomain" code:-1L userInfo:@{NSLocalizedDescriptionKey: @"An error occurred converting the contents of a NSString to UTF8."}]; } goto exitNow; }
     
     if(mutableCollection == NO) { returnObject = [(decoder = [CDVJSONDecoder decoderWithParseOptions:parseOptionFlags])        objectWithUTF8String:(const unsigned char *)utf8String length:(size_t)usedBytes error:error]; }
     else                        { returnObject = [(decoder = [CDVJSONDecoder decoderWithParseOptions:parseOptionFlags]) mutableObjectWithUTF8String:(const unsigned char *)utf8String length:(size_t)usedBytes error:error]; }
@@ -2435,9 +2431,7 @@ static void cdvjk_encode_error(CDVJKEncodeState *encodeState, NSString *format, 
 
   if(encodeState->error == NULL) {
     encodeState->error = [NSError errorWithDomain:@"CDVJKErrorDomain" code:-1L userInfo:
-                                   [NSDictionary dictionaryWithObjectsAndKeys:
-                                                                              formatString, NSLocalizedDescriptionKey,
-                                                                              NULL]];
+                                   @{NSLocalizedDescriptionKey: formatString}];
   }
 }
 

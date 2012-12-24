@@ -63,12 +63,12 @@
 
     // restrict number parsing to 0-255
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
-    [numberFormatter setMinimum:[NSNumber numberWithUnsignedInteger:0]];
-    [numberFormatter setMaximum:[NSNumber numberWithUnsignedInteger:255]];
+    [numberFormatter setMinimum:@0U];
+    [numberFormatter setMaximum:@255U];
 
     // iterate through each octet, and test for a number between 0-255 or if it equals '*'
     for (NSUInteger i = 0; i < num_octets; ++i) {
-        NSString* octet = [octets objectAtIndex:i];
+        NSString* octet = octets[i];
 
         if ([octet isEqualToString:@"*"]) { // passes - check next octet
             continue;
@@ -115,7 +115,7 @@
         // check for single wildcard '*', if found set allowAll to YES
         if ([regex isEqualToString:@"*"]) {
             self.allowAll = YES;
-            self.expandedWhitelist = [NSArray arrayWithObject:regex];
+            self.expandedWhitelist = @[regex];
             break;
         }
 

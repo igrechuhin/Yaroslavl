@@ -37,7 +37,7 @@
     int count = [labels count];
 
     for (int n = 0; n < count; n++) {
-        [alertView addButtonWithTitle:[labels objectAtIndex:n]];
+        [alertView addButtonWithTitle:labels[n]];
     }
 
     [alertView show];
@@ -49,9 +49,9 @@
     NSArray* arguments = command.arguments;
     int argc = [arguments count];
 
-    NSString* message = argc > 0 ? [arguments objectAtIndex:0] : nil;
-    NSString* title = argc > 1 ? [arguments objectAtIndex:1] : nil;
-    NSString* buttons = argc > 2 ? [arguments objectAtIndex:2] : nil;
+    NSString* message = argc > 0 ? arguments[0] : nil;
+    NSString* title = argc > 1 ? arguments[1] : nil;
+    NSString* buttons = argc > 2 ? arguments[2] : nil;
 
     if (!title) {
         title = NSLocalizedString(@"Alert", @"Alert");
@@ -69,9 +69,9 @@
     NSArray* arguments = command.arguments;
     int argc = [arguments count];
 
-    NSString* message = argc > 0 ? [arguments objectAtIndex:0] : nil;
-    NSString* title = argc > 1 ? [arguments objectAtIndex:1] : nil;
-    NSString* buttons = argc > 2 ? [arguments objectAtIndex:2] : nil;
+    NSString* message = argc > 0 ? arguments[0] : nil;
+    NSString* title = argc > 1 ? arguments[1] : nil;
+    NSString* buttons = argc > 2 ? arguments[2] : nil;
 
     if (!title) {
         title = NSLocalizedString(@"Confirm", @"Confirm");
