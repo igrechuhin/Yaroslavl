@@ -1,0 +1,1 @@
+.full-screen{position:absolute;top:0;bottom:0;left:0;right:0;overflow:hidden}#PanoramaContent{position:absolute;top:0;bottom:0;left:0;right:0;overflow:hidden;z-index:1200}#PanoramaContent img{z-index:1201;position:fixed;width:50px}#PanoramaContent img#ClosePanorama{left:26px;top:26px}#PanoramaContent img#Gyroscope{right:26px;bottom:26px}

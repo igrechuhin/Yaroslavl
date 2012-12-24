@@ -55,10 +55,14 @@ Menu.touch = function(event) {
   event.stopPropagation();
 };
 
-Menu.gotoPage = function(target) {
+Menu.gotoPage = function(target, delay) {
   "use strict";
+  delay = delay || 200;
   Loader.getContent({
     target: target,
     loadNext: true});
-  mainScroller.scrollToPage(target.index(), 0, 200);
+  setTimeout(function() {
+    mainScroller.scrollToPage(target.index(), 0, delay);
+  },
+             0);
 };

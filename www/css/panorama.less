@@ -1,0 +1,30 @@
+@padding-left-thin:		26px;
+
+@panorama-zindex:	1200;
+
+.full-screen {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    overflow: hidden;
+}
+
+#PanoramaContent {
+	.full-screen;
+	z-index: @panorama-zindex;
+	img {
+		z-index: @panorama-zindex + 1;
+		position: fixed;
+		width: 50px;
+		&#ClosePanorama {
+			left: @padding-left-thin;
+			top: @padding-left-thin;
+		}
+		&#Gyroscope {
+			right: @padding-left-thin;
+			bottom: @padding-left-thin;
+		}
+	}
+}

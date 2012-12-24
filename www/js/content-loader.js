@@ -59,7 +59,7 @@ Loader.setContent = function(Parameters) {
 				$(".plan").addClass("invisible");
 				var scrollerOptions = {
 					 snap: true
-					,momentum: false
+					,momentum: true
 					,hScroll: false
 					,vScroll: true
 					,hScrollbar: false

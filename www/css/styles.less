@@ -17,7 +17,6 @@
 @buttons-zindex:		1000;
 @menu-zindex:			1100;
 @menuButton-zindex:	1150;
-@panorama-zindex:	1200;
 
 @buttons-width:			100px;
 @buttons-size:				80px;
@@ -206,10 +205,10 @@ body {
 			}
 		}
 		&.normal {
-			color: white;
+			color: #FFF;
 		}
 		&.invert {
-			background-color: white;
+			background-color: #FFF;
 			border-width: 2px;
 			border-style: solid;
 		}
@@ -225,7 +224,7 @@ body {
 		
 		&#Dim {
 			.full-screen;
-			background-color: white;
+			background-color: #FFF;
 			z-index: @menu-zindex - 1;
 			&.show {
 				opacity: 0.74;
@@ -257,7 +256,12 @@ body {
 			width: 130%;
 		}
 		color: @color-normal;
-		&.invert {color: @color-invert;}
+		&.invert {
+			color: @color-invert;
+			&#Panorama {
+				color: @color-normal;
+			}
+		}
 
 		&#Eye {top: 296px / @coord-divisor;}
 		&#Text {top: 531px / @coord-divisor;}
@@ -273,7 +277,7 @@ body {
 		&#Audio {.buttons-define("audio");}
 		&#Route {.buttons-define("marshrut");}
 		&#Photo {.buttons-define("photo");}
-		&#Panorama {.buttons-define("panorama");}
+		&#Panorama {background-image: url("../img/buttons/panorama.png");}
 		&#Location {.buttons-define("mesto");}
 		&#Temple {.buttons-define("hramy");}	
 	}
@@ -286,7 +290,7 @@ body {
 	right: 100px;
 	left: @padding-left-thin;
 	height: 113px;
-	background-color: white;
+	background-color: #FFF;
 	div {
 		z-index: @buttons-zindex;
 		background-size: contain;
@@ -340,9 +344,9 @@ body {
 				padding-left: @padding-left-thick;
 				padding-top: @header-top;
 				width: @width-portrait - @padding-left-thick - @buttons-width;
-				span {border-bottom: 1px solid black;}
+				span {border-bottom: 1px solid #000;}
 				z-index: @header-zindex;
-				background-color: white;
+				background-color: #FFF;
 			}		
 			article {
 				padding-left: @padding-left-thick;
@@ -351,12 +355,12 @@ body {
 				font-family: "PT Serif Regular";
 				font-size: 12pt;
 				line-height: 17pt;
-				color: black;
+				color: #000;
 			}
 			.plan {
 				.full-screen;
 				z-index: @plan-zindex;
-				background-color: white;
+				background-color: #FFF;
 				img {
 					position: relative;
 					padding-top: @padding-top-thick;
@@ -384,8 +388,8 @@ body {
 				p {
 					font-family: "PT Sans Pro Condensed Demi Regular";
 					font-size: 42px;
-					color: white;
-					border-bottom: 3px solid white;
+					color: #FFF;
+					border-bottom: 3px solid #FFF;
 					position: absolute;
 					left: 52px;
 					letter-spacing: 1px;
@@ -443,13 +447,13 @@ body {
 					left: @padding-left-thin;
 					right: @padding-right;
 					bottom: @padding-left-thin;
-					border: 1px double black;
+					border: 1px double #000;
 					.map_info {
 						font-family: "PT Sans Narrow Regular", Verdana, sans-serif;
 						padding-top: 8px;
 						height: 100%;
 						
-						#Name {font-weight: bold;}
+						#Name {font-weight: 700;}
 						
 						p {padding-left: 10px;}
 						
@@ -458,7 +462,7 @@ body {
 							width: 100%;
 							border: none;
 							vertical-align: bottom;
-							color: white;
+							color: #FFF;
 							text-align: center;
 							tr {
 								height: 40px;
@@ -469,13 +473,13 @@ body {
 									}
 								}
 								td {
-									color: white;
+									color: #FFF;
 									background-color: @color-normal;
 									background-size: 50px;
 									background-position: center;
 									background-repeat: no-repeat;
 									&.selected {
-										color: white;
+										color: #FFF;
 										background-color: @color-red;
 									}
 									&.month {
@@ -508,9 +512,10 @@ body {
 	position: fixed;
 	bottom: 0px;
 	padding-left: @padding-left-thick;
-	width: @width-portrait - @padding-right;
+	padding-right: @padding-right;
+	width: @width-portrait - @padding-left-thick - @padding-right;
 	height: 45px;
-	background-color: white;
+	background-color: #FFF;
 	z-index: @hint-zindex;
 	#UpDown {
 		z-index: @hint-zindex;
@@ -529,22 +534,4 @@ body {
 
 	#Up {background-image: url("../img/buttons/up.png");}
 	#Down {background-image: url("../img/buttons/down.png");}
-}
-
-#PanoramaContent {
-	.full-screen;
-	z-index: @panorama-zindex;
-	img {
-		z-index: @panorama-zindex + 1;
-		position: fixed;
-		width: 50px;
-		&#ClosePanorama {
-			left: @padding-left-thin;
-			top: @padding-left-thin;
-		}
-		&#Gyroscope {
-			right: @padding-left-thin;
-			bottom: @padding-left-thin;
-		}
-	}
 }

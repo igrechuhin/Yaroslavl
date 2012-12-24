@@ -6,7 +6,6 @@ Buttons.register = function() {
 		_Buttons.children()
 			.add(_MenuButton)
 			.add(_Hint.children("#UpDown").children())
-			.add(_PanoramaContent.children("#ClosePanorama,#Gyroscope"))
 			.unbind("touchstart").bind("touchstart", Buttons.touch);
 	}, 0);
 };
@@ -110,30 +109,9 @@ Buttons.touch = function(event) {
           _Hint.addClass("invisible");
         }
       break;
-      case "Panorama":
-      	_PanoramaContent.removeClass("invisible");
-      	var path = "panoramas/" + currentPage.data("url").replace(".html","/");
-      	var settings = {
-          swf: path+"virtualtour.swf",
-          xml: path+"virtualtour.xml",
-          target: "PanoramaContent",
-          html5: "prefer"
-        }
-        var panoramaViewer = createPanoViewer(settings);
-        panoramaViewer.embed();
-      break;
-      case "ClosePanorama":
-      	var krpano = document.getElementById("krpanoSWFObject");
-      	if (krpano && krpano.unload) {
-          krpano.unload();
-        }
-      	_PanoramaContent.addClass("invisible");
-      	targetObj = _Buttons.children("#Panorama");
-      break;
-      case "Gyroscope":
-      	var krpano = document.getElementById("krpanoSWFObject");
-      	krpano.set("plugin[gyro].enabled", !krpano.get("plugin[gyro].enabled"));
-      break;   
+	  case "Panorama":
+	  	window.location.href = "panorama.html?" + currentPage.attr("id");
+	  break;
   }
   targetObj.toggleClass("invert");
 };
