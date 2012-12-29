@@ -1,7 +1,6 @@
 function Menu() {}
 
 Menu.register = function() {
-  "use strict";
   setTimeout(function () {
     _Menu.children(".button").bind(
       "touchstart",
@@ -17,7 +16,6 @@ Menu.register = function() {
 };
 
 Menu.setup = function(Parameters) {
-  "use strict";
   console.assert(Parameters.hasOwnProperty("pageID"), "Menu.setup -- pageID undefined");
   var currentButtonID = ["#Page", "Button"].join(Parameters.pageID.substring(4, 6));
   _Menu.children().removeClass("invert").addClass("normal");
@@ -26,7 +24,6 @@ Menu.setup = function(Parameters) {
 };
 
 Menu.show = function() {
-  "use strict";
   $("video").addClass("invisible2");
   _Menu.removeClass("invisible");
   setTimeout(function() {
@@ -40,7 +37,6 @@ Menu.show = function() {
 };
 
 Menu.hide = function() {
-  "use strict";
   _Menu.children().removeClass("show");
   $("video").removeClass("invisible2");
   setTimeout(function() {
@@ -50,13 +46,11 @@ Menu.hide = function() {
 };
 
 Menu.touch = function(event) {
-  "use strict";
   Menu.gotoPage($("#"+$(event.currentTarget).data("page")));
   event.stopPropagation();
 };
 
 Menu.gotoPage = function(target, delay) {
-  "use strict";
   delay = delay || 200;
   Loader.getContent({
     target: target,

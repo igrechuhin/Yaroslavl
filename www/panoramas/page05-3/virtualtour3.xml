@@ -25,15 +25,6 @@
     <preview url="virtualtourdata/virtualtour3/preview.jpg" type="CUBESTRIP" striporder="FRBLUD" details="16"/>
     <!-- the pano itself -->
     <image type="CUBE" multires="true" tilesize="2879" baseindex="0">
-        <!-- mobile phone / iphone images -->
-        <mobile>
-            <left url="virtualtourdata/virtualtour3/3/mobile_face.jpg"/>
-            <front url="virtualtourdata/virtualtour3/0/mobile_face.jpg"/>
-            <right url="virtualtourdata/virtualtour3/1/mobile_face.jpg"/>
-            <back url="virtualtourdata/virtualtour3/2/mobile_face.jpg"/>
-            <up url="virtualtourdata/virtualtour3/4/mobile_face.jpg"/>
-            <down url="virtualtourdata/virtualtour3/5/mobile_face.jpg"/>
-        </mobile>
         <!-- tablet pc / ipad images -->
         <tablet>
             <left url="virtualtourdata/virtualtour3/3/tablet_face.jpg"/>

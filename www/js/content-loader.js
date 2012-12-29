@@ -11,7 +11,7 @@ Loader.getContent = function(Parameters) {
 					Loader.setContent(Parameters);
 				}
 			,error: function(xhr, type) {
-					alert("Ajax error!");
+					alert("Ajax error: " + xhr.statusText);
 				}
 			});
 	}
@@ -109,7 +109,7 @@ Loader.setContent = function(Parameters) {
 					Menu.setup(setupObj);
 					Temples.setup(setupObj);
 					Buttons.setup(setupObj);
-				}, 0);
+				}, 100);
 				
 				// Cleanup
 				setTimeout(function() {

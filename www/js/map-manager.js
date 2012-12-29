@@ -17,7 +17,6 @@ Map.watchID = null;
 Map.registered = false;
 
 Map.register = function(Parameters) {
-  "use strict";
   console.assert(Parameters.hasOwnProperty('target'), 'Map.register -- target undefined');
   //Map.unregister();
   if (Map.registered) {
@@ -99,7 +98,6 @@ Map.register = function(Parameters) {
 };
 
 Map.templeClickHandler = function() {
-  "use strict";
   var templeIndex = this.zIndex - 1;
   Map.reInitMarkers();
   this.setIcon(Map.markers.images[templeIndex].invert);
@@ -108,7 +106,6 @@ Map.templeClickHandler = function() {
 };
 
 Map.unregister = function() {
-  "use strict";
   if (Map.google !== null) {
     Map.google.unbindAll();
     delete Map.google;
@@ -132,7 +129,6 @@ Map.unregister = function() {
 };
 
 Map.reInitMarkers = function() {
-  "use strict";
   var markers = Map.markers.objects;
   var images = Map.markers.images;
   for (var i = 0; i < markers.length; i++) {
@@ -142,7 +138,6 @@ Map.reInitMarkers = function() {
 };
 
 Map.makeInfoWindow = function(marker) {
-  "use strict";
   var date = Map.checkDate;
   var dd = date.getDate();
   var mm = date.getMonth();
@@ -193,7 +188,6 @@ Map.makeInfoWindow = function(marker) {
 };
 
 Map.getWorkState = function() {
-  "use strict";
   var date = Map.checkDate;
   var dd = date.getDate();
   var mm = date.getMonth();
@@ -212,7 +206,6 @@ Map.getWorkState = function() {
 };
 
 Map.onDayChange = function(isUp) {
-  "use strict";
   Map.target.find('.month,.year').removeClass('selected');
   Map.target.find('.day').addClass('selected');
   if (isUp) {
@@ -224,7 +217,6 @@ Map.onDayChange = function(isUp) {
 };
 
 Map.onMonthChange = function(isUp) {
-  "use strict";
   Map.target.find('.day,.year').removeClass('selected');
   Map.target.find('.month').addClass('selected');
   if (isUp) {
@@ -236,7 +228,6 @@ Map.onMonthChange = function(isUp) {
 };
 
 Map.onYearChange = function(isUp) {
-  "use strict";
   Map.target.find('.day,.month').removeClass('selected');
   Map.target.find('.year').addClass('selected');
   if (isUp) {
@@ -248,7 +239,6 @@ Map.onYearChange = function(isUp) {
 };
 
 Map.setWorkStateText = function() {
-  "use strict";
   Map.target.find('.map_info_day').text(Map.checkDate.getDate());
   Map.target.find('.map_info_month').text(Map.months[Map.checkDate.getMonth()]);
   Map.target.find('.map_info_year').text(Map.checkDate.getFullYear());
@@ -259,7 +249,6 @@ Map.setWorkStateText = function() {
 Map.location = null;
 Map.locationMarker = null;
 Map.watchLocation = function() {
-  "use strict";
   if (Map.watchID === null && navigator.geolocation) {
     var imagesPath = Map.target.data('imagespath');
     var markersDefs = Map.target.parent().children('#MapMarkers');
@@ -280,26 +269,25 @@ Map.watchLocation = function() {
           Map.updateLocation,
           Map.onError,
           { enableHighAccuracy: true });
-        Buttons.showRoute();
       },
       Map.onError);
   } else {
     Map.locationMarker.setMap(null);
     navigator.geolocation.clearWatch(Map.watchID);
     Map.watchID = null;
-    Buttons.hideRoute();
   }
 };
 
 Map.isWatchingLocation = function() {
-  "use strict";
   return Map.watchID !== null; 
 };
 
 Map.updateLocation = function(position) {
-  "use strict";
   Map.location = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
   Map.locationMarker.setPosition(Map.location);
+  if (Map.haveRoute === false) {
+	  Map.getRoute();
+  }
 };
 
 Map.onError = function() {
@@ -307,7 +295,6 @@ Map.onError = function() {
 
 Map.haveRoute = false;
 Map.getRoute = function() {
-  "use strict";
   if (Map.haveRoute === false) {
     var markers = Map.target.parent().children('#MapMarkers');
     var markersCount = markers.children().size();

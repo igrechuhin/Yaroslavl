@@ -7,35 +7,38 @@
 @color-red:					#B23917;
 @color-bown:				#58291D;
 
-@color-normal:			#A7A9AC;
+@color-normal:				#A7A9AC;
 @color-invert:				#A64124;
 
 @page-zindex:				10;
-@header-zindex:			15;
+@header-zindex:				15;
 @hint-zindex:				20;
 @plan-zindex:				30;
-@buttons-zindex:		1000;
-@menu-zindex:			1100;
-@menuButton-zindex:	1150;
+@buttons-zindex:			1000;
+@menu-zindex:				1100;
+@menuButton-zindex:			1150;
+@plan-image-zindex:			1200;
 
-@buttons-width:			100px;
+@buttons-width:				100px;
 @buttons-size:				80px;
 
 @small-size:				78px;
-@medium-size:			105px;
-@large-size:					138px;
+@medium-size:				105px;
+@large-size:				138px;
 
-@padding-top-thin:		85px;
-@padding-top-thick:	116px;
-@padding-right:			126px;
-@padding-left-thin:		26px;
-@padding-left-thick:	52px;
+@padding-top-thin:			85px;
+@padding-top-thick:			116px;
+@padding-right:				126px;
+@padding-left-thin:			26px;
+@padding-left-thick:		52px;
 
 @header-top:				32px;
 
 @width-portrait:			768px;
+@height-portrait:			1024px;
 
-@coord-divisor:			2;
+@coord-divisor:				2;
+@font-divisor:				2.67;
 
 .size (@size) {
 	width: @size;
@@ -108,12 +111,12 @@
 }
 
 .full-screen {
-    position: absolute;
-    top: 0px;
-    bottom: 0px;
-    left: 0px;
-    right: 0px;
-    overflow: hidden;
+		position: absolute;
+		top: 0px;
+		bottom: 0px;
+		left: 0px;
+		right: 0px;
+		overflow: hidden;
 }
 
 body {
@@ -151,41 +154,58 @@ body {
 	.buttons-define("contents");
 }
 
+@font-big: 48px / @coord-divisor;
+@font-medium: 35.8px / @coord-divisor;
+@font-small: 32px / @coord-divisor;
+
 #Menu {
 	div {
-		&#Page01Button {left: 318px; top: 580px; div {left: 18px; top: 12px; font-size: 43px;}}
-		&#Page02Button {left: 129px; top: 596px; div {left: 18px; top: 12px; font-size: 20px;}}
-		&#Page03Button {left: 318px; top: 376px; div {left: 20px; top: 15px; font-size: 26px;}}
-		&#Page04Button {left: 421px; top: 478px; div {left: 20px; top: 15px; font-size: 38px;}}
-		&#Page05Button {left: 215px; top: 478px; div {left: 20px; top: 15px; font-size: 45px;}}
-		&#Page06Button {left: 40px;   top: 509px; div {left: 6px; top: 15px; font-size: 17px;}}
-		&#Page07Button {left: 40px;   top: 713px; div {left: 9px; top: 13px; font-size: 20px;}}
-		&#Page08Button {left: 656px; top: 508px; div {left: 12px; top: 13px; font-size: 20px;}}
-		&#Page09Button {left: 142px; top: 816px; div {left: 12px; top: 11px; font-size: 22px;}}
-		&#Page10Button {left: 348px; top: 816px; div {left: 9px; top: 9px; font-size: 22px;}}
-		&#Page11Button {left: 438px; top: 700px; div {left: 7px; top: 20px; font-size: 22px;}}
-		&#Page12Button {left: 232px; top: 290px; div {left: 22px; top: 13px; font-size: 16px;}}
-		&#Page13Button {left: 348px; top: 200px; div {left: 16px; top: 7px; font-size: 16px;}}
+		&#Page01Button {left: 318px; top: 580px; 
+			div {top: 30px; font-size: @font-big; text-align: center;}}
+		&#Page02Button {left: 129px; top: 596px; 
+			div {top: 12px; font-size: @font-medium; text-align: center;}}
+		&#Page03Button {left: 318px; top: 376px; 
+			div {top: 13px; font-size: @font-big; text-align: center;}}
+		&#Page04Button {left: 421px; top: 478px; 
+			div {top: 30px; font-size: @font-big; text-align: center;}}
+		&#Page05Button {left: 215px; top: 478px; 
+			div {top: 30px; font-size: @font-big; text-align: center;}}
+		&#Page06Button {left: 40px;  top: 509px; 
+			div {top: 9px; font-size: @font-small; text-align: center;}}
+		&#Page07Button {left: 40px;  top: 713px; 
+			div {top: 9px; font-size: @font-medium; text-align: center;}}
+		&#Page08Button {left: 656px; top: 508px; 
+			div {top: 9px; font-size: @font-medium; text-align: center;}}
+		&#Page09Button {left: 142px; top: 816px; 
+			div {top: 11px; font-size: @font-medium; text-align: center;}}
+		&#Page10Button {left: 348px; top: 816px; 
+			div {top: 15px;  font-size: @font-small; text-align: center;}}
+		&#Page11Button {left: 438px; top: 700px; 
+			div {top: 22px; font-size: @font-medium; text-align: center;}}
+		&#Page12Button {left: 232px; top: 290px; 
+			div {top: 9px; font-size: @font-small; text-align: center;}}
+		&#Page13Button {left: 348px; top: 200px; 
+			div {top: 6px;  font-size: @font-small; text-align: center;}}
 		
 		&#MenuCircle01 {left: 440px; top: 290px;}
 		&#MenuCircle02 {left: 656px; top: 713px;}
 		&#MenuCircle03 {left: 142px; top: 200px;}
 		&#MenuCircle04 {left: 129px; top: 392px;}
 		
-		&#MenuRect01 {left: 595px;	top: 356px; width: 10px; height: 185px;}
+		&#MenuRect01 {left: 595px;	top: 356px; width: 10px;  height: 185px;}
 		&#MenuRect02 {left: 568px;	top: 542px; width: 80px;  height: 10px;}
-		&#MenuRect03 {left: 485px;	top: 625px; width: 10px; height: 65px;}
+		&#MenuRect03 {left: 485px;	top: 625px; width: 10px;  height: 65px;}
 		&#MenuRect04 {left: 550px;	top: 748px; width: 100px; height: 10px;}
-		&#MenuRect05 {left: 690px;	top: 595px; width: 10px; height: 110px;}
-		&#MenuRect06 {left: 381px;	top: 726px; width: 10px; height: 82px;}
+		&#MenuRect05 {left: 690px;	top: 595px; width: 10px;  height: 110px;}
+		&#MenuRect06 {left: 381px;	top: 726px; width: 10px;  height: 82px;}
 		&#MenuRect07 {left: 192px;	top: 758px; width: 165px; height: 10px;}
-		&#MenuRect08 {left: 174px;	top: 709px; width: 10px; height: 100px;}
-		&#MenuRect09 {left: 126px;	top: 542px; width: 80px; height: 10px;}
-		&#MenuRect10 {left: 76px;		top: 595px; width: 10px; height: 110px;}
-		&#MenuRect11 {left: 380px;	top: 287px; width: 10px; height: 80px;}
-		&#MenuRect12 {left: 322px;	top: 281px; width: 35px; height: 10px;}
-		&#MenuRect13 {left: 224px;	top: 266px; width: 10px; height: 35px;}
-		&#MenuRect14 {left: 177px;	top: 285px; width: 10px; height: 100px;}
+		&#MenuRect08 {left: 174px;	top: 709px; width: 10px;  height: 100px;}
+		&#MenuRect09 {left: 126px;	top: 542px; width: 80px;  height: 10px;}
+		&#MenuRect10 {left: 76px;	top: 595px; width: 10px;  height: 110px;}
+		&#MenuRect11 {left: 380px;	top: 287px; width: 10px;  height: 80px;}
+		&#MenuRect12 {left: 322px;	top: 281px; width: 35px;  height: 10px;}
+		&#MenuRect13 {left: 224px;	top: 266px; width: 10px;  height: 35px;}
+		&#MenuRect14 {left: 177px;	top: 285px; width: 10px;  height: 100px;}
 
 		position: fixed;
 		z-index: @menu-zindex;
@@ -267,8 +287,8 @@ body {
 		&#Text {top: 531px / @coord-divisor;}
 		&#Plan {top: 919px / @coord-divisor;}
 		&#Audio {top: 1145px / @coord-divisor;}
-		&#Route,&#Photo {top: 1372px / @coord-divisor;}
-		&#Panorama,&#Location {top: 1597px / @coord-divisor;}
+		&#Photo {top: 1372px / @coord-divisor;}
+		&#Panorama,&#Route {top: 1597px / @coord-divisor;}
 		&#Temple {top: 1822px / @coord-divisor;}
 		
 		&#Eye {.buttons-define("eye");}
@@ -278,8 +298,12 @@ body {
 		&#Route {.buttons-define("marshrut");}
 		&#Photo {.buttons-define("photo");}
 		&#Panorama {background-image: url("../img/buttons/panorama.png");}
-		&#Location {.buttons-define("mesto");}
-		&#Temple {.buttons-define("hramy");}	
+		&#Temple {
+			.buttons-define("hramy");
+			&.invert p {
+				display: none;
+			}
+		}	
 	}
 }
 
@@ -324,6 +348,24 @@ body {
 	}
 }
 
+@plan05-1-top: 320px / @coord-divisor;
+@plan05-1-left: 104px / @coord-divisor;
+
+@plan05-2-top: 252px / @coord-divisor;
+@plan05-2-left: 78px / @coord-divisor;
+
+@plan05-3-top: 424px / @coord-divisor;
+@plan05-3-left: 78px / @coord-divisor;
+
+@plan05-4-top: 400px / @coord-divisor;
+@plan05-4-left: 104px / @coord-divisor;
+
+@plan05-5-top: 380px / @coord-divisor;
+@plan05-5-left: 78px / @coord-divisor;
+
+@plan05-6-top: 320px / @coord-divisor;
+@plan05-6-left: 78px / @coord-divisor;
+
 #Pages {
 	.full-screen;
 	z-index: @page-zindex;
@@ -351,6 +393,7 @@ body {
 			article {
 				padding-left: @padding-left-thick;
 				padding-right: @padding-right;
+				padding-top: 34px;
 				
 				font-family: "PT Serif Regular";
 				font-size: 12pt;
@@ -363,10 +406,16 @@ body {
 				background-color: #FFF;
 				img {
 					position: relative;
-					padding-top: @padding-top-thick;
-					padding-left: @padding-left-thick;
 					width: @width-portrait - @padding-left-thick - @padding-right;
 				}
+				div {
+					padding: 0px;
+					position: absolute;
+					z-index: @plan-zindex+5;
+					.size (@buttons-width / 2);
+					background-image: url("../img/buttons/map_info.png");
+					background-size: contain;
+				}				
 			}
 			.content {
 				.full-screen;
@@ -411,8 +460,8 @@ body {
 				video {
 					padding: @padding-top-thin @padding-right 0px @padding-left-thin;
 					width: @width-portrait - @padding-left-thin - @padding-right;
-					height: @width-portrait - @padding-left-thin - @padding-right;
-				//height: (@width-portrait - @padding-left-thin - @padding-right)*1080/1920;
+					//height: @width-portrait - @padding-left-thin - @padding-right;
+					height: (@width-portrait - @padding-left-thin - @padding-right)*1080/1920;
 				}
 			}
 			&#Page03 {
@@ -497,11 +546,82 @@ body {
 			&#Page05-1,&#Page05-2,&#Page05-3,&#Page05-4,&#Page05-5,&#Page05-6 {
 				.screen {
 					table {
-						padding: 80px @padding-right 0px @padding-left-thick;
+						padding: 148px @padding-right 0px @padding-left-thick;
 						font-family: "PT Sans Pro Narrow Demi Regular";
 						text-align: center;
-						tr {vertical-align: bottom;}
+						tr {
+							vertical-align: bottom;
+							img {
+								max-width: 280px;
+								max-height: 280px;
+							}
+						}
 					}
+				}
+			}
+			&#Page05-1 {
+				.plan {
+					img { padding-top: @plan05-1-top; padding-left: @plan05-1-left; }
+					div.marker#M1 { top: @plan05-1-top + 341px; left: @plan05-1-left + 120px; }
+					div.marker#M2 {	top: @plan05-1-top + 200px; left: @plan05-1-left + 344px; }
+					div.marker#M3 {	top: @plan05-1-top + 334px; left: @plan05-1-left + 444px; }
+					div.marker#M4 {	top: @plan05-1-top + 230px; left: @plan05-1-left + 493px; }
+					div.marker#M5 {	top: @plan05-1-top + 440px; left: @plan05-1-left + 493px; }
+				}
+			}
+			&#Page05-2 {
+				.plan {
+					img { padding-top: @plan05-2-top; padding-left: @plan05-2-left; }
+					div.marker#M1 { top: @plan05-2-top + 443px; left: @plan05-2-left + 431px; }
+					div.marker#M2 {	top: @plan05-2-top + 312px; left: @plan05-2-left + 255px; }
+					div.marker#M3 {	top: @plan05-2-top + 443px; left: @plan05-2-left + 381px; }
+					div.marker#M4 {	top: @plan05-2-top + 477px; left: @plan05-2-left + 306px; }
+					div.marker#M5 {	top: @plan05-2-top + 174px; left: @plan05-2-left + 325px; }
+					div.marker#M6 {	top: @plan05-2-top + 443px; left: @plan05-2-left + 230px; }
+					div.marker#M7 {	top: @plan05-2-top + 367px; left: @plan05-2-left + 156px; }
+				}
+			}
+			&#Page05-3 {
+				.plan {
+					img { padding-top: @plan05-3-top; padding-left: @plan05-3-left; }
+					div.marker#M1 { top: @plan05-3-top + 380px; left: @plan05-3-left + 213px; }
+					div.marker#M2 {	top: @plan05-3-top + 331px; left: @plan05-3-left + 213px; }
+					div.marker#M3 {	top: @plan05-3-top + 165px; left: @plan05-3-left + 232px; }
+					div.marker#M4 {	top: @plan05-3-top + 336px; left: @plan05-3-left + 296px; }
+					div.marker#M5 {	top: @plan05-3-top + 270px; left: @plan05-3-left + 413px; }
+					div.marker#M6 {	top: @plan05-3-top + 188px; left: @plan05-3-left + 177px; }
+					div.marker#M7 {	top: @plan05-3-top + 231px; left: @plan05-3-left + 123px; }
+				}
+			}
+			&#Page05-4 {
+				.plan {
+					img { padding-top: @plan05-4-top; padding-left: @plan05-4-left; }
+					div.marker#M1 { top: @plan05-4-top + 294px; left: @plan05-4-left + 279px; }
+					div.marker#M2 {	top: @plan05-4-top + 379px; left: @plan05-4-left + 333px; }
+					div.marker#M3 {	top: @plan05-4-top + 379px; left: @plan05-4-left + 400px; }
+					div.marker#M4 {	top: @plan05-4-top + 275px; left: @plan05-4-left + 323px; }
+				}
+			}
+			&#Page05-5 {
+				.plan {
+					img { padding-top: @plan05-5-top; padding-left: @plan05-5-left; }
+					div.marker#M1 { top: @plan05-5-top + 300px; left: @plan05-5-left + 363px; }
+					div.marker#M2 {	top: @plan05-5-top + 372px; left: @plan05-5-left + 363px; }
+					div.marker#M3 {	top: @plan05-5-top + 187px; left: @plan05-5-left + 198px; }
+					div.marker#M4 {	top: @plan05-5-top + 187px; left: @plan05-5-left + 266px; }
+					div.marker#M5 {	top: @plan05-5-top + 372px; left: @plan05-5-left + 300px; }
+					div.marker#M6 {	top: @plan05-5-top + 262px; left: @plan05-5-left + 216px; }
+				}
+			}
+			&#Page05-6 {
+				.plan {
+					img { padding-top: @plan05-6-top; padding-left: @plan05-6-left; }
+					div.marker#M1 { top: @plan05-6-top + 381px; left: @plan05-6-left + 236px; }
+					div.marker#M2 {	top: @plan05-6-top + 300px; left: @plan05-6-left + 236px; }
+					div.marker#M3 {	top: @plan05-6-top + 242px; left: @plan05-6-left + 338px; }
+					div.marker#M4 {	top: @plan05-6-top + 193px; left: @plan05-6-left + 385px; }
+					div.marker#M5 {	top: @plan05-6-top + 419px; left: @plan05-6-left + 146px; }
+					div.marker#M6 {	top: @plan05-6-top + 467px; left: @plan05-6-left + 256px; }
 				}
 			}
 		}
@@ -534,4 +654,67 @@ body {
 
 	#Up {background-image: url("../img/buttons/up.png");}
 	#Down {background-image: url("../img/buttons/down.png");}
+}
+
+#PlanImage {
+	position: fixed;
+	z-index: @plan-image-zindex;
+	background-color: #FFF;
+	height: 100%;
+	width: 100%;
+	table {
+		tr#Row1 {
+			height: @buttons-size;
+		}
+		tr#Row2 {
+			height: 100%;
+			td {
+				div#ImageContent {
+					height: @height-portrait - 3*@buttons-size;
+				}
+			}
+		}
+		tr#Row3 td {
+			width: 22px;
+		}
+		tr#Row4 {
+			height: @buttons-size;
+		}
+	}
+	#Close {
+		background-image: url("../img/buttons/hramy_invert.png");
+		background-size: contain;
+		.size (@buttons-size);
+	}
+	#Image {
+		max-width: 100%;
+		max-height: @height-portrait - 3*@buttons-size;
+		//padding-top: @padding-top-thin;
+		//padding-bottom: @padding-left-thin;
+	}
+	#Label {
+		font-family: "PT Sans Pro Narrow Demi Regular";
+		font-size: 35pt / @font-divisor;
+		//padding-left: @padding-left-thick;
+	}
+	
+	#AudioPlayer {
+		position: fixed;
+		left: 0px;
+		bottom: 10px;
+		width: @width-portrait - @buttons-width;
+		#PlayPause {
+			background-size: contain;
+			background-position: center;
+			background-repeat: no-repeat;
+			height: @buttons-size;
+			width: @padding-left-thick;
+			.buttons-define("play");
+			float: left;
+		}
+		#LayoutSlider{
+			padding: @padding-left-thin @padding-left-thick @padding-left-thin @padding-left-thick;
+			width: @width-portrait - 2*@padding-left-thick;
+		}
+	}
 }

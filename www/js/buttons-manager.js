@@ -1,17 +1,16 @@
 function Buttons() {}
 
 Buttons.register = function() {
-	"use strict";
 	setTimeout(function () {
 		_Buttons.children()
 			.add(_MenuButton)
 			.add(_Hint.children("#UpDown").children())
+			.add(_PlanImage.find("#Close"))
 			.unbind("touchstart").bind("touchstart", Buttons.touch);
 	}, 0);
 };
 
 Buttons.setup = function(Parameters) {
-	"use strict";
 	console.assert(Parameters.hasOwnProperty("pageID"), "Buttons.setup -- pageID undefined");
 	_Buttons.children().removeClass().add(_Hint).addClass("invisible");
 	_MenuButton.removeClass();
@@ -27,8 +26,7 @@ Buttons.setup = function(Parameters) {
 			Buttons.toggleEyeText();
 		break;
 		case "Page04":
-//			buttons.children("#Temple,#Location,#Route").removeClass("invisible");
-			_Buttons.children("#Temple,#Location").removeClass("invisible");
+			_Buttons.children("#Temple,#Route").removeClass("invisible");
 		break;
 		case "Page05-1":
 		case "Page05-2":
@@ -37,16 +35,16 @@ Buttons.setup = function(Parameters) {
 		case "Page05-5":
 		case "Page05-6":
 			_Buttons.children("#Temple,#Plan,#Audio,#Photo,#Panorama").add(_Hint).removeClass("invisible");
+      $("#"+Parameters.pageID).children("#MainContent").find("#Plan,#Photo").unbind("touchstart").bind("touchstart", Buttons.touch);
 		break;
 	}
 	_Buttons.removeClass("invisible");
 };
 
 Buttons.touch = function(event) {
-  "use strict";
   event.stopPropagation();
   var target = event.currentTarget,
-      targetObj = $(target),
+      targetObj = $(event.currentTarget),
       currentScroller = pageScroller[mainScroller.currPageX],
       scrollDuration = 200,
       currentPage = $();
@@ -71,11 +69,8 @@ Buttons.touch = function(event) {
       case "MenuButton":
       	targetObj.hasClass("invert") ? Menu.hide() : Menu.show();
       break;
-      case "Location":
-      	Map.watchLocation();
-      break;
       case "Route":
-      	Map.getRoute();
+      	Map.watchLocation();
       break;
       case "Temple":
       	targetObj.hasClass("invert") ? Temples.hide() : Temples.show();
@@ -100,34 +95,41 @@ Buttons.touch = function(event) {
           currentScroller.scrollToPage(0, currentScroller.currPageY + 1, scrollDuration);
         }
       break;
+      case "Audio":
+      break;
+      case "Photo":
+        targetObj = _Buttons.children("#"+target.id);
+      break;
       case "Plan":
       	if (targetObj.hasClass("invert")) {
           plan.addClass("invisible");
           _Hint.removeClass("invisible");
         } else {
           plan.removeClass("invisible");
+          Plan.register(plan);
           _Hint.addClass("invisible");
         }
+        targetObj = _Buttons.children("#"+target.id);
       break;
 	  case "Panorama":
 	  	window.location.href = "panorama.html?" + currentPage.attr("id");
+	  break;
+	  case "Close":
+	  	Plan.hide();
 	  break;
   }
   targetObj.toggleClass("invert");
 };
 
 Buttons.showRoute = function() {
-  "use strict";
   _Buttons.children("#Route").removeClass("invisible");
 };
 
 Buttons.hideRoute = function() {
-  "use strict";
   _Buttons.children("#Route").addClass("invisible");
 };
 
 Buttons.toggleEyeText = function() {
-  "use strict";
   var show = _Buttons.children("#Eye"),
       hide = _Buttons.children("#Text"),
       scrollerIndex = _Page03.index(),
@@ -145,7 +147,6 @@ Buttons.toggleEyeText = function() {
 };
 
 Buttons.refreshScroll = function() {
-  "use strict";
   var scrollHint = _Hint.children("#UpDown");
   scrollHint.children().removeClass("invisible2");
   if (this.pagesY.length !== 0) {
