@@ -42,10 +42,10 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
     if (self) {
         // get the documents directory path
         NSArray* paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        self.appDocsPath = paths[0];
+        self.appDocsPath = [paths objectAtIndex:0];
 
         paths = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, NSUserDomainMask, YES);
-        self.appLibraryPath = paths[0];
+        self.appLibraryPath = [paths objectAtIndex:0];
 
         self.appTempPath = [NSTemporaryDirectory ()stringByStandardizingPath];  // remove trailing slash from NSTemporaryDirectory()
 
@@ -64,7 +64,7 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
     NSError* __autoreleasing pError = nil;
 
     NSDictionary* pDict = [fMgr attributesOfFileSystemForPath:appPath error:&pError];
-    NSNumber* pNumAvail = (NSNumber*)pDict[NSFileSystemFreeSize];
+    NSNumber* pNumAvail = (NSNumber*)[pDict objectForKey:NSFileSystemFreeSize];
 
     return pNumAvail;
 }
@@ -140,8 +140,8 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
     NSArray* arguments = command.arguments;
 
     // arguments
-    NSString* strType = arguments[0];
-    unsigned long long size = [arguments[1] longLongValue];
+    NSString* strType = [arguments objectAtIndex:0];
+    unsigned long long size = [[arguments objectAtIndex:1] longLongValue];
 
     int type = [strType intValue];
     CDVPluginResult* result = nil;
@@ -159,9 +159,9 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_IO_EXCEPTION messageAsInt:QUOTA_EXCEEDED_ERR];
         } else {
             NSMutableDictionary* fileSystem = [NSMutableDictionary dictionaryWithCapacity:2];
-            fileSystem[@"name"] = (type == TEMPORARY ? kW3FileTemporary:kW3FilePersistent);
+            [fileSystem setObject:(type == TEMPORARY ? kW3FileTemporary:kW3FilePersistent) forKey:@"name"];
             NSDictionary* dirEntry = [self getDirectoryEntry:fullPath isDirectory:YES];
-            fileSystem[@"root"] = dirEntry;
+            [fileSystem setObject:dirEntry forKey:@"root"];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:fileSystem];
         }
     }
@@ -188,12 +188,12 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
     NSMutableDictionary* dirEntry = [NSMutableDictionary dictionaryWithCapacity:4];
     NSString* lastPart = [fullPath lastPathComponent];
 
-    dirEntry[@"isFile"] = [NSNumber numberWithBool:!isDir];
-    dirEntry[@"isDirectory"] = @(isDir);
+    [dirEntry setObject:[NSNumber numberWithBool:!isDir]  forKey:@"isFile"];
+    [dirEntry setObject:[NSNumber numberWithBool:isDir]  forKey:@"isDirectory"];
     // NSURL* fileUrl = [NSURL fileURLWithPath:fullPath];
     // [dirEntry setObject: [fileUrl absoluteString] forKey: @"fullPath"];
-    dirEntry[@"fullPath"] = fullPath;
-    dirEntry[@"name"] = lastPart;
+    [dirEntry setObject:fullPath forKey:@"fullPath"];
+    [dirEntry setObject:lastPart forKey:@"name"];
 
     return dirEntry;
 }
@@ -213,7 +213,7 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)resolveLocalFileSystemURI:(CDVInvokedUrlCommand*)command
 {
     // arguments
-    NSString* inputUri = (command.arguments)[0];
+    NSString* inputUri = [command.arguments objectAtIndex:0];
 
     // don't know if string is encoded or not so unescape
     NSString* cleanUri = [inputUri stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
@@ -292,9 +292,9 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
     } else {
         options = [NSMutableDictionary dictionaryWithCapacity:1];
     }
-    options[@"getDir"] = @1;
+    [options setObject:[NSNumber numberWithInt:1] forKey:@"getDir"];
     if ([arguments count] >= 3) {
-        arguments[2] = options;
+        [arguments replaceObjectAtIndex:2 withObject:options];
     } else {
         [arguments addObject:options];
     }
@@ -325,8 +325,8 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)getFile:(CDVInvokedUrlCommand*)command
 {
     // arguments are URL encoded
-    NSString* fullPath = (command.arguments)[0];
-    NSString* requestedPath = (command.arguments)[1];
+    NSString* fullPath = [command.arguments objectAtIndex:0];
+    NSString* requestedPath = [command.arguments objectAtIndex:1];
     NSDictionary* options = [command.arguments objectAtIndex:2 withDefault:nil];
 
     CDVPluginResult* result = nil;
@@ -423,7 +423,7 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)getParent:(CDVInvokedUrlCommand*)command
 {
     // arguments are URL encoded
-    NSString* fullPath = (command.arguments)[0];
+    NSString* fullPath = [command.arguments objectAtIndex:0];
 
     CDVPluginResult* result = nil;
     NSString* newPath = nil;
@@ -460,7 +460,7 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)getMetadata:(CDVInvokedUrlCommand*)command
 {
     // arguments
-    NSString* argPath = (command.arguments)[0];
+    NSString* argPath = [command.arguments objectAtIndex:0];
     NSString* testPath = argPath; // [self getFullPath: argPath];
 
     NSFileManager* fileMgr = [[NSFileManager alloc] init];
@@ -498,7 +498,7 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)setMetadata:(CDVInvokedUrlCommand*)command
 {
     // arguments
-    NSString* filePath = (command.arguments)[0];
+    NSString* filePath = [command.arguments objectAtIndex:0];
     NSDictionary* options = [command.arguments objectAtIndex:1 withDefault:nil];
 
     CDVPluginResult* result = nil;
@@ -507,14 +507,14 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
     // we only care about this iCloud key for now.
     // set to 1/true to skip backup, set to 0/false to back it up (effectively removing the attribute)
     NSString* iCloudBackupExtendedAttributeKey = @"com.apple.MobileBackup";
-    id iCloudBackupExtendedAttributeValue = options[iCloudBackupExtendedAttributeKey];
+    id iCloudBackupExtendedAttributeValue = [options objectForKey:iCloudBackupExtendedAttributeKey];
 
     if ((iCloudBackupExtendedAttributeValue != nil) && [iCloudBackupExtendedAttributeValue isKindOfClass:[NSNumber class]]) {
         if (IsAtLeastiOSVersion(@"5.1")) {
             NSURL* url = [NSURL fileURLWithPath:filePath];
             NSError* __autoreleasing error = nil;
 
-            ok = [url setResourceValue:@([iCloudBackupExtendedAttributeValue boolValue]) forKey:NSURLIsExcludedFromBackupKey error:&error];
+            ok = [url setResourceValue:[NSNumber numberWithBool:[iCloudBackupExtendedAttributeValue boolValue]] forKey:NSURLIsExcludedFromBackupKey error:&error];
         } else { // below 5.1 (deprecated - only really supported in 5.01)
             u_int8_t value = [iCloudBackupExtendedAttributeValue intValue];
             if (value == 0) { // remove the attribute (allow backup, the default)
@@ -545,7 +545,7 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)remove:(CDVInvokedUrlCommand*)command
 {
     // arguments
-    NSString* fullPath = (command.arguments)[0];
+    NSString* fullPath = [command.arguments objectAtIndex:0];
 
     CDVPluginResult* result = nil;
     CDVFileError errorCode = 0;  // !! 0 not currently defined
@@ -585,7 +585,7 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)removeRecursively:(CDVInvokedUrlCommand*)command
 {
     // arguments
-    NSString* fullPath = (command.arguments)[0];
+    NSString* fullPath = [command.arguments objectAtIndex:0];
 
     CDVPluginResult* result = nil;
 
@@ -688,10 +688,10 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
     NSArray* arguments = command.arguments;
 
     // arguments
-    NSString* srcFullPath = arguments[0];
-    NSString* destRootPath = arguments[1];
+    NSString* srcFullPath = [arguments objectAtIndex:0];
+    NSString* destRootPath = [arguments objectAtIndex:1];
     // optional argument
-    NSString* newName = ([arguments count] > 2) ? arguments[2] : [srcFullPath lastPathComponent];          // use last component from appPath if new name not provided
+    NSString* newName = ([arguments count] > 2) ? [arguments objectAtIndex:2] : [srcFullPath lastPathComponent];          // use last component from appPath if new name not provided
 
     CDVPluginResult* result = nil;
     CDVFileError errCode = 0;  // !! Currently 0 is not defined, use this to signal error !!
@@ -836,7 +836,7 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)getFileMetadata:(CDVInvokedUrlCommand*)command
 {
     // arguments
-    NSString* argPath = (command.arguments)[0];
+    NSString* argPath = [command.arguments objectAtIndex:0];
 
     CDVPluginResult* result = nil;
 
@@ -854,13 +854,13 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
             NSError* __autoreleasing error = nil;
             NSDictionary* fileAttrs = [fileMgr attributesOfItemAtPath:fullPath error:&error];
             NSMutableDictionary* fileInfo = [NSMutableDictionary dictionaryWithCapacity:5];
-            fileInfo[@"size"] = @([fileAttrs fileSize]);
-            fileInfo[@"fullPath"] = argPath;
-            fileInfo[@"type"] = @"";  // can't easily get the mimetype unless create URL, send request and read response so skipping
-            fileInfo[@"name"] = [argPath lastPathComponent];
+            [fileInfo setObject:[NSNumber numberWithUnsignedLongLong:[fileAttrs fileSize]] forKey:@"size"];
+            [fileInfo setObject:argPath forKey:@"fullPath"];
+            [fileInfo setObject:@"" forKey:@"type"];  // can't easily get the mimetype unless create URL, send request and read response so skipping
+            [fileInfo setObject:[argPath lastPathComponent] forKey:@"name"];
             NSDate* modDate = [fileAttrs fileModificationDate];
-            NSNumber* msDate = @([modDate timeIntervalSince1970] * 1000);
-            fileInfo[@"lastModifiedDate"] = msDate;
+            NSNumber* msDate = [NSNumber numberWithDouble:[modDate timeIntervalSince1970] * 1000];
+            [fileInfo setObject:msDate forKey:@"lastModifiedDate"];
             result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:fileInfo];
         }
     }
@@ -873,7 +873,7 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)readEntries:(CDVInvokedUrlCommand*)command
 {
     // arguments
-    NSString* fullPath = (command.arguments)[0];
+    NSString* fullPath = [command.arguments objectAtIndex:0];
 
     CDVPluginResult* result = nil;
 
@@ -912,7 +912,7 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)readAsText:(CDVInvokedUrlCommand*)command
 {
     // arguments
-    NSString* argPath = (command.arguments)[0];
+    NSString* argPath = [command.arguments objectAtIndex:0];
     // NSString* encoding = [command.arguments objectAtIndex:2];   // not currently used
     CDVPluginResult* result = nil;
 
@@ -949,7 +949,7 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)readAsDataURL:(CDVInvokedUrlCommand*)command
 {
     // arguments
-    NSString* argPath = (command.arguments)[0];
+    NSString* argPath = [command.arguments objectAtIndex:0];
 
     CDVFileError errCode = ABORT_ERR;
     CDVPluginResult* result = nil;
@@ -1011,8 +1011,8 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)truncate:(CDVInvokedUrlCommand*)command
 {
     // arguments
-    NSString* argPath = (command.arguments)[0];
-    unsigned long long pos = (unsigned long long)[(command.arguments)[1] longLongValue];
+    NSString* argPath = [command.arguments objectAtIndex:0];
+    unsigned long long pos = (unsigned long long)[[command.arguments objectAtIndex:1] longLongValue];
 
     NSString* appFile = argPath; // [self getFullPath:argPath];
 
@@ -1050,9 +1050,9 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
     NSArray* arguments = command.arguments;
 
     // arguments
-    NSString* argPath = arguments[0];
-    NSString* argData = arguments[1];
-    unsigned long long pos = (unsigned long long)[arguments[2] longLongValue];
+    NSString* argPath = [arguments objectAtIndex:0];
+    NSString* argData = [arguments objectAtIndex:1];
+    unsigned long long pos = (unsigned long long)[[arguments objectAtIndex:2] longLongValue];
 
     NSString* fullPath = argPath; // [self getFullPath:argPath];
 
@@ -1099,7 +1099,7 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)testFileExists:(CDVInvokedUrlCommand*)command
 {
     // arguments
-    NSString* argPath = (command.arguments)[0];
+    NSString* argPath = [command.arguments objectAtIndex:0];
 
     // Get the file manager
     NSFileManager* fMgr = [NSFileManager defaultManager];
@@ -1114,7 +1114,7 @@ extern NSString * const NSURLIsExcludedFromBackupKey __attribute__((weak_import)
 - (void)testDirectoryExists:(CDVInvokedUrlCommand*)command
 {
     // arguments
-    NSString* argPath = (command.arguments)[0];
+    NSString* argPath = [command.arguments objectAtIndex:0];
 
     // Get the file manager
     NSFileManager* fMgr = [[NSFileManager alloc] init];

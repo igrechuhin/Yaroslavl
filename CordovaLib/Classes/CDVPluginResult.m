@@ -34,7 +34,7 @@ static NSArray* org_apache_cordova_CommandStatusMsgs;
 
 + (void)initialize
 {
-    org_apache_cordova_CommandStatusMsgs = @[@"No result",
+    org_apache_cordova_CommandStatusMsgs = [[NSArray alloc] initWithObjects:@"No result",
         @"OK",
         @"Class not found",
         @"Illegal access",
@@ -43,7 +43,8 @@ static NSArray* org_apache_cordova_CommandStatusMsgs;
         @"IO error",
         @"Invalid action",
         @"JSON error",
-        @"Error"];
+        @"Error",
+        nil];
 }
 
 - (CDVPluginResult*)init
@@ -57,14 +58,14 @@ static NSArray* org_apache_cordova_CommandStatusMsgs;
     if (self) {
         status = [NSNumber numberWithInt:statusOrdinal];
         message = theMessage;
-        keepCallback = @NO;
+        keepCallback = [NSNumber numberWithBool:NO];
     }
     return self;
 }
 
 + (CDVPluginResult*)resultWithStatus:(CDVCommandStatus)statusOrdinal
 {
-    return [[self alloc] initWithStatus:statusOrdinal message:org_apache_cordova_CommandStatusMsgs[statusOrdinal]];
+    return [[self alloc] initWithStatus:statusOrdinal message:[org_apache_cordova_CommandStatusMsgs objectAtIndex:statusOrdinal]];
 }
 
 + (CDVPluginResult*)resultWithStatus:(CDVCommandStatus)statusOrdinal messageAsString:(NSString*)theMessage
@@ -79,12 +80,12 @@ static NSArray* org_apache_cordova_CommandStatusMsgs;
 
 + (CDVPluginResult*)resultWithStatus:(CDVCommandStatus)statusOrdinal messageAsInt:(int)theMessage
 {
-    return [[self alloc] initWithStatus:statusOrdinal message:@(theMessage)];
+    return [[self alloc] initWithStatus:statusOrdinal message:[NSNumber numberWithInt:theMessage]];
 }
 
 + (CDVPluginResult*)resultWithStatus:(CDVCommandStatus)statusOrdinal messageAsDouble:(double)theMessage
 {
-    return [[self alloc] initWithStatus:statusOrdinal message:@(theMessage)];
+    return [[self alloc] initWithStatus:statusOrdinal message:[NSNumber numberWithDouble:theMessage]];
 }
 
 + (CDVPluginResult*)resultWithStatus:(CDVCommandStatus)statusOrdinal messageAsDictionary:(NSDictionary*)theMessage
@@ -94,21 +95,23 @@ static NSArray* org_apache_cordova_CommandStatusMsgs;
 
 + (CDVPluginResult*)resultWithStatus:(CDVCommandStatus)statusOrdinal messageToErrorObject:(int)errorCode
 {
-    NSDictionary* errDict = @{@"code": @(errorCode)};
+    NSDictionary* errDict = [NSDictionary dictionaryWithObject:[NSNumber numberWithInt:errorCode] forKey:@"code"];
 
     return [[self alloc] initWithStatus:statusOrdinal message:errDict];
 }
 
 - (void)setKeepCallbackAsBool:(BOOL)bKeepCallback
 {
-    [self setKeepCallback:@(bKeepCallback)];
+    [self setKeepCallback:[NSNumber numberWithBool:bKeepCallback]];
 }
 
 - (NSString*)toJSONString
 {
-    NSString* resultString = [@{@"status": self.status,
-            @"message": self.message ? self.                                 message:[NSNull null],
-            @"keepCallback": self.keepCallback} cdvjk_JSONString];
+    NSString* resultString = [[NSDictionary dictionaryWithObjectsAndKeys:
+            self.status, @"status",
+            self.message ? self.                                 message:[NSNull null], @"message",
+            self.keepCallback, @"keepCallback",
+            nil] cdvjk_JSONString];
 
     if ([[self class] isVerbose]) {
         NSLog(@"PluginResult:toJSONString - %@", resultString);

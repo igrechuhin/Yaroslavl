@@ -23,12 +23,12 @@
 
 - (void)log:(CDVInvokedUrlCommand*)command
 {
-    NSString* message = (command.arguments)[0];
-    NSDictionary* options = (command.arguments)[1];
+    NSString* message = [command.arguments objectAtIndex:0];
+    NSDictionary* options = [command.arguments objectAtIndex:1];
     NSString* log_level = @"INFO";
 
-    if (options[@"logLevel"]) {
-        log_level = options[@"logLevel"];
+    if ([options objectForKey:@"logLevel"]) {
+        log_level = [options objectForKey:@"logLevel"];
     }
 
     NSLog(@"[%@] %@", log_level, message);

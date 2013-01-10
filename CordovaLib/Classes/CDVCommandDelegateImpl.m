@@ -83,7 +83,7 @@
     id message = result.message == nil ? [NSNull null] : result.message;
 
     // Use an array to encode the message as JSON.
-    message = @[message];
+    message = [NSArray arrayWithObject:message];
     NSString* encodedMessage = [message cdvjk_JSONString];
     // And then strip off the outer []s.
     encodedMessage = [encodedMessage substringWithRange:NSMakeRange(1, [encodedMessage length] - 2)];

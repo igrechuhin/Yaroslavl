@@ -34,11 +34,11 @@
 
 - (id)initFromJson:(NSArray*)jsonEntry
 {
-    id tmp = jsonEntry[0];
+    id tmp = [jsonEntry objectAtIndex:0];
     NSString* callbackId = tmp == [NSNull null] ? nil : tmp;
-    NSString* className = jsonEntry[1];
-    NSString* methodName = jsonEntry[2];
-    NSMutableArray* arguments = jsonEntry[3];
+    NSString* className = [jsonEntry objectAtIndex:1];
+    NSString* methodName = [jsonEntry objectAtIndex:2];
+    NSMutableArray* arguments = [jsonEntry objectAtIndex:3];
 
     return [self initWithArguments:arguments
                         callbackId:callbackId
@@ -66,9 +66,9 @@
     NSMutableArray* newArguments = [NSMutableArray arrayWithArray:_arguments];
 
     for (NSUInteger i = 0; i < [newArguments count]; ++i) {
-        if ([newArguments[i] isKindOfClass:[NSDictionary class]]) {
+        if ([[newArguments objectAtIndex:i] isKindOfClass:[NSDictionary class]]) {
             if (legacyDict != NULL) {
-                *legacyDict = newArguments[i];
+                *legacyDict = [newArguments objectAtIndex:i];
             }
             [newArguments removeObjectAtIndex:i];
             break;
@@ -82,6 +82,31 @@
     if (legacyArguments != NULL) {
         *legacyArguments = newArguments;
     }
+}
+
+- (id)argumentAtIndex:(NSUInteger)index
+{
+    return [self argumentAtIndex:index withDefault:nil];
+}
+
+- (id)argumentAtIndex:(NSUInteger)index withDefault:(id)defaultValue
+{
+    return [self argumentAtIndex:index withDefault:defaultValue andClass:nil];
+}
+
+- (id)argumentAtIndex:(NSUInteger)index withDefault:(id)defaultValue andClass:(Class)aClass
+{
+    if (index >= [_arguments count]) {
+        return defaultValue;
+    }
+    id ret = [_arguments objectAtIndex:index];
+    if (ret == [NSNull null]) {
+        ret = defaultValue;
+    }
+    if ((aClass != nil) && ![ret isKindOfClass:aClass]) {
+        ret = defaultValue;
+    }
+    return ret;
 }
 
 @end

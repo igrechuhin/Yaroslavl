@@ -92,11 +92,11 @@
     if ((currentState == UIDeviceBatteryStateUnknown) || (currentLevel == -1.0)) {
         w3cLevel = [NSNull null];
     } else {
-        w3cLevel = @(currentLevel * 100);
+        w3cLevel = [NSNumber numberWithFloat:(currentLevel * 100)];
     }
     NSMutableDictionary* batteryData = [NSMutableDictionary dictionaryWithCapacity:2];
-    batteryData[@"isPlugged"] = @(isPlugged);
-    batteryData[@"level"] = w3cLevel;
+    [batteryData setObject:[NSNumber numberWithBool:isPlugged] forKey:@"isPlugged"];
+    [batteryData setObject:w3cLevel forKey:@"level"];
     return batteryData;
 }
 

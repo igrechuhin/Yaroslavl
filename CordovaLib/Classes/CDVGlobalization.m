@@ -32,23 +32,23 @@
 
 - (void)getPreferredLanguage:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options
 {
-    NSString* callbackId = arguments[0];
+    NSString* callbackId = [arguments objectAtIndex:0];
     CDVPluginResult* result = nil;
 
     NSLog(@"log1");
     // Source: http://stackoverflow.com/questions/3910244/getting-current-device-language-in-ios
     // (should be OK)
-    NSString* language = [NSLocale preferredLanguages][0];
+    NSString* language = [[NSLocale preferredLanguages] objectAtIndex:0];
 
     if (language) {
-        NSDictionary* dictionary = @{@"value": language};
+        NSDictionary* dictionary = [NSDictionary dictionaryWithObject:language forKey:@"value"];
 
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK
                                messageAsDictionary:dictionary];
     } else {
         // TBD is this ever expected to happen?
         NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithCapacity:2];
-        [dictionary setValue:@(CDV_UNKNOWN_ERROR) forKey:@"code"];
+        [dictionary setValue:[NSNumber numberWithInt:CDV_UNKNOWN_ERROR] forKey:@"code"];
         [dictionary setValue:@"Unknown error" forKey:@"message"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:dictionary];
     }
@@ -59,18 +59,18 @@
 - (void)getLocaleName:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options
 {
     CDVPluginResult* result = nil;
-    NSString* callbackId = arguments[0];
+    NSString* callbackId = [arguments objectAtIndex:0];
     NSDictionary* dictionary = nil;
 
     NSLocale* locale = [NSLocale currentLocale];
 
     if (locale) {
-        dictionary = @{@"value": [locale localeIdentifier]};
+        dictionary = [NSDictionary dictionaryWithObject:[locale localeIdentifier] forKey:@"value"];
 
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     } else {
         NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithCapacity:2];
-        [dictionary setValue:@(CDV_UNKNOWN_ERROR) forKey:@"code"];
+        [dictionary setValue:[NSNumber numberWithInt:CDV_UNKNOWN_ERROR] forKey:@"code"];
         [dictionary setValue:@"Unknown error" forKey:@"message"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:dictionary];
     }
@@ -86,7 +86,7 @@
     NSDate* date = nil;
     NSString* dateString = nil;
     CDVPluginResult* result = nil;
-    NSString* callBackId = arguments[0];
+    NSString* callBackId = [arguments objectAtIndex:0];
 
     id milliseconds = [options valueForKey:@"date"];
 
@@ -150,14 +150,14 @@
 
     // if the date was converted to a string successfully then return the result
     if (dateString) {
-        NSDictionary* dictionary = @{@"value": dateString};
+        NSDictionary* dictionary = [NSDictionary dictionaryWithObject:dateString forKey:@"value"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     }
     // error
     else {
         // DLog(@"GlobalizationCommand dateToString unable to format %@", [date description]);
         NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithCapacity:2];
-        [dictionary setValue:@(CDV_FORMATTING_ERROR) forKey:@"code"];
+        [dictionary setValue:[NSNumber numberWithInt:CDV_FORMATTING_ERROR] forKey:@"code"];
         [dictionary setValue:@"Formatting error" forKey:@"message"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:dictionary];
     }
@@ -173,7 +173,7 @@
     CFDateFormatterStyle dateStyle = kCFDateFormatterShortStyle;
     CFDateFormatterStyle timeStyle = kCFDateFormatterShortStyle;
     CDVPluginResult* result = nil;
-    NSString* callBackId = arguments[0];
+    NSString* callBackId = [arguments objectAtIndex:0];
     NSString* dateString = nil;
     NSDateComponents* comps = nil;
 
@@ -257,14 +257,15 @@
 
     // put the various elements of the date and time into a dictionary
     if (comps != nil) {
-        NSArray* keys = @[@"year", @"month", @"day", @"hour", @"minute", @"second", @"millisecond"];
-        NSArray* values = @[@([comps year]),
-            @([comps month] - 1),
-            @([comps day]),
-            @([comps hour]),
-            @([comps minute]),
-            @([comps second]),
-            @0];
+        NSArray* keys = [NSArray arrayWithObjects:@"year", @"month", @"day", @"hour", @"minute", @"second", @"millisecond", nil];
+        NSArray* values = [NSArray arrayWithObjects:[NSNumber numberWithInt:[comps year]],
+            [NSNumber numberWithInt:[comps month] - 1],
+            [NSNumber numberWithInt:[comps day]],
+            [NSNumber numberWithInt:[comps hour]],
+            [NSNumber numberWithInt:[comps minute]],
+            [NSNumber numberWithInt:[comps second]],
+            [NSNumber numberWithInt:0],                /* iOS does not provide milliseconds */
+            nil];
 
         NSDictionary* dictionary = [NSDictionary dictionaryWithObjects:values forKeys:keys];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
@@ -273,7 +274,7 @@
     else {
         // Dlog(@"GlobalizationCommand stringToDate unable to parse %@", dateString);
         NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithCapacity:2];
-        [dictionary setValue:@(CDV_PARSING_ERROR) forKey:@"code"];
+        [dictionary setValue:[NSNumber numberWithInt:CDV_PARSING_ERROR] forKey:@"code"];
         [dictionary setValue:@"unable to parse" forKey:@"message"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:dictionary];
     }
@@ -289,7 +290,7 @@
     CFDateFormatterStyle dateStyle = kCFDateFormatterShortStyle;
     CFDateFormatterStyle timeStyle = kCFDateFormatterShortStyle;
     CDVPluginResult* result = nil;
-    NSString* callBackId = arguments[0];
+    NSString* callBackId = [arguments objectAtIndex:0];
 
     // see if any options have been specified
     id items = [options valueForKey:@"options"];
@@ -346,11 +347,12 @@
 
     // put the pattern and time zone information into the dictionary
     if ((datePattern != nil) && (timezone != nil)) {
-        NSArray* keys = @[@"pattern", @"timezone", @"utc_offset", @"dst_offset"];
-        NSArray* values = @[((__bridge NSString*)datePattern),
+        NSArray* keys = [NSArray arrayWithObjects:@"pattern", @"timezone", @"utc_offset", @"dst_offset", nil];
+        NSArray* values = [NSArray arrayWithObjects:((__bridge NSString*)datePattern),
             [((__bridge NSTimeZone*)timezone)abbreviation],
             [NSNumber numberWithLong:[((__bridge NSTimeZone*)timezone)secondsFromGMT]],
-            @([((__bridge NSTimeZone*)timezone)daylightSavingTimeOffset])];
+            [NSNumber numberWithDouble:[((__bridge NSTimeZone*)timezone)daylightSavingTimeOffset]],
+            nil];
 
         NSDictionary* dictionary = [NSDictionary dictionaryWithObjects:values forKeys:keys];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
@@ -358,7 +360,7 @@
     // error
     else {
         NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithCapacity:2];
-        [dictionary setValue:@(CDV_PATTERN_ERROR) forKey:@"code"];
+        [dictionary setValue:[NSNumber numberWithInt:CDV_PATTERN_ERROR] forKey:@"code"];
         [dictionary setValue:@"Pattern error" forKey:@"message"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:dictionary];
     }
@@ -377,7 +379,7 @@
     int selector = CDV_SELECTOR_MONTHS;
     CFStringRef dataStyle = kCFDateFormatterMonthSymbols;
     CDVPluginResult* result = nil;
-    NSString* callBackId = arguments[0];
+    NSString* callBackId = [arguments objectAtIndex:0];
 
     // see if any options have been specified
     id items = [options valueForKey:@"options"];
@@ -430,14 +432,14 @@
     CFArrayRef names = (CFArrayRef)CFDateFormatterCopyProperty(formatter, dataStyle);
 
     if (names) {
-        NSDictionary* dictionary = @{@"value": ((__bridge NSArray*)names)};
+        NSDictionary* dictionary = [NSDictionary dictionaryWithObject:((__bridge NSArray*)names) forKey:@"value"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
         CFRelease(names);
     }
     // error
     else {
         NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithCapacity:2];
-        [dictionary setValue:@(CDV_UNKNOWN_ERROR) forKey:@"code"];
+        [dictionary setValue:[NSNumber numberWithInt:CDV_UNKNOWN_ERROR] forKey:@"code"];
         [dictionary setValue:@"Unknown error" forKey:@"message"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:dictionary];
     }
@@ -451,7 +453,7 @@
 {
     NSDate* date = nil;
     CDVPluginResult* result = nil;
-    NSString* callBackId = arguments[0];
+    NSString* callBackId = [arguments objectAtIndex:0];
 
     id milliseconds = [options valueForKey:@"date"];
 
@@ -464,15 +466,15 @@
         // get the current calendar for the user and check if the date is using DST
         NSCalendar* calendar = [NSCalendar currentCalendar];
         NSTimeZone* timezone = [calendar timeZone];
-        NSNumber* dst = @([timezone isDaylightSavingTimeForDate:date]);
+        NSNumber* dst = [NSNumber numberWithBool:[timezone isDaylightSavingTimeForDate:date]];
 
-        NSDictionary* dictionary = @{@"dst": dst};
+        NSDictionary* dictionary = [NSDictionary dictionaryWithObject:dst forKey:@"dst"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     }
     // error
     else {
         NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithCapacity:2];
-        [dictionary setValue:@(CDV_UNKNOWN_ERROR) forKey:@"code"];
+        [dictionary setValue:[NSNumber numberWithInt:CDV_UNKNOWN_ERROR] forKey:@"code"];
         [dictionary setValue:@"Unknown error" forKey:@"message"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:dictionary];
     }
@@ -482,20 +484,20 @@
 - (void)getFirstDayOfWeek:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options
 {
     CDVPluginResult* result = nil;
-    NSString* callBackId = arguments[0];
+    NSString* callBackId = [arguments objectAtIndex:0];
 
     NSCalendar* calendar = [NSCalendar autoupdatingCurrentCalendar];
 
     NSNumber* day = [NSNumber numberWithInt:[calendar firstWeekday]];
 
     if (day) {
-        NSDictionary* dictionary = @{@"value": day};
+        NSDictionary* dictionary = [NSDictionary dictionaryWithObject:day forKey:@"value"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     }
     // error
     else {
         NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithCapacity:2];
-        [dictionary setValue:@(CDV_UNKNOWN_ERROR) forKey:@"code"];
+        [dictionary setValue:[NSNumber numberWithInt:CDV_UNKNOWN_ERROR] forKey:@"code"];
         [dictionary setValue:@"Unknown error" forKey:@"message"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:dictionary];
     }
@@ -506,7 +508,7 @@
 - (void)numberToString:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options
 {
     CDVPluginResult* result = nil;
-    NSString* callBackId = arguments[0];
+    NSString* callBackId = [arguments objectAtIndex:0];
     CFNumberFormatterStyle style = kCFNumberFormatterDecimalStyle;
     NSNumber* number = nil;
 
@@ -552,14 +554,14 @@
         (__bridge CFNumberRef)number);
 
     if (numberString) {
-        NSDictionary* dictionary = @{@"value": numberString};
+        NSDictionary* dictionary = [NSDictionary dictionaryWithObject:numberString forKey:@"value"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     }
     // error
     else {
         // DLog(@"GlobalizationCommand numberToString unable to format %@", [number stringValue]);
         NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithCapacity:2];
-        [dictionary setValue:@(CDV_FORMATTING_ERROR) forKey:@"code"];
+        [dictionary setValue:[NSNumber numberWithInt:CDV_FORMATTING_ERROR] forKey:@"code"];
         [dictionary setValue:@"Unable to format" forKey:@"message"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:dictionary];
     }
@@ -572,7 +574,7 @@
 - (void)stringToNumber:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options
 {
     CDVPluginResult* result = nil;
-    NSString* callBackId = arguments[0];
+    NSString* callBackId = [arguments objectAtIndex:0];
     CFNumberFormatterStyle style = kCFNumberFormatterDecimalStyle;
     NSString* numberString = nil;
     double doubleValue;
@@ -626,14 +628,14 @@
         &doubleValue);
 
     if (rc) {
-        NSDictionary* dictionary = @{@"value": @(doubleValue)};
+        NSDictionary* dictionary = [NSDictionary dictionaryWithObject:[NSNumber numberWithDouble:doubleValue] forKey:@"value"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     }
     // error
     else {
         // DLog(@"GlobalizationCommand stringToNumber unable to parse %@", numberString);
         NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithCapacity:2];
-        [dictionary setValue:@(CDV_PARSING_ERROR) forKey:@"code"];
+        [dictionary setValue:[NSNumber numberWithInt:CDV_PARSING_ERROR] forKey:@"code"];
         [dictionary setValue:@"Unable to parse" forKey:@"message"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:dictionary];
     }
@@ -646,7 +648,7 @@
 - (void)getNumberPattern:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options
 {
     CDVPluginResult* result = nil;
-    NSString* callBackId = arguments[0];
+    NSString* callBackId = [arguments objectAtIndex:0];
     CFNumberFormatterStyle style = kCFNumberFormatterDecimalStyle;
     CFStringRef symbolType = NULL;
     NSString* symbol = @"";
@@ -703,17 +705,17 @@
 
     // put the pattern information into the dictionary
     if (numberPattern != nil) {
-        NSArray* keys = @[@"pattern", @"symbol", @"fraction", @"rounding",
-            @"positive", @"negative", @"decimal", @"grouping"];
-        NSArray* values = @[numberPattern, symbol, fracDigits, roundingDigits,
-            posSign, negSign, decimal, grouping];
+        NSArray* keys = [NSArray arrayWithObjects:@"pattern", @"symbol", @"fraction", @"rounding",
+            @"positive", @"negative", @"decimal", @"grouping", nil];
+        NSArray* values = [NSArray arrayWithObjects:numberPattern, symbol, fracDigits, roundingDigits,
+            posSign, negSign, decimal, grouping, nil];
         NSDictionary* dictionary = [NSDictionary dictionaryWithObjects:values forKeys:keys];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
     }
     // error
     else {
         NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithCapacity:2];
-        [dictionary setValue:@(CDV_PATTERN_ERROR) forKey:@"code"];
+        [dictionary setValue:[NSNumber numberWithInt:CDV_PATTERN_ERROR] forKey:@"code"];
         [dictionary setValue:@"Pattern error" forKey:@"message"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:dictionary];
     }
@@ -726,7 +728,7 @@
 - (void)getCurrencyPattern:(NSMutableArray*)arguments withDict:(NSMutableDictionary*)options
 {
     CDVPluginResult* result = nil;
-    NSString* callBackId = arguments[0];
+    NSString* callBackId = [arguments objectAtIndex:0];
     NSString* currencyCode = nil;
     NSString* numberPattern = nil;
     NSString* decimal = nil;
@@ -757,10 +759,10 @@
         decimal = (__bridge_transfer NSString*)CFNumberFormatterCopyProperty(formatter, kCFNumberFormatterCurrencyDecimalSeparator);
         grouping = (__bridge_transfer NSString*)CFNumberFormatterCopyProperty(formatter, kCFNumberFormatterCurrencyGroupingSeparator);
 
-        NSArray* keys = @[@"pattern", @"code", @"fraction", @"rounding",
-            @"decimal", @"grouping"];
-        NSArray* values = @[numberPattern, currencyCode, @(defaultFractionDigits),
-            @(roundingIncrement), decimal, grouping];
+        NSArray* keys = [NSArray arrayWithObjects:@"pattern", @"code", @"fraction", @"rounding",
+            @"decimal", @"grouping", nil];
+        NSArray* values = [NSArray arrayWithObjects:numberPattern, currencyCode, [NSNumber numberWithInt:defaultFractionDigits],
+            [NSNumber numberWithDouble:roundingIncrement], decimal, grouping, nil];
         NSDictionary* dictionary = [NSDictionary dictionaryWithObjects:values forKeys:keys];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:dictionary];
         CFRelease(formatter);
@@ -769,7 +771,7 @@
     else {
         // DLog(@"GlobalizationCommand getCurrencyPattern unable to get pattern for %@", currencyCode);
         NSMutableDictionary* dictionary = [NSMutableDictionary dictionaryWithCapacity:2];
-        [dictionary setValue:@(CDV_PATTERN_ERROR) forKey:@"code"];
+        [dictionary setValue:[NSNumber numberWithInt:CDV_PATTERN_ERROR] forKey:@"code"];
         [dictionary setValue:@"Unable to get pattern" forKey:@"message"];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsDictionary:dictionary];
     }

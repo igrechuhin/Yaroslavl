@@ -27,7 +27,7 @@
         return nil;
     }
 
-    return self[0];
+    return [self objectAtIndex:0];
 }
 
 - (__autoreleasing id)dequeue
@@ -36,7 +36,7 @@
         return nil;
     }
 
-    id head = self[0];
+    id head = [self objectAtIndex:0];
     if (head != nil) {
         // [[head retain] autorelease]; ARC - the __autoreleasing on the return value should so the same thing
         [self removeObjectAtIndex:0];

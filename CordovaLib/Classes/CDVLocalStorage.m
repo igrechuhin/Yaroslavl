@@ -23,7 +23,7 @@
 @interface CDVLocalStorage ()
 
 @property (nonatomic, readwrite, strong) NSMutableArray* backupInfo;  // array of CDVBackupInfo objects
-@property (nonatomic, readwrite, unsafe_unretained) id <UIWebViewDelegate> webviewDelegate;
+@property (nonatomic, readwrite, weak) id <UIWebViewDelegate> webviewDelegate;
 
 @end
 
@@ -38,7 +38,7 @@
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onResignActive)
                                                      name:UIApplicationWillResignActiveNotification object:nil];
 
-        self.backupInfo = [[self class] createBackupInfoWithCloudBackup:[(NSString*)classSettings[@"backupType"] isEqualToString:@"cloud"]];
+        self.backupInfo = [[self class] createBackupInfoWithCloudBackup:[(NSString*)[classSettings objectForKey:@"backupType"] isEqualToString:@"cloud"]];
 
         // over-ride current webview delegate (for restore reasons)
         self.webviewDelegate = theWebView.delegate;
@@ -114,8 +114,8 @@
 + (NSMutableArray*)createBackupInfoWithCloudBackup:(BOOL)cloudBackup
 {
     // create backup info from backup folder to caches folder
-    NSString* appLibraryFolder = NSSearchPathForDirectoriesInDomains (NSLibraryDirectory, NSUserDomainMask, YES)[0];
-    NSString* appDocumentsFolder = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    NSString* appLibraryFolder = [NSSearchPathForDirectoriesInDomains (NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString* appDocumentsFolder = [NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
     NSString* cacheFolder = [appLibraryFolder stringByAppendingPathComponent:@"Caches"];
     NSString* backupsFolder = [appDocumentsFolder stringByAppendingPathComponent:@"Backups"];
 
@@ -132,7 +132,7 @@
     NSAssert(IsAtLeastiOSVersion(@"5.1"), @"Cannot mark files for NSURLIsExcludedFromBackupKey on iOS less than 5.1");
 
     NSError* error = nil;
-    BOOL success = [URL setResourceValue:@(skip) forKey:NSURLIsExcludedFromBackupKey error:&error];
+    BOOL success = [URL setResourceValue:[NSNumber numberWithBool:skip] forKey:NSURLIsExcludedFromBackupKey error:&error];
     if (!success) {
         NSLog(@"Error excluding %@ from backup %@", [URL lastPathComponent], error);
     }
@@ -148,7 +148,8 @@
         if (error != NULL) {
             (*error) = [NSError errorWithDomain:kCDVLocalStorageErrorDomain
                                            code:kCDVLocalStorageFileOperationError
-                                       userInfo:@{NSLocalizedDescriptionKey: errorString}];
+                                       userInfo:[NSDictionary dictionaryWithObject:errorString
+                                                                            forKey:NSLocalizedDescriptionKey]];
         }
         return NO;
     }
@@ -287,7 +288,7 @@
 {
     NSBundle* mainBundle = [NSBundle mainBundle];
     NSString* bundlePath = [[mainBundle bundlePath] stringByDeletingLastPathComponent];
-    NSString* bundleIdentifier = [mainBundle infoDictionary][@"CFBundleIdentifier"];
+    NSString* bundleIdentifier = [[mainBundle infoDictionary] objectForKey:@"CFBundleIdentifier"];
     NSString* appPlistPath = [bundlePath stringByAppendingPathComponent:[NSString stringWithFormat:@"Library/Preferences/%@.plist", bundleIdentifier]];
 
     NSMutableDictionary* appPlistDict = [NSMutableDictionary dictionaryWithContentsOfFile:appPlistPath];
@@ -309,13 +310,15 @@
     NSString* libraryCaches = @"Library/Caches";
     NSString* libraryWebKit = @"Library/WebKit";
 
-    NSArray* keysToCheck = @[@"WebKitLocalStorageDatabasePathPreferenceKey",
-        @"WebDatabaseDirectory"];
+    NSArray* keysToCheck = [NSArray arrayWithObjects:
+        @"WebKitLocalStorageDatabasePathPreferenceKey",
+        @"WebDatabaseDirectory",
+        nil];
 
     BOOL dirty = NO;
 
     for (NSString* key in keysToCheck) {
-        NSString* value = appPlistDict[key];
+        NSString* value = [appPlistDict objectForKey:key];
         // verify key exists, and path is in app bundle, if not - fix
         if ((value != nil) && ![value hasPrefix:bundlePath]) {
             // the pathSuffix to use may be wrong - OTA upgrades from < 5.1 to 5.1 do keep the old path Library/WebKit,
@@ -339,8 +342,8 @@
         return;
     }
 
-    NSString* appLibraryFolder = NSSearchPathForDirectoriesInDomains (NSLibraryDirectory, NSUserDomainMask, YES)[0];
-    NSString* appDocumentsFolder = NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES)[0];
+    NSString* appLibraryFolder = [NSSearchPathForDirectoriesInDomains (NSLibraryDirectory, NSUserDomainMask, YES) objectAtIndex:0];
+    NSString* appDocumentsFolder = [NSSearchPathForDirectoriesInDomains (NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
 
     NSMutableArray* backupInfo = [NSMutableArray arrayWithCapacity:0];
 
@@ -380,7 +383,7 @@
     BOOL isMultitaskingSupported = [device respondsToSelector:@selector(isMultitaskingSupported)] && [device isMultitaskingSupported];
 
     if (exitsOnSuspend == nil) { // if it's missing, it should be NO (i.e. multi-tasking on by default)
-        exitsOnSuspend = @NO;
+        exitsOnSuspend = [NSNumber numberWithBool:NO];
     }
 
     if (exitsOnSuspend) {
@@ -393,7 +396,7 @@
                 backgroundTaskID = UIBackgroundTaskInvalid;
                 NSLog (@"Background task to backup WebSQL/LocalStorage expired.");
             }];
-        CDVLocalStorage __unsafe_unretained* weakSelf = self;
+        CDVLocalStorage __weak* weakSelf = self;
         [self.commandDelegate runInBackground:^{
                 [weakSelf backup:nil];
 
@@ -458,8 +461,8 @@
     NSDictionary* aPathAttribs = [fileManager attributesOfItemAtPath:aPath error:&error];
     NSDictionary* bPathAttribs = [fileManager attributesOfItemAtPath:bPath error:&error];
 
-    NSDate* aPathModDate = aPathAttribs[NSFileModificationDate];
-    NSDate* bPathModDate = bPathAttribs[NSFileModificationDate];
+    NSDate* aPathModDate = [aPathAttribs objectForKey:NSFileModificationDate];
+    NSDate* bPathModDate = [bPathAttribs objectForKey:NSFileModificationDate];
 
     if ((nil == aPathModDate) && (nil == bPathModDate)) {
         return NO;

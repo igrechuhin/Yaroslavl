@@ -68,7 +68,7 @@ static NSSet* org_apache_cordova_validArrowDirections;
 
     self.hasPendingOperation = NO;
 
-    NSString* sourceTypeString = arguments[2];
+    NSString* sourceTypeString = [arguments objectAtIndex:2];
     UIImagePickerControllerSourceType sourceType = UIImagePickerControllerSourceTypeCamera; // default
     if (sourceTypeString != nil) {
         sourceType = (UIImagePickerControllerSourceType)[sourceTypeString intValue];
@@ -82,10 +82,10 @@ static NSSet* org_apache_cordova_validArrowDirections;
         return;
     }
 
-    bool allowEdit = [arguments[7] boolValue];
-    NSNumber* targetWidth = arguments[3];
-    NSNumber* targetHeight = arguments[4];
-    NSNumber* mediaValue = arguments[6];
+    bool allowEdit = [[arguments objectAtIndex:7] boolValue];
+    NSNumber* targetWidth = [arguments objectAtIndex:3];
+    NSNumber* targetHeight = [arguments objectAtIndex:4];
+    NSNumber* mediaValue = [arguments objectAtIndex:6];
     CDVMediaType mediaType = (mediaValue) ? [mediaValue intValue] : MediaTypePicture;
 
     CGSize targetSize = CGSizeMake(0, 0);
@@ -106,21 +106,21 @@ static NSSet* org_apache_cordova_validArrowDirections;
     cameraPicker.webView = self.webView;
     cameraPicker.popoverSupported = [self popoverSupported];
 
-    cameraPicker.correctOrientation = [arguments[8] boolValue];
-    cameraPicker.saveToPhotoAlbum = [arguments[9] boolValue];
+    cameraPicker.correctOrientation = [[arguments objectAtIndex:8] boolValue];
+    cameraPicker.saveToPhotoAlbum = [[arguments objectAtIndex:9] boolValue];
 
-    cameraPicker.encodingType = (arguments[5]) ? [arguments[5] intValue] : EncodingTypeJPEG;
+    cameraPicker.encodingType = ([arguments objectAtIndex:5]) ? [[arguments objectAtIndex:5] intValue] : EncodingTypeJPEG;
 
-    cameraPicker.quality = (arguments[0]) ? [arguments[0] intValue] : 50;
-    cameraPicker.returnType = (arguments[1]) ? [arguments[1] intValue] : DestinationTypeFileUri;
+    cameraPicker.quality = ([arguments objectAtIndex:0]) ? [[arguments objectAtIndex:0] intValue] : 50;
+    cameraPicker.returnType = ([arguments objectAtIndex:1]) ? [[arguments objectAtIndex:1] intValue] : DestinationTypeFileUri;
 
     if (sourceType == UIImagePickerControllerSourceTypeCamera) {
         // we only allow taking pictures (no video) in this api
-        cameraPicker.mediaTypes = @[(NSString*)kUTTypeImage];
+        cameraPicker.mediaTypes = [NSArray arrayWithObjects:(NSString*)kUTTypeImage, nil];
     } else if (mediaType == MediaTypeAll) {
         cameraPicker.mediaTypes = [UIImagePickerController availableMediaTypesForSourceType:sourceType];
     } else {
-        NSArray* mediaArray = @[(NSString*)(mediaType == MediaTypeVideo ? kUTTypeMovie:kUTTypeImage)];
+        NSArray* mediaArray = [NSArray arrayWithObjects:(NSString*)(mediaType == MediaTypeVideo ? kUTTypeMovie:kUTTypeImage), nil];
         cameraPicker.mediaTypes = mediaArray;
     }
 
@@ -229,15 +229,15 @@ static NSSet* org_apache_cordova_validArrowDirections;
 
     CDVPluginResult* result = nil;
 
-    NSString* mediaType = info[UIImagePickerControllerMediaType];
+    NSString* mediaType = [info objectForKey:UIImagePickerControllerMediaType];
     // IMAGE TYPE
     if ([mediaType isEqualToString:(NSString*)kUTTypeImage]) {
         // get the image
         UIImage* image = nil;
-        if (cameraPicker.allowsEditing && info[UIImagePickerControllerEditedImage]) {
-            image = info[UIImagePickerControllerEditedImage];
+        if (cameraPicker.allowsEditing && [info objectForKey:UIImagePickerControllerEditedImage]) {
+            image = [info objectForKey:UIImagePickerControllerEditedImage];
         } else {
-            image = info[UIImagePickerControllerOriginalImage];
+            image = [info objectForKey:UIImagePickerControllerOriginalImage];
         }
 
         if (cameraPicker.saveToPhotoAlbum) {
@@ -293,7 +293,7 @@ static NSSet* org_apache_cordova_validArrowDirections;
     }
     // NOT IMAGE TYPE (MOVIE)
     else {
-        NSString* moviePath = [info[UIImagePickerControllerMediaURL] absoluteString];
+        NSString* moviePath = [[info objectForKey:UIImagePickerControllerMediaURL] absoluteString];
         result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:moviePath];
     }
 
@@ -308,7 +308,7 @@ static NSSet* org_apache_cordova_validArrowDirections;
 // older api calls newer didFinishPickingMediaWithInfo
 - (void)imagePickerController:(UIImagePickerController*)picker didFinishPickingImage:(UIImage*)image editingInfo:(NSDictionary*)editingInfo
 {
-    NSDictionary* imageInfo = @{UIImagePickerControllerOriginalImage: image};
+    NSDictionary* imageInfo = [NSDictionary dictionaryWithObject:image forKey:UIImagePickerControllerOriginalImage];
 
     [self imagePickerController:picker didFinishPickingMediaWithInfo:imageInfo];
 }

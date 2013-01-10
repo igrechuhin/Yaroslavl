@@ -26,7 +26,7 @@
     id obj = nil;
 
     @try {
-        obj = self[index];
+        obj = [self objectAtIndex:index];
         if ((obj == [NSNull null]) || (obj == nil)) {
             return aDefault;
         }

@@ -19,6 +19,8 @@
 
 #import "CDVWhitelist.h"
 
+NSString* const kCDVDefaultWhitelistRejectionString = @"ERROR whitelist rejection: url='%@'";
+
 @interface CDVWhitelist ()
 
 @property (nonatomic, readwrite, strong) NSArray* whitelist;
@@ -31,7 +33,7 @@
 
 @implementation CDVWhitelist
 
-@synthesize whitelist, expandedWhitelist, allowAll;
+@synthesize whitelist, expandedWhitelist, allowAll, whitelistRejectionFormatString;
 
 - (id)initWithArray:(NSArray*)array
 {
@@ -40,6 +42,7 @@
         self.whitelist = array;
         self.expandedWhitelist = nil;
         self.allowAll = NO;
+        self.whitelistRejectionFormatString = kCDVDefaultWhitelistRejectionString;
         [self processWhitelist];
     }
 
@@ -63,12 +66,12 @@
 
     // restrict number parsing to 0-255
     NSNumberFormatter* numberFormatter = [[NSNumberFormatter alloc] init];
-    [numberFormatter setMinimum:@0U];
-    [numberFormatter setMaximum:@255U];
+    [numberFormatter setMinimum:[NSNumber numberWithUnsignedInteger:0]];
+    [numberFormatter setMaximum:[NSNumber numberWithUnsignedInteger:255]];
 
     // iterate through each octet, and test for a number between 0-255 or if it equals '*'
     for (NSUInteger i = 0; i < num_octets; ++i) {
-        NSString* octet = octets[i];
+        NSString* octet = [octets objectAtIndex:i];
 
         if ([octet isEqualToString:@"*"]) { // passes - check next octet
             continue;
@@ -115,7 +118,7 @@
         // check for single wildcard '*', if found set allowAll to YES
         if ([regex isEqualToString:@"*"]) {
             self.allowAll = YES;
-            self.expandedWhitelist = @[regex];
+            self.expandedWhitelist = [NSArray arrayWithObject:regex];
             break;
         }
 
@@ -183,7 +186,7 @@
 
 - (NSString*)errorStringForURL:(NSURL*)url
 {
-    return [NSString stringWithFormat:@"ERROR whitelist rejection: url='%@'", [url absoluteString]];
+    return [NSString stringWithFormat:self.whitelistRejectionFormatString, [url absoluteString]];
 }
 
 @end

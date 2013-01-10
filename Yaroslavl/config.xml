@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cordova>
+	<preference name="AllowInlineMediaPlayback" value="true"/>
+	<preference name="AutoHideSplashScreen" value="true"/>
+	<preference name="BackupWebStorage" value="cloud"/>
+	<preference name="EnableLocation" value="true"/>
+	<preference name="EnableViewportScale" value="false"/>
+	<preference name="KeyboardDisplayRequiresUserAction" value="true"/>
+	<preference name="MediaPlaybackRequiresUserAction" value="false"/>
+	<preference name="OpenAllWhitelistURLsInWebView" value="false"/>
+	<preference name="ShowSplashScreenSpinner" value="false"/>
+	<preference name="SuppressesIncrementalRendering" value="false"/>
+	<preference name="TopActivityIndicator" value="gray"/>
+	<preference name="UIWebViewBounce" value="false"/>
+	<plugins>
+		<plugin name="Accelerometer" value="CDVAccelerometer"/>
+		<plugin name="Debug Console" value="CDVDebugConsole"/>
+		<plugin name="Device" value="CDVDevice"/>
+		<plugin name="Geolocation" value="CDVLocation"/>
+		<plugin name="Logger" value="CDVLogger"/>
+		<plugin name="Media" value="CDVSound"/>
+		<plugin name="NetworkStatus" value="CDVConnection"/>
+		<plugin name="InAppBrowser" value="CDVInAppBrowser" />
+	</plugins>
+	<access origin="*.google.com"/>
+	<access origin="*.googleapis.com"/>
+	<access origin="*.gstatic.com"/>
+</cordova>

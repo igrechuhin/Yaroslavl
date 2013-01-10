@@ -75,7 +75,7 @@
     NSString* callbackId = command.callbackId;
 
     CDVAddressBookHelper* abHelper = [[CDVAddressBookHelper alloc] init];
-    CDVContacts* __unsafe_unretained weakSelf = self;  // play it safe to avoid retain cycles
+    CDVContacts* __weak weakSelf = self;  // play it safe to avoid retain cycles
 
     [abHelper createAddressBook: ^(ABAddressBookRef addrBook, CDVAddressBookAccessError * errCode) {
             if (addrBook == NULL) {
@@ -123,12 +123,12 @@
 - (void)displayContact:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    ABRecordID recordID = [(command.arguments)[0] intValue];
+    ABRecordID recordID = [[command.arguments objectAtIndex:0] intValue];
     NSDictionary* options = [command.arguments objectAtIndex:1 withDefault:[NSNull null]];
     bool bEdit = [options isKindOfClass:[NSNull class]] ? false : [options existsValue:@"true" forKey:@"allowsEditing"];
 
     CDVAddressBookHelper* abHelper = [[CDVAddressBookHelper alloc] init];
-    CDVContacts* __unsafe_unretained weakSelf = self;  // play it safe to avoid retain cycles
+    CDVContacts* __weak weakSelf = self;  // play it safe to avoid retain cycles
 
     [abHelper createAddressBook: ^(ABAddressBookRef addrBook, CDVAddressBookAccessError * errCode) {
             if (addrBook == NULL) {
@@ -190,7 +190,7 @@
     pickerController.peoplePickerDelegate = self;
     pickerController.callbackId = callbackId;
     pickerController.options = options;
-    pickerController.pickedContactDictionary = @{kW3ContactId: @kABRecordInvalidID};
+    pickerController.pickedContactDictionary = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:kABRecordInvalidID], kW3ContactId, nil];
     pickerController.allowsEditing = (BOOL)[options existsValue : @"true" forKey : @"allowsEditing"];
 
     if ([self.viewController respondsToSelector:@selector(presentViewController:::)]) {
@@ -204,7 +204,7 @@
       shouldContinueAfterSelectingPerson:(ABRecordRef)person
 {
     CDVContactsPicker* picker = (CDVContactsPicker*)peoplePicker;
-    NSNumber* pickedId = @(ABRecordGetRecordID(person));
+    NSNumber* pickedId = [NSNumber numberWithInt:ABRecordGetRecordID(person)];
 
     if (picker.allowsEditing) {
         ABPersonViewController* personController = [[ABPersonViewController alloc] init];
@@ -212,13 +212,13 @@
         personController.personViewDelegate = self;
         personController.allowsEditing = picker.allowsEditing;
         // store id so can get info in peoplePickerNavigationControllerDidCancel
-        picker.pickedContactDictionary = @{kW3ContactId: pickedId};
+        picker.pickedContactDictionary = [NSDictionary dictionaryWithObjectsAndKeys:pickedId, kW3ContactId, nil];
 
         [peoplePicker pushViewController:personController animated:YES];
     } else {
         // Retrieve and return pickedContact information
         CDVContact* pickedContact = [[CDVContact alloc] initFromABRecord:(ABRecordRef)person];
-        NSArray* fields = (picker.options)[@"fields"];
+        NSArray* fields = [picker.options objectForKey:@"fields"];
         NSDictionary* returnFields = [[CDVContact class] calcReturnFields:fields];
         picker.pickedContactDictionary = [pickedContact toDictionary:returnFields];
 
@@ -250,19 +250,18 @@
         // if we got this far, user has already approved/ disapproved addressBook access
         ABAddressBookRef addrBook = nil;
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
-        if (&ABAddressBookCreateWithOptions != NULL) {
-            addrBook = ABAddressBookCreateWithOptions(NULL, NULL);
-        }
-        else
+            if (&ABAddressBookCreateWithOptions != NULL) {
+                addrBook = ABAddressBookCreateWithOptions(NULL, NULL);
+            } else
 #endif
         {
             // iOS 4 & 5
             addrBook = ABAddressBookCreate();
         }
-        ABRecordRef person = ABAddressBookGetPersonWithRecordID(addrBook, [(picker.pickedContactDictionary)[kW3ContactId] integerValue]);
+        ABRecordRef person = ABAddressBookGetPersonWithRecordID(addrBook, [[picker.pickedContactDictionary objectForKey:kW3ContactId] integerValue]);
         if (person) {
             CDVContact* pickedContact = [[CDVContact alloc] initFromABRecord:(ABRecordRef)person];
-            NSArray* fields = (picker.options)[@"fields"];
+            NSArray* fields = [picker.options objectForKey:@"fields"];
             NSDictionary* returnFields = [[CDVContact class] calcReturnFields:fields];
             picker.pickedContactDictionary = [pickedContact toDictionary:returnFields];
         }
@@ -281,7 +280,7 @@
 - (void)search:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    NSArray* fields = (command.arguments)[0];
+    NSArray* fields = [command.arguments objectAtIndex:0];
     NSDictionary* findOptions = [command.arguments objectAtIndex:1 withDefault:[NSNull null]];
 
     [self.commandDelegate runInBackground:^{
@@ -289,8 +288,8 @@
             // which is why address book is created within the dispatch queue.
             // more details here: http: //blog.byadrian.net/2012/05/05/ios-addressbook-framework-and-gcd/
             CDVAddressBookHelper* abHelper = [[CDVAddressBookHelper alloc] init];
-            CDVContacts* __unsafe_unretained weakSelf = self; // play it safe to avoid retain cycles
-                                                              // it gets uglier, block within block.....
+            CDVContacts* __weak weakSelf = self; // play it safe to avoid retain cycles
+            // it gets uglier, block within block.....
             [abHelper createAddressBook: ^(ABAddressBookRef addrBook, CDVAddressBookAccessError * errCode) {
                     if (addrBook == NULL) {
                         // permission was denied or other error - return error
@@ -305,8 +304,8 @@
                     NSString* filter = nil;
                     if (![findOptions isKindOfClass:[NSNull class]]) {
                         id value = nil;
-                        filter = (NSString*)findOptions[@"filter"];
-                        value = findOptions[@"multiple"];
+                        filter = (NSString*)[findOptions objectForKey:@"filter"];
+                        value = [findOptions objectForKey:@"multiple"];
                         if ([value isKindOfClass:[NSNumber class]]) {
                             // multiple is a boolean that will come through as an NSNumber
                             multiple = [(NSNumber*) value boolValue];
@@ -327,7 +326,7 @@
                             matches = [NSMutableArray arrayWithCapacity:xferCount];
 
                             for (int k = 0; k < xferCount; k++) {
-                                CDVContact* xferContact = [[CDVContact alloc] initFromABRecord:(__bridge ABRecordRef)foundRecords[k]];
+                                CDVContact* xferContact = [[CDVContact alloc] initFromABRecord:(__bridge ABRecordRef)[foundRecords objectAtIndex:k]];
                                 [matches addObject:xferContact];
                                 xferContact = nil;
                             }
@@ -339,7 +338,7 @@
                         int testCount = [foundRecords count];
 
                         for (int j = 0; j < testCount; j++) {
-                            CDVContact* testContact = [[CDVContact alloc] initFromABRecord:(__bridge ABRecordRef)foundRecords[j]];
+                            CDVContact* testContact = [[CDVContact alloc] initFromABRecord:(__bridge ABRecordRef)[foundRecords objectAtIndex:j]];
                             if (testContact) {
                                 bFound = [testContact foundValue:filter inFields:returnFields];
                                 if (bFound) {
@@ -358,7 +357,7 @@
                             int count = multiple == YES ? [matches count]:1;
 
                             for (int i = 0; i < count; i++) {
-                                CDVContact* newContact = matches[i];
+                                CDVContact* newContact = [matches objectAtIndex:i];
                                 NSDictionary* aContact = [newContact toDictionary:returnFields];
                                 [returnContacts addObject:aContact];
                             }
@@ -381,11 +380,11 @@
 - (void)save:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    NSDictionary* contactDict = (command.arguments)[0];
+    NSDictionary* contactDict = [command.arguments objectAtIndex:0];
 
     [self.commandDelegate runInBackground:^{
             CDVAddressBookHelper* abHelper = [[CDVAddressBookHelper alloc] init];
-            CDVContacts* __unsafe_unretained weakSelf = self; // play it safe to avoid retain cycles
+            CDVContacts* __weak weakSelf = self; // play it safe to avoid retain cycles
 
             [abHelper createAddressBook: ^(ABAddressBookRef addrBook, CDVAddressBookAccessError * errorCode) {
                     CDVPluginResult* result = nil;
@@ -453,10 +452,10 @@
 - (void)remove:(CDVInvokedUrlCommand*)command
 {
     NSString* callbackId = command.callbackId;
-    NSNumber* cId = (command.arguments)[0];
+    NSNumber* cId = [command.arguments objectAtIndex:0];
 
     CDVAddressBookHelper* abHelper = [[CDVAddressBookHelper alloc] init];
-    CDVContacts* __unsafe_unretained weakSelf = self;  // play it safe to avoid retain cycles
+    CDVContacts* __weak weakSelf = self;  // play it safe to avoid retain cycles
 
     [abHelper createAddressBook: ^(ABAddressBookRef addrBook, CDVAddressBookAccessError * errorCode) {
             CDVPluginResult* result = nil;
@@ -564,12 +563,12 @@
     ABAddressBookRef addressBook;
 
 #if __IPHONE_OS_VERSION_MAX_ALLOWED >= 60000
-    if (&ABAddressBookCreateWithOptions != NULL) {
-        CFErrorRef error = nil;
-        // CFIndex status = ABAddressBookGetAuthorizationStatus();
-        addressBook = ABAddressBookCreateWithOptions(NULL, &error);
-        // NSLog(@"addressBook access: %lu", status);
-        ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
+        if (&ABAddressBookCreateWithOptions != NULL) {
+            CFErrorRef error = nil;
+            // CFIndex status = ABAddressBookGetAuthorizationStatus();
+            addressBook = ABAddressBookCreateWithOptions(NULL, &error);
+            // NSLog(@"addressBook access: %lu", status);
+            ABAddressBookRequestAccessWithCompletion(addressBook, ^(bool granted, CFErrorRef error) {
                 // callback can occur in background, address book must be accessed on thread it was created on
                 dispatch_sync (dispatch_get_main_queue (), ^{
                         if (error) {
@@ -582,8 +581,7 @@
                         }
                     });
             });
-    }
-    else
+        } else
 #endif
     {
         // iOS 4 or 5 no checks needed

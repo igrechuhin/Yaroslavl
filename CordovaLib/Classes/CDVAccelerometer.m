@@ -98,13 +98,13 @@
     // Create an acceleration object
     NSMutableDictionary* accelProps = [NSMutableDictionary dictionaryWithCapacity:4];
 
-    [accelProps setValue:@(x * kGravitationalConstant) forKey:@"x"];
-    [accelProps setValue:@(y * kGravitationalConstant) forKey:@"y"];
-    [accelProps setValue:@(z * kGravitationalConstant) forKey:@"z"];
-    [accelProps setValue:@(timestamp) forKey:@"timestamp"];
+    [accelProps setValue:[NSNumber numberWithDouble:x * kGravitationalConstant] forKey:@"x"];
+    [accelProps setValue:[NSNumber numberWithDouble:y * kGravitationalConstant] forKey:@"y"];
+    [accelProps setValue:[NSNumber numberWithDouble:z * kGravitationalConstant] forKey:@"z"];
+    [accelProps setValue:[NSNumber numberWithDouble:timestamp] forKey:@"timestamp"];
 
     CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:accelProps];
-    [result setKeepCallback:@YES];
+    [result setKeepCallback:[NSNumber numberWithBool:YES]];
     [self.commandDelegate sendPluginResult:result callbackId:self.callbackId];
 }
 
