@@ -303,7 +303,24 @@ body {
 			&.invert p {
 				display: none;
 			}
-		}	
+		}
+
+		&.popover, &.popover-inner {
+			width: 90px + 2*14px;
+			height: 70px;
+		}
+
+		&.popover-content {
+			width: 90px;
+			padding: 9px 14px;
+			font-family: "PT Sans Pro Narrow Demi Regular";
+			font-size: 10pt;
+			letter-spacing: 0.5px;
+			#External, #Internal {
+				width: 90px;
+				height: 30px;
+			}
+		}
 	}
 }
 
@@ -671,6 +688,12 @@ body {
 			td {
 				div#ImageContent {
 					height: @height-portrait - 3*@buttons-size;
+
+					opacity: 1;
+					.menu-opacity-animation (0.3s, ease-in-out);
+					&.hide {
+						opacity: 0;
+					}
 				}
 			}
 		}

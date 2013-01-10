@@ -11,8 +11,7 @@ Menu.register = function() {
         event.stopPropagation();
       }
     );
-  },
-             0);
+  }, 0);
 };
 
 Menu.setup = function(Parameters) {
@@ -30,10 +29,8 @@ Menu.show = function() {
     _Menu.children().addClass("show");
     setTimeout(function() {
       _Menu.children(".hide").removeClass("show");
-    },
-               1000);
-  },
-             50);
+    }, 1000);
+  }, 50);
 };
 
 Menu.hide = function() {
@@ -41,8 +38,7 @@ Menu.hide = function() {
   $("video").removeClass("invisible2");
   setTimeout(function() {
     _Menu.addClass("invisible");
-  },
-             500);
+  }, 500);
 };
 
 Menu.touch = function(event) {
@@ -57,6 +53,5 @@ Menu.gotoPage = function(target, delay) {
     loadNext: true});
   setTimeout(function() {
     mainScroller.scrollToPage(target.index(), 0, delay);
-  },
-             0);
+  }, 0);
 };

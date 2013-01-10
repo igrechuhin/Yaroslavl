@@ -19,9 +19,7 @@ Loader.getContent = function(Parameters) {
 
 Loader.setContent = function(Parameters) {
 	console.assert(Parameters.hasOwnProperty("target"), "Loader.setContent -- target undefined");
-
 	var target = Parameters.target;
-
 	var targetData = target.html();
 	//var needDataUpdate = ((targetData.length != Parameters.data.length) || (targetData != Parameters.data));
 	var needDataUpdate = (targetData.length === 0);
@@ -55,7 +53,6 @@ Loader.setContent = function(Parameters) {
 						,loadNext: false
 					});
 				}, 300);
-
 				$(".plan").addClass("invisible");
 				var scrollerOptions = {
 					 snap: true
@@ -110,7 +107,6 @@ Loader.setContent = function(Parameters) {
 					Temples.setup(setupObj);
 					Buttons.setup(setupObj);
 				}, 100);
-				
 				// Cleanup
 				setTimeout(function() {
 					for (index in pageScroller) {

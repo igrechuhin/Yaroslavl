@@ -6,45 +6,38 @@
         <meta name="format-detection" content="telephone=no" />
         <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width, height=device-height, target-densitydpi=device-dpi" />
 
-<!-- 
-		<script src="http://192.168.61.113:8080/target/target-script-min.js#anonymous"></script>
-		<script src="http://localhost:8080/target/target-script-min.js#anonymous"></script>
-
-        <link rel="stylesheet/less" type="text/css" href="css/styles.less">
-        <script type="text/javascript" src="js/less-1.3.1.min.js"></script>
-        -->
-
-		<link rel="stylesheet" href="css/jslider.css" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/jslider.css"/>
 
         <link rel="stylesheet" type="text/css" href="css/styles.css">
-        
 
         <script type="text/javascript" src="js/cordova-2.2.0.js"></script>
         <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
         <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
         <script type="text/javascript" src="js/infobox_packed.js"></script>
-        <script type="text/javascript" src="js/map-manager.js"></script>
-        
-        <script type="text/javascript" src="js/audio-manager.js"></script>
-        <script type="text/javascript" src="js/menu-manager.js"></script>
-        <script type="text/javascript" src="js/buttons-manager.js"></script>
-        <script type="text/javascript" src="js/temples-manager.js"></script>
-        <script type="text/javascript" src="js/plan-manager.js"></script>
-        <script type="text/javascript" src="js/content-loader.js"></script>
-        
-        <script type="text/javascript" src="js/iscroll.js"></script>
-        <!--<script type="text/javascript" src="js/iscroll.min.js"></script>-->
+        <script type="text/javascript" src="js/bootstrap.js"></script>
 
-		<script type="text/javascript" src="js/jshashtable-2.1_src.js"></script>
+        <script type="text/javascript" src="js/iscroll.js"></script>
+
+        <script type="text/javascript" src="js/jshashtable-2.1_src.js"></script>
         <script type="text/javascript" src="js/jquery.numberformatter-1.2.3.js"></script>
         <script type="text/javascript" src="js/tmpl.js"></script>
         <script type="text/javascript" src="js/jquery.dependClass-0.1.js"></script>
         <script type="text/javascript" src="js/draggable-0.1.js"></script>
         <script type="text/javascript" src="js/jquery.slider.js"></script>
+
+        <script type="text/javascript" src="js/map-manager.js"></script>
+        <script type="text/javascript" src="js/audio-manager.js"></script>
+        <script type="text/javascript" src="js/menu-manager.js"></script>
+        <script type="text/javascript" src="js/buttons-manager.js"></script>
+        <script type="text/javascript" src="js/temples-manager.js"></script>
+        <script type="text/javascript" src="js/plan-manager.js"></script>
+        <script type="text/javascript" src="js/guide-manager.js"></script>
+        <script type="text/javascript" src="js/content-loader.js"></script>
         
-		<script type="text/javascript">
+        <script type="text/javascript">
             $(document).ready(function(e) {
-				_Menu = $("#Menu");
+                _Menu = $("#Menu");
 				_Buttons = $("#Buttons");
 				_Temples = $("#Temples");
 				_Hint = $("#Hint");
@@ -52,7 +45,7 @@
 				_Pages = $("#Pages");
 				_PagesScroller = _Pages.children("#PagesScroller");
 				_PlanImage = $("#PlanImage");
-				
+
 				_Page01 = _PagesScroller.children("#Page01");
                 _Page02 = _PagesScroller.children("#Page02");
                 _Page03 = _PagesScroller.children("#Page03");
@@ -71,13 +64,13 @@
                 _Page11 = _PagesScroller.children("#Page11");
                 _Page12 = _PagesScroller.children("#Page12");
                 _Page13 = _PagesScroller.children("#Page13");
-                
+
 	            Loader.getContent({target: _Menu});
                 Loader.getContent({target: _Buttons});
 				Loader.getContent({target: _Temples});
 				Loader.getContent({target: _Hint});
 				Loader.getContent({target: _PlanImage});
-				
+
 				var wrapperWidth = _Pages.width();
 				wrapperHeight = _Pages.height();
 				var pages = _PagesScroller.children();

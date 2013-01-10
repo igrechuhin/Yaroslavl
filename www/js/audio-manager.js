@@ -5,7 +5,9 @@ var audio = {
 	Controls: null,
 	PlayPauseBtn: null,
 	PositionSlider: null,
-	Label: null,
+
+	OnPositionUpdate: null,
+	OnRelease: null,
 
 	Duration: -1,
 	
@@ -19,16 +21,15 @@ var audio = {
 		audio.Controls = guiElements.controls;	
 		audio.PlayPauseBtn = audio.Controls.children("#PlayPause");
 		audio.PositionSlider = audio.Controls.find("#SliderSingle");
+		audio.OnPositionUpdate = audio.OnPositionUpdate || guiElements.onPositionUpdate;
+		audio.OnRelease = audio.OnRelease || guiElements.onRelease;
 	},
 	
 	setSource: function(source) {
 		console.assert(source.hasOwnProperty("url") && source.url !== null, "Audio manager: url undefined");
 		console.assert(source.url !== "", "Audio manager: url is empty");
 		console.assert(typeof Media !== "undefined", "Audio manager: Media undefined");
-		if (typeof Media === "undefined") {
-			return;
-		};
-	
+		if (typeof Media === "undefined") return;
 		audio.release();
 		audio.MyMedia = new Media(source.url,
 			function() { //mediaSuccess
@@ -49,10 +50,7 @@ var audio = {
 		if (audio.MediaTimer !== null) {
 			clearInterval(audio.MediaTimer);
 			audio.MediaTimer = null;
-		}
-        if (audio.Label !== null && source.hasOwnProperty("label"))
-            audio.Label.text(source.label);
-		
+		};
 		audio.togglePlay();
 		if (source.hasOwnProperty("startPlay") && source.startPlay === false) {
 			audio.togglePlay();
@@ -74,6 +72,9 @@ var audio = {
 					onstatechange: function ( value ) {
 						if (audio.IsTouching) {
 							audio.MyMedia.pause();
+						}
+						if (audio.OnPositionUpdate) {
+							audio.OnPositionUpdate.call(this, value);
 						}
 					},
 					mouseDownCallback: function ( value ) {
@@ -102,17 +103,23 @@ var audio = {
 
 	release: function() {
 		if (audio.MyMedia !== null) {
+			if (audio.OnRelease) {
+				audio.OnRelease.call(this);
+			}
+
 			audio.MyMedia.release();
 			audio.MyMedia = null;
 
 			clearInterval(audio.MediaTimer);
 			audio.MediaTimer = null;
 
+			audio.OnPositionUpdate = null;
+			audio.OnRelease = null;
 			audio.Duration = -1;
 			audio.IsPlaying = false;
 			audio.IsTouching = false;
 			audio.Status = 0;
-		};
+		}
 	},
 
 	togglePlay: function() {

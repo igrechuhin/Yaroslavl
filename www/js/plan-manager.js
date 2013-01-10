@@ -4,40 +4,46 @@ Plan.zoom = null;
 
 Plan.register = function(target) {
 	target.children(".marker").unbind("touchstart").bind('touchstart', Plan.touch);
+	audio.initialize({controls: _PlanImage.find("#AudioPlayer")});
 }
 
 Plan.touch = function(event) {
-	var target = $(event.currentTarget);
+	var target = $(event.currentTarget),
+		_image = _PlanImage.find("#Image"),
+		_label = _PlanImage.find("#Label"),
+		_imageContent = _PlanImage.find("#ImageContent"),
+		areaHeight = _imageContent.css("height").replace(/[^\-\d\.]/g, "");
 
-	_PlanImage.find("#Image").attr("src", "img/" + target.data("image"));
-
-	audio.initialize({controls: _PlanImage.find("#AudioPlayer")});
-	audio.setSource({
-		url: "audio/" + target.data("audio"),
-		startPlay: true
-	});
+	_imageContent.addClass("hide");
+	_image.attr("src", "img/" + target.data("image"));
 
 	setTimeout(function() {
-		_PlanImage.find("#Label").text(target.data("label"));
-		_PlanImage.removeClass("invisible").addClass("invisible2");
+		_PlanImage.removeClass("invisible").find("#Close").unbind("touchstart").bind("touchstart", Plan.hide);
 		_Pages.addClass("invisible");
-		Plan.zoom = new iScroll(_PlanImage.find("#ImageContent").get(0), {
+
+		audio.setSource({
+			url: "audio/" + target.data("audio"),
+			startPlay: true
+		});
+
+		Plan.zoom = new iScroll(_imageContent.get(0), {
 			snap: false,
 			snapThreshold: 100,
 			zoom: true,
+			zoomMax: 3,
 			momentum: false,
 			hScrollbar: false,
 			vScrollbar: false,
 			lockDirection: false
 		});
 		setTimeout(function() {
-			var areaHeight = _PlanImage.find("#ImageContent").css("height").replace(/[^\-\d\.]/g, ""),
-				imageHeight = _PlanImage.find("#Image").css("height").replace(/[^\-\d\.]/g, "");
-			var padingTop = (areaHeight - imageHeight) / 2;
-			_PlanImage.find("#Image").css("padding-top", padingTop + "px");
-			_PlanImage.removeClass("invisible2");
-		}, 50);
-	}, 5);
+			var imageHeight = _image.css("height").replace(/[^\-\d\.]/g, ""),
+				padingTop = (areaHeight - imageHeight) / 2;
+			_image.css("padding-top", padingTop + "px");
+			_label.text(target.data("label"));
+			_imageContent.removeClass("hide");
+		}, 100);
+	}, 100);
 
 	event.stopPropagation();
 }
