@@ -20,7 +20,7 @@ Map.register = function(Parameters) {
   console.assert(Parameters.hasOwnProperty('target'), 'Map.register -- target undefined');
   //Map.unregister();
   if (Map.registered) {
-          return;
+    return;
   }
   Map.target  = Parameters.target;
   

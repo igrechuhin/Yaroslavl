@@ -10,14 +10,15 @@
 @color-normal:				#A7A9AC;
 @color-invert:				#A64124;
 
-@page-zindex:				10;
-@header-zindex:				15;
-@hint-zindex:				20;
-@plan-zindex:				30;
-@buttons-zindex:			1000;
-@menu-zindex:				1100;
-@menuButton-zindex:			1150;
-@plan-image-zindex:			1200;
+@zero-index:				500;
+@page-zindex:				@zero-index+10;
+@header-zindex:				@zero-index+15;
+@hint-zindex:				@zero-index+20;
+@plan-zindex:				@zero-index+30;
+@buttons-zindex:			@zero-index+1000;
+@menu-zindex:				@zero-index+1100;
+@menuButton-zindex:			@zero-index+1150;
+@plan-image-zindex:			@zero-index+1200;
 
 @buttons-width:				100px;
 @buttons-size:				80px;
@@ -36,6 +37,8 @@
 
 @width-portrait:			768px;
 @height-portrait:			1024px;
+
+@hint-height:				45px;
 
 @coord-divisor:				2;
 @font-divisor:				2.67;
@@ -67,9 +70,10 @@
 	transform: rotate(@angle);
 }
 
+//property duration timing-function delay;
 .menu-opacity-animation (@duration: 0.5s, @function: ease-in-out) {
-	-webkit-transition: @duration @function;
-	transition: @duration @function;
+	-webkit-transition: opacity @duration @function 0;
+	transition: opacity @duration @function 0;
 }
 
 .menu-opacity(@max-opacity: 1) {
@@ -111,16 +115,24 @@
 }
 
 .full-screen {
-		position: absolute;
-		top: 0px;
-		bottom: 0px;
-		left: 0px;
-		right: 0px;
-		overflow: hidden;
+	position: absolute;
+	top: 0px;
+	bottom: 0px;
+	left: 0px;
+	right: 0px;
+	//overflow: hidden;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+
+	-webkit-tap-highlight-color: transparent;
+	tap-highlight-color: transparent;
 }
 
 body {
-	overflow: hidden;
+	//overflow: hidden;
+	-webkit-backface-visibility: hidden;
+	backface-visibility: hidden;
+
 	-webkit-tap-highlight-color: transparent;
 	tap-highlight-color: transparent;
 	margin: 0px;
@@ -201,7 +213,7 @@ body {
 		&#MenuRect07 {left: 192px;	top: 758px; width: 165px; height: 10px;}
 		&#MenuRect08 {left: 174px;	top: 709px; width: 10px;  height: 100px;}
 		&#MenuRect09 {left: 126px;	top: 542px; width: 80px;  height: 10px;}
-		&#MenuRect10 {left: 76px;	top: 595px; width: 10px;  height: 110px;}
+		&#MenuRect10 {left: 74px;	top: 595px; width: 10px;  height: 110px;}
 		&#MenuRect11 {left: 380px;	top: 287px; width: 10px;  height: 80px;}
 		&#MenuRect12 {left: 322px;	top: 281px; width: 35px;  height: 10px;}
 		&#MenuRect13 {left: 224px;	top: 266px; width: 10px;  height: 35px;}
@@ -386,11 +398,24 @@ body {
 #Pages {
 	.full-screen;
 	z-index: @page-zindex;
-	div {
+	div#PagesScroller {
+		-webkit-transform: translate3d(0,0,0);
+		transform: translate3d(0,0,0);
+		-webkit-overflow-scrolling: touch;
+		overflow-scrolling: touch;
+
+		-webkit-backface-visibility: hidden;
+		backface-visibility: hidden;
 		.page {
 			float: left;
 			-webkit-transform: translate3d(0,0,0);
+			transform: translate3d(0,0,0);
 			-webkit-overflow-scrolling: touch;
+			overflow-scrolling: touch;
+
+			-webkit-backface-visibility: hidden;
+			backface-visibility: hidden;
+
 			height: 100%;
 			padding: 0px;
 			h1 {
@@ -416,6 +441,13 @@ body {
 				font-size: 12pt;
 				line-height: 17pt;
 				color: #000;
+			}
+
+			img#Loading {
+				position: absolute;
+				height: 200px;
+				top: 40%;
+				left: 25%;
 			}
 			.plan {
 				.full-screen;
@@ -444,6 +476,10 @@ body {
 					.screen {
 						-webkit-transform: translate3d(0,0,0);
 						-webkit-overflow-scrolling: touch;
+
+						-webkit-backface-visibility: hidden;
+						backface-visibility: hidden;
+
 						width: 100%;
 						padding: 0px;
 					}
@@ -570,7 +606,7 @@ body {
 							vertical-align: bottom;
 							img {
 								max-width: 280px;
-								max-height: 280px;
+								max-height: 280px;					
 							}
 						}
 					}
@@ -641,6 +677,179 @@ body {
 					div.marker#M6 {	top: @plan05-6-top + 467px; left: @plan05-6-left + 256px; }
 				}
 			}
+			&#Page06 {
+				table {
+					padding: @padding-top-thin @padding-right 0px @padding-left-thick;
+					font-family: "PT Sans Pro Narrow Demi Regular";
+					text-align: center;
+					tr {
+						vertical-align: bottom;
+						img {
+							max-width: 205px;
+							max-height: 205px;
+						}
+						&:nth-child(odd) {
+							height: 250px;
+						}
+						&:nth-child(1), {
+							height: 0px;
+						}
+					}
+				}
+
+				div#MainContent.content {
+					top: @padding-top-thin;
+					bottom: 1.3 * @hint-height;
+					//background-color: black;
+				}
+
+				ul.image-gallery {
+					//background-color: black;
+
+					list-style-type: none;
+					position: relative;
+					display: block;
+
+					left: @padding-left-thick;
+					//top: @padding-top-thin;
+
+					//max-width: @width-portrait - @padding-left-thick - @buttons-width;
+
+					padding: 0px;
+					margin: 0px;
+
+					li {
+						float: left;
+						padding: 0px 20px 0px 0px;
+
+						//overflow: hidden;
+						-webkit-backface-visibility: hidden;
+						backface-visibility: hidden;
+
+						img {
+							display: block;
+							position: relative;
+							max-width: 265px;
+							//max-height: 350px;
+
+							border: 10px solid #fff;
+							box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+						}
+						div {
+							font-family: "PT Sans Pro Narrow Demi Regular";
+							font-size: 35pt / @font-divisor;
+							width: 265px;
+							min-height: 45px;
+
+							//max-width: 265px;
+							//min-height: 45px;
+						}
+					}
+				}
+				/*
+					li {
+						div {
+							position: absolute;
+							background: #fff;
+							line-height: 20px;
+							color: #333;
+							left: 0px;
+							top: 40%;
+
+							padding: 10px 35px 10px 10px;
+							width: 50%;
+							box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+							span:nth-child(2) {
+								color: #aaa;
+								padding: 0 5px;
+								background: #F7F7F7;
+								right: 0px;
+								height: 100%;
+								line-height: 40px;
+								top: 0px;
+								position: absolute;
+								display: block;
+							}
+						}
+
+
+					}
+				}
+				/*
+				ul#Photos.tp-grid {
+					list-style-type: none;
+					position: relative;
+					display: block;
+
+					left: @padding-left-thick;
+					top: @padding-top-thin;
+
+					max-width: @width-portrait - @padding-left-thick - @buttons-width;
+
+					padding: 0px;
+					margin: 0px;
+
+					li {
+						position: absolute;
+						cursor: pointer;
+						border: 10px solid #fff;
+						box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+						display: none;
+						overflow: hidden;
+						-webkit-backface-visibility: hidden;
+						backface-visibility: hidden;
+
+						img {
+							display: block;
+							position: relative;
+							border: none;
+							max-width: 240px;
+							max-height: 160px;
+						}
+
+						.tp-info, .tp-title {
+							position: absolute;
+							background: #fff;
+							line-height: 20px;
+							color: #333;
+							left: 0px;
+							top: 40%;
+							font-family: "PT Sans Pro Narrow Demi Regular";
+							font-size: 35pt / @font-divisor;
+						}
+
+						.tp-info {
+							width: 240px;
+							opacity: 0;
+						}
+
+						.tp-title {
+							padding: 10px 35px 10px 10px;
+							width: 50%;
+							box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+						}
+
+						.tp-title span:nth-child(2){
+							color: #aaa;
+							padding: 0 5px;
+							background: #F7F7F7;
+							right: 0px;
+							height: 100%;
+							line-height: 40px;
+							top: 0px;
+							position: absolute;
+							display: block;
+						}
+					}
+					&.tp-open li {
+						overflow: visible;
+						.tp-info {
+							top: 160px + 15px;
+							opacity: 1;
+						}
+					}
+				}*/
+			}
 		}
 	}
 }
@@ -651,7 +860,7 @@ body {
 	padding-left: @padding-left-thick;
 	padding-right: @padding-right;
 	width: @width-portrait - @padding-left-thick - @padding-right;
-	height: 45px;
+	height: @hint-height;
 	background-color: #FFF;
 	z-index: @hint-zindex;
 	#UpDown {
@@ -694,6 +903,16 @@ body {
 					&.hide {
 						opacity: 0;
 					}
+
+					img#Image {
+						max-width: 95%;
+						max-height: @height-portrait - 3*@buttons-size - 60;
+						border: 10px solid #fff;
+						box-shadow:
+							1px 1px 1px rgba(0, 0, 0, 0.1),
+							5px 5px 10px 0px rgba(0, 0, 0, 0.2),
+							inset 0 0 5px rgba(0, 0, 0, 0.04);
+					}
 				}
 			}
 		}
@@ -708,12 +927,6 @@ body {
 		background-image: url("../img/buttons/hramy_invert.png");
 		background-size: contain;
 		.size (@buttons-size);
-	}
-	#Image {
-		max-width: 100%;
-		max-height: @height-portrait - 3*@buttons-size;
-		//padding-top: @padding-top-thin;
-		//padding-bottom: @padding-left-thin;
 	}
 	#Label {
 		font-family: "PT Sans Pro Narrow Demi Regular";

@@ -20,107 +20,14 @@ Loader.getContent = function(Parameters) {
 Loader.setContent = function(Parameters) {
 	console.assert(Parameters.hasOwnProperty("target"), "Loader.setContent -- target undefined");
 	var target = Parameters.target;
+	if (target.length === 0) {
+		return;
+	}
 	var targetData = target.html();
 	//var needDataUpdate = ((targetData.length != Parameters.data.length) || (targetData != Parameters.data));
 	var needDataUpdate = (targetData.length === 0);
 	if (needDataUpdate) {
 		target.html(Parameters.data);
-		setTimeout(function () {
-			mainScroller.refresh();
-		}, 0);
 	}
-	var pageID = target.attr("id");
-	switch (pageID) {
-		case "Buttons":
-		case "PanoramaContent":
-			Buttons.register();
-		break;
-		case "Menu":
-			Menu.register();
-		break;
-		case "Temples":
-			Temples.register();
-		break;
-		default:
-			if (Parameters.hasOwnProperty("loadNext") && Parameters.loadNext === true && target.hasClass("page")) {
-				setTimeout(function () {
-					Loader.getContent({
-						 target: target.prev()
-						,loadNext: false
-					});
-					Loader.getContent({
-						 target: target.next()
-						,loadNext: false
-					});
-				}, 300);
-				$(".plan").addClass("invisible");
-				var scrollerOptions = {
-					 snap: true
-					,momentum: true
-					,hScroll: false
-					,vScroll: true
-					,hScrollbar: false
-					,vScrollbar: false
-					,lockDirection: true
-					};
-				switch (pageID) {
-					case "Page03":
-						if (pageScroller[target.index()] === undefined || pageScroller[target.index()] === null) {
-							setTimeout(function () {
-								scrollerOptions.onScrollEnd = function() {
-									Buttons.toggleEyeText.call(pageScroller[target.index()]);
-									Buttons.refreshScroll.call(pageScroller[target.index()]);
-								}
-								pageScroller[target.index()] = new iScroll(target.children("#MainContent").get(0), scrollerOptions);
-								Buttons.refreshScroll.call(pageScroller[target.index()]);
-								Buttons.toggleEyeText();
-							}, 0);
-						}
-						var screens = target.find(".screen");
-						screens.css("height", wrapperHeight);
-						target.find(".scroller").css("height", wrapperHeight * screens.length);
-					break;
-					case "Page04":
-						setTimeout(function () {
-							Map.register({target: target.children("#Map")});
-						}, 400);
-					break;
-					case "Page05-1":
-					case "Page05-2":
-					case "Page05-3":
-					case "Page05-4":
-					case "Page05-5":
-					case "Page05-6":
-						if (pageScroller[target.index()] === undefined || pageScroller[target.index()] === null) {
-							setTimeout(function () {
-								scrollerOptions.snap = false;
-								scrollerOptions.onScrollEnd = Buttons.refreshScroll;
-								pageScroller[target.index()] = new iScroll(target.children("#MainContent").get(0), scrollerOptions);
-								Buttons.refreshScroll.call(pageScroller[target.index()]);
-							}, 0);
-						}
-					break;
-				}
-				setTimeout(function() {
-					var setupObj = {pageID: pageID};
-					Menu.setup(setupObj);
-					Temples.setup(setupObj);
-					Buttons.setup(setupObj);
-				}, 100);
-				// Cleanup
-				setTimeout(function() {
-					for (index in pageScroller) {
-						if (index == target.index()) continue;
-						if (pageScroller[index] !== undefined && pageScroller[index] !== null) {
-							pageScroller[index].destroy();
-							pageScroller[index] = null;
-						}
-					}
-					var toClear = target.prevAll(":gt(0)").add(target.nextAll(":gt(0)")).not(_Page04);
-					toClear.children().remove();
-					toClear.html("");
-				}, 500);
-			}
-		break;
-	}
+	Menu.initPageAfterLoad.call(target, Parameters);
 }

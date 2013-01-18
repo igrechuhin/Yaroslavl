@@ -38,8 +38,8 @@ Plan.touch = function(event) {
 		});
 		setTimeout(function() {
 			var imageHeight = _image.css("height").replace(/[^\-\d\.]/g, ""),
-				padingTop = (areaHeight - imageHeight) / 2;
-			_image.css("padding-top", padingTop + "px");
+				marginTop = (areaHeight - imageHeight) / 2;
+			_image.css("margin-top", marginTop + "px");
 			_label.text(target.data("label"));
 			_imageContent.removeClass("hide");
 		}, 100);

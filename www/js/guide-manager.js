@@ -2,6 +2,26 @@ function Guide() {}
 
 Guide.zoom = null;
 
+Guide.setImage = function(source, text) {
+	var _image = _PlanImage.find("#Image"),
+		_label = _PlanImage.find("#Label"),
+		_imageContent = _PlanImage.find("#ImageContent"),
+		areaHeight = _imageContent.css("height").replace(/[^\-\d\.]/g, "");
+
+	_imageContent.addClass("hide");
+	_image.attr("src", source);
+	setTimeout(function() {
+		Guide.zoomCreate(_imageContent);
+		setTimeout(function() {
+			var imageHeight = _image.css("height").replace(/[^\-\d\.]/g, ""),
+				marginTop = (areaHeight - imageHeight) / 2;
+			_image.css("margin-top", marginTop + "px");
+			_label.text(text);
+			_imageContent.removeClass("hide");
+		}, 100);
+	}, 250);
+};
+
 Guide.register = function(target) {
 	var images = [];
 	target.children().each(function(index, element) {
@@ -14,28 +34,8 @@ Guide.register = function(target) {
 		});
 	});
 
-	var _image = _PlanImage.find("#Image"),
-		_label = _PlanImage.find("#Label"),
-		_imageContent = _PlanImage.find("#ImageContent"),
-		areaHeight = _imageContent.css("height").replace(/[^\-\d\.]/g, "");
-
-	var setImage = function(source, text) {
-		_imageContent.addClass("hide");
-		_image.attr("src", source);
-		setTimeout(function() {
-			Guide.zoomCreate(_imageContent);
-			setTimeout(function() {
-				var imageHeight = _image.css("height").replace(/[^\-\d\.]/g, ""),
-					padingTop = (areaHeight - imageHeight) / 2;
-				_image.css("padding-top", padingTop + "px");
-				_label.text(text);
-				_imageContent.removeClass("hide");
-			}, 100);
-		}, 250);
-	};
-
 	var currentIndex = 0;
-	setImage(images[currentIndex].source, images[currentIndex].label);
+	Guide.setImage(images[currentIndex].source, images[currentIndex].label);
 
 	audio.initialize({
 		controls: _PlanImage.find("#AudioPlayer"),
@@ -45,14 +45,14 @@ Guide.register = function(target) {
 			for (var i = 0; i < images.length; i++) {
 				if (pos >= images[i].from && pos <= images[i].to) {
 					currentIndex = i;
-					setImage(images[currentIndex].source, images[currentIndex].label);
+					Guide.setImage(images[currentIndex].source, images[currentIndex].label);
 					return;
 				};
 			};
 		},
 		onRelease: function() {
-			_image.attr("src", "");
-			_label.text("");
+			_PlanImage.find("#Image").attr("src", "");
+			_PlanImage.find("#Label").text("");
 		}
 	});
 	setTimeout(function() {

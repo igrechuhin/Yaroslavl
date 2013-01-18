@@ -1,0 +1,229 @@
+          case "Page06":
+            var loaderTimeout = 2000;
+            setTimeout(function () {
+              var $grid = that.find("ul#Photos.tp-grid"),
+                  $images = $grid.find("div"),
+                  $header = that.find("h1 > span"),
+                  $loaderStub = that.children("img#Loading,div#MainContent"),
+                  skipOpen = false,
+                  stapel = $grid.stapel({
+                    useAnimation : false,
+                    onLoad : function() { 
+                      scrollerOptions.snap = false;
+                      scrollerOptions.onScrollEnd = Buttons.refreshScroll;
+                      scrollerOptions.onScrollMove = function(){
+                        skipOpen = true;
+                      };
+                      scrollerOptions.onScrollEnd = function(){
+                        skipOpen = false;
+                      };
+                      createScroller(that, scrollerOptions);
+                      $loaderStub.toggleClass("invisible");
+                      return false;
+                    },
+                    onBeforeOpen : function( pileName ) {
+                      if (skipOpen) {
+                        skipOpen = false;
+                        return true;
+                      }
+                      $header.data("original", $header.data("original") || $header.text());
+                      $grid.data("galleryScrollPosition", pageScroller[pageIndex].y);
+                      $loaderStub.toggleClass("invisible");
+                      return false;
+                    },
+                    onAfterOpen : function( pileName ) {
+                      $header.bind("touchstart", function() {
+                        stapel.closePile();
+                      }).text($header.data("original") + " - " + pileName);
+                      setTimeout(function() {
+                        $loaderStub.toggleClass("invisible");
+                        pageScroller[pageIndex].refresh();
+                        pageScroller[pageIndex].scrollTo(0, 0);
+                      }, loaderTimeout);
+                      return false;
+                    },
+                    onBeforeClose : function() {
+                      $header.unbind("touchstart").text($header.data("original"));
+                      $images.unbind("touchstart");
+                      $loaderStub.toggleClass("invisible");
+                      return false;
+                    },
+                    onAfterClose : function() {
+                      setTimeout(function() {
+                        $loaderStub.toggleClass("invisible");
+                        pageScroller[pageIndex].refresh();
+                        pageScroller[pageIndex].scrollTo(0, $grid.data("galleryScrollPosition"));
+                      }, loaderTimeout);
+                      return false;
+                    },
+                    onImageOpen : function( Image ) { 
+                      return false;
+                    }
+                  });
+            }, loaderTimeout);
+          break;
+
+<h1>
+    <span>Фотогалерея</span>
+</h1>
+<img id="Loading" src="img/loading.gif">
+<div id="MainContent" class="content invisible">
+    <div class="scroller">
+        <div class="screen">
+            <ul id="Photos" class="tp-grid">
+<!-- 
+01. Внешний вид
+02. Интерьер
+03. Детали                  удалить
+04. Роспись 
+05. Иконостас
+06. Глава
+07. Изразцы
+08. Портал 
+09. Галерея
+10. Придел
+11. Колокольня
+12. Резьба
+ -->
+
+<!-- Спасо-Преображенский собор --> 
+<li data-pile="Внешний вид,Глава,Галерея"><span class="tp-info">Спасо-Преображенский собор. Западный фасад</span><img data-full-image="img/page05-1/_DSC6634.jpg" src="img/page05-1/_DSC6634_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава"><span class="tp-info">Спасо-Преображенский собор. Восточный фасад</span><img data-full-image="img/page05-1/_DSC6628.jpg" src="img/page05-1/_DSC6628_mini.jpg"></li> 
+
+<li data-pile="Внешний вид,Детали,Роспись,Портал,Галерея"><span class="tp-info">Спасо-Преображенский собор. Центральный портал</span><img data-full-image="img/page05-1/_DSC6746.jpg" src="img/page05-1/_DSC6746_mini.jpg"></li>
+<li data-pile="Внешний вид,Детали,Роспись,Портал,Галерея"><span class="tp-info">Спасо-Преображенский собор. Интерьер галереи</span><img data-full-image="img/page05-1/_DSC6753.jpg" src="img/page05-1/_DSC6753_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Галерея"><span class="tp-info">Спасо-Преображенский собор. Вид с северо-запада</span><img data-full-image="img/page05-1/_DSC6889.jpg" src="img/page05-1/_DSC6889_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Галерея"><span class="tp-info">Спасо-Преображенский собор. Галерея</span><img data-full-image="img/page05-1/_DSC6893.jpg" src="img/page05-1/_DSC6893_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Спасо-Преображенский собор. Роспись сводов средокрестия</span><img data-full-image="img/page05-1/_DSC6734.jpg" src="img/page05-1/_DSC6734_mini.jpg"></li>
+
+<li data-pile="Интерьер,Детали,Роспись,Глава"><span class="tp-info">Спасо-Преображенский собор. Роспись купола: Христос Пантократор, святители, пророки</span><img data-full-image="img/page05-1/_DSC6737.jpg" src="img/page05-1/_DSC6737_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Галерея,Колокольня"><span class="tp-info">Спасо-Преображенский собор. Церковь Ярославских чудотворцев: Звонница</span><img data-full-image="img/page05-1/_DSC6894.jpg" src="img/page05-1/_DSC6894_mini.jpg"></li>
+
+<li data-pile="Интерьер,Детали,Роспись"><span class="tp-info">Спасо-Преображенский собор. Росписи на столбах</span><img data-full-image="img/page05-1/_DSC6731.jpg" src="img/page05-1/_DSC6731_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Спасо-Преображенский собор. Роспись южной стены: Поцелуй Иуды</span><img data-full-image="img/page05-1/080017.jpg" src="img/page05-1/080017_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Спасо-Преображенский собор. Роспись конхи центральной апсиды: Похвала Богоматери</span><img data-full-image="img/page05-1/080002.jpg" src="img/page05-1/080002_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Спасо-Преображенский собор. Роспись северной стены: Сорок мучеников севастийских</span><img data-full-image="img/page05-1/080004.jpg" src="img/page05-1/080004_mini.jpg"></li>
+<li data-pile="Интерьер,Детали,Роспись"><span class="tp-info">Спасо-Преображенский собор. Роспись конхи южной апсиды: Господь Саваоф</span><img data-full-image="img/page05-1/080015.jpg" src="img/page05-1/080015_mini.jpg"></li>
+<li data-pile="Интерьер,Детали,Роспись"><span class="tp-info">Спасо-Преображенский собор. Роспись конхи северной апсиды: Иоанн Креститель</span><img data-full-image="img/page05-1/080005.jpg" src="img/page05-1/080005_mini.jpg"></li>
+<li data-pile="Интерьер,Детали,Роспись"><span class="tp-info">Спасо-Преображенский собор. Роспись алтаря: Святитель Алексий, митрополит Московский</span><img data-full-image="img/page05-1/080008.jpg" src="img/page05-1/080008_mini.jpg"></li>
+<li data-pile="Интерьер,Детали,Роспись"><span class="tp-info">Спасо-Преображенский собор. Роспись алтаря: Святитель Григорий Богослов</span><img data-full-image="img/page05-1/080011.jpg" src="img/page05-1/080011_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Спасо-Преображенский собор. Страшный суд</span><img data-full-image="img/page05-1/080023.jpg" src="img/page05-1/080023_mini.jpg"></li>
+<li data-pile="Интерьер,Детали,Роспись"><span class="tp-info">Спасо-Преображенский собор. Подсвечник</span><img data-full-image="img/page05-1/080006.jpg" src="img/page05-1/080006_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Спасо-Преображенский собор. Преображение</span><img data-full-image="img/page05-1/080001.jpg" src="img/page05-1/080001_mini.jpg"></li>
+<li data-pile="Интерьер,Детали,Роспись"><span class="tp-info">Спасо-Преображенский собор. Иоанн Предтеча</span><img data-full-image="img/page05-1/080005.jpg" src="img/page05-1/080005_mini.jpg"></li>
+<li data-pile="Интерьер,Детали,Роспись"><span class="tp-info">Спасо-Преображенский собор. Господь Саваоф</span><img data-full-image="img/page05-1/080014.jpg" src="img/page05-1/080014_mini.jpg"></li>
+
+<!-- Церковь Рождества Христова -->
+<li data-pile="Внешний вид,Глава,Портал,Галерея,Придел,Колокольня"><span class="tp-info">Церковь Рождества Христова. Колокольня</span><img data-full-image="img/page05-4/_DSC6564.jpg" src="img/page05-4/_DSC6564_mini.jpg"></li>
+<li data-pile="Внешний вид,Портал,Галерея,Колокольня"><span class="tp-info">Церковь Рождества Христова. Колокольня: Деталь декорации нижнего яруса</span><img data-full-image="img/page05-4/_DSC6568.jpg" src="img/page05-4/_DSC6568_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Галерея,Придел"><span class="tp-info">Церковь Рождества Христова. Вид со стороны придела Пяти персидских мучеников</span><img data-full-image="img/page05-4/_DSC6590.jpg" src="img/page05-4/_DSC6590_mini.jpg"></li>
+<li data-pile="Внешний вид,Детали,Изразцы"><span class="tp-info">Церковь Рождества Христова. Деталь оформления фасада</span><img data-full-image="img/page05-4/_DSC6573.jpg" src="img/page05-4/_DSC6573_mini.jpg"></li>
+<li data-pile="Внешний вид,Детали,Глава,Изразцы"><span class="tp-info">Церковь Рождества Христова. Купол</span><img data-full-image="img/page05-4/_DSC6607.jpg" src="img/page05-4/_DSC6607_mini.jpg"></li>
+<li data-pile="Внешний вид"><span class="tp-info">Церковь Рождества Христова. Детали оформления фасада</span><img data-full-image="img/page05-4/_DSC6585.jpg" src="img/page05-4/_DSC6585_mini.jpg"></li>
+
+<li data-pile="Интерьер,Иконостас,Резьба"><span class="tp-info">Церковь Рождества Христова. Иконостас</span><img data-full-image="img/page05-4/Rojdestva_ikonostas.jpg" src="img/page05-4/Rojdestva_ikonostas_mini.jpg"></li>
+<li data-pile="Внешний вид,Детали,Колокольня,Резьба"><span class="tp-info">Церковь Рождества Христова. Закомары колокольни</span><img data-full-image="img/page05-4/_DSC6582.jpg" src="img/page05-4/_DSC6582_mini.jpg"></li>
+
+<li data-pile="Внешний вид,Детали,Изразцы"><span class="tp-info">Церковь Рождества Христова. Изразцы на фасаде</span><img data-full-image="img/page05-4/_DSC6580.jpg" src="img/page05-4/_DSC6580_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Рождества Христова. Роспись сводов</span><img data-full-image="img/page05-4/Rojdestva_svod.jpg" src="img/page05-4/Rojdestva_svod_mini.jpg"></li>
+<li data-pile="Интерьер,Детали,Роспись"><span class="tp-info">Церковь Рождества Христова. Роспись купола</span><img data-full-image="img/page05-4/_DSC6596.jpg" src="img/page05-4/_DSC6596_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Рождества Христова. София – Премудрость Божия</span><img data-full-image="img/page05-4/110158.jpg" src="img/page05-4/110158_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Рождества Христова. Искушение монаха Иеронима</span><img data-full-image="img/page05-4/110164.jpg" src="img/page05-4/110164_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Рождества Христова. Деяния апостолов</span><img data-full-image="img/page05-4/110165.jpg" src="img/page05-4/110165_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Рождества Христова. Князь Константин Ярославский</span><img data-full-image="img/page05-4/110159.jpg" src="img/page05-4/110159_mini.jpg"></li>
+
+<!-- Церковь Николы Надеина -->
+<li data-pile="Внешний вид,Глава,Галерея,Придел,Колокольня"><span class="tp-info">Церковь Николы Надеина. Южный фасад</span><img data-full-image="img/page05-3/_DSC6450.jpg" src="img/page05-3/_DSC6450_mini.jpg"></li>
+<li data-pile="Внешний вид,Детали"><span class="tp-info">Церковь Николы Надеина. Деталь оформления крыльца</span><img data-full-image="img/page05-3/_DSC6550.jpg" src="img/page05-3/_DSC6550_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Галерея,Придел"><span class="tp-info">Церковь Николы Надеина. Фрагмент южного фасада</span><img data-full-image="img/page05-3/_DSC6543.jpg" src="img/page05-3/_DSC6543_mini.jpg"></li>
+<li data-pile="Внешний вид,Детали"><span class="tp-info">Церковь Николы Надеина. Деталь оформления фасада</span><img data-full-image="img/page05-3/_DSC6554.jpg" src="img/page05-3/_DSC6554_mini.jpg"></li>
+<li data-pile="Внешний вид,Детали"><span class="tp-info">Церковь Николы Надеина. Церковь Николы Надеина</span><img data-full-image="img/page05-3/_DSC6553.jpg" src="img/page05-3/_DSC6553_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Галерея,Придел,Колокольня"><span class="tp-info">Церковь Николы Надеина. Вид с северо-востока</span><img data-full-image="img/page05-3/_DSC6882.jpg" src="img/page05-3/_DSC6882_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись,Галерея"><span class="tp-info">Церковь Николы Надеина. Интерьер галереи</span><img data-full-image="img/page05-3/_DSC6832.jpg" src="img/page05-3/_DSC6832_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись,Галерея"><span class="tp-info">Церковь Николы Надеина. Интерьер галереи</span><img data-full-image="img/page05-3/_DSC6838.jpg" src="img/page05-3/_DSC6838_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись,Галерея"><span class="tp-info">Церковь Николы Надеина. Роспись крыльца</span><img data-full-image="img/page05-3/_DSC6828.jpg" src="img/page05-3/_DSC6828_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Николы Надеина. Роспись сводов</span><img data-full-image="img/page05-3/_DSC6816.jpg" src="img/page05-3/_DSC6816_mini.jpg"></li>
+<li data-pile="Интерьер,Иконостас,Резьба"><span class="tp-info">Церковь Николы Надеина. Иконостас</span><img data-full-image="img/page05-3/Nikola_ikonostas.jpg" src="img/page05-3/Nikola_ikonostas_mini.jpg"></li>
+<li data-pile="Интерьер,Иконостас,Резьба"><span class="tp-info">Церковь Николы Надеина. Фигуры иконостаса</span><img data-full-image="img/page05-3/090035.jpg" src="img/page05-3/090035_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Николы Надеина. Святой Николай возвращает зрение царевичу Стефану</span><img data-full-image="img/page05-3/090026.jpg" src="img/page05-3/090026_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Николы Надеина. Киевское чудо. Спасение утопшего младенца из вод Днепра по молитве святому Николаю</span><img data-full-image="img/page05-3/090027.jpg" src="img/page05-3/090027_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Николы Надеина. Ругодивское чудо</span><img data-full-image="img/page05-3/090038.jpg" src="img/page05-3/090038_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Николы Надеина. Клеймо с именем храмописцев</span><img data-full-image="img/page05-3/090025.jpg" src="img/page05-3/090025_mini.jpg"></li>
+<li data-pile="Интерьер,Детали,Иконостас,Резьба"><span class="tp-info">Церковь Николы Надеина. Царские врата</span><img data-full-image="img/page05-3/090033.jpg" src="img/page05-3/090033_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись,Галерея"><span class="tp-info">Церковь Николы Надеина. Вселенский потоп и благодарственная молитва Ноя</span><img data-full-image="img/page05-3/090097.jpg" src="img/page05-3/090097_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись,Галерея"><span class="tp-info">Церковь Николы Надеина. Пророк Илия</span><img data-full-image="img/page05-3/IMG_1660.jpg" src="img/page05-3/IMG_1660_mini.jpg"></li>
+
+<!-- Церковь Ильи Пророка -->
+<li data-pile="Внешний вид,Глава,Галерея,Придел,Колокольня"><span class="tp-info">Церковь Ильи Пророка. Южный фасад</span><img data-full-image="img/page05-2/_DSC6445.jpg" src="img/page05-2/_DSC6445_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Галерея,Придел,Колокольня"><span class="tp-info">Церковь Ильи Пророка. Северный фасад</span><img data-full-image="img/page05-2/_DSC6459.jpg" src="img/page05-2/_DSC6459_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Портал,Галерея,Придел,Колокольня"><span class="tp-info">Церковь Ильи Пророка. Западный фасад</span><img data-full-image="img/page05-2/_DSC6540.jpg" src="img/page05-2/_DSC6540_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Галерея,Придел,Колокольня"><span class="tp-info">Церковь Ильи Пророка. Восточный фасад</span><img data-full-image="img/page05-2/_DSC6463.jpg" src="img/page05-2/_DSC6463_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Портал,Галерея,Придел,Колокольня"><span class="tp-info">Церковь Ильи Пророка. Слева – церковь Гурия, Самона и Авива</span><img data-full-image="img/page05-2/_DSC6507.jpg" src="img/page05-2/_DSC6507_mini.jpg"></li>
+<li data-pile="Внешний вид,Роспись,Глава,Портал,Галерея,Придел"><span class="tp-info">Церковь Ильи Пророка. Галерея западного фасада</span><img data-full-image="img/page05-2/_DSC6477.jpg" src="img/page05-2/_DSC6477_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Галерея,Придел,Колокольня"><span class="tp-info">Церковь Ильи Пророка. Вид с северо-востока</span><img data-full-image="img/page05-2/_DSC6871.jpg" src="img/page05-2/_DSC6871_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Галерея,Придел"><span class="tp-info">Церковь Ильи Пророка. Восточный фасад. Слева – Покровский придел</span><img data-full-image="img/page05-2/_DSC6466.jpg" src="img/page05-2/_DSC6466_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Галерея,Придел,Колокольня"><span class="tp-info">Церковь Ильи Пророка. Западный фасад</span><img data-full-image="img/page05-2/_DSC6488.jpg" src="img/page05-2/_DSC6488_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Галерея,Придел,Колокольня"><span class="tp-info">Церковь Ильи Пророка. Галерея западного фасада и Ризположенский придел</span><img data-full-image="img/page05-2/_DSC6497.jpg" src="img/page05-2/_DSC6497_mini.jpg"></li>
+<li data-pile="Внешний вид,Детали,Придел"><span class="tp-info">Церковь Ильи Пророка. Ризположенский придел. Деталь фасада</span><img data-full-image="img/page05-2/_DSC6533.jpg" src="img/page05-2/_DSC6533_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись,Изразцы,Галерея"><span class="tp-info">Церковь Ильи Пророка. Интерьер галереи</span><img data-full-image="img/page05-2/_DSC6778.jpg" src="img/page05-2/_DSC6778_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись,Изразцы,Портал,Галерея"><span class="tp-info">Церковь Ильи Пророка. Вход в главный храм</span><img data-full-image="img/page05-2/_DSC6769.jpg" src="img/page05-2/_DSC6769_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись,Иконостас"><span class="tp-info">Церковь Ильи Пророка. Роспись сводов</span><img data-full-image="img/page05-2/_DSC6783.jpg" src="img/page05-2/_DSC6783_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись,Галерея"><span class="tp-info">Церковь Ильи Пророка. Семь дней творения</span><img data-full-image="img/page05-2/100099.jpg" src="img/page05-2/100099_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Ильи Пророка. Роспись сводов</span><img data-full-image="img/page05-2/_DSC6807.jpg" src="img/page05-2/_DSC6807_mini.jpg"></li>
+
+<li data-pile="Интерьер,Иконостас,Резьба"><span class="tp-info">Церковь Ильи Пророка. Иконостас</span><img data-full-image="img/page05-2/_DSC6781.jpg" src="img/page05-2/_DSC6781_mini.jpg"></li>
+<li data-pile="Интерьер,Иконостас,Резьба"><span class="tp-info">Церковь Ильи Пророка. Царские врата</span><img data-full-image="img/page05-2/_DSC6792.jpg" src="img/page05-2/_DSC6792_mini.jpg"></li>
+<li data-pile="Интерьер,Иконостас,Резьба"><span class="tp-info">Церковь Ильи Пророка. Деталь интерьера</span><img data-full-image="img/page05-2/_DSC6789.jpg" src="img/page05-2/_DSC6789_mini.jpg"></li>
+
+<li data-pile="Интерьер,Иконостас,Резьба"><span class="tp-info">Церковь Ильи Пророка. Деталь резьбы иконостаса</span><img data-full-image="img/page05-2/_DSC6788.jpg" src="img/page05-2/_DSC6788_mini.jpg"></li>
+
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Ильи Пророка. Рождение пророка Илии (Ангелы повивают пророка Илию огнём)</span><img data-full-image="img/page05-2/100120.jpg" src="img/page05-2/100120_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Ильи Пророка. Обличение царя Ахава пророком Илиёй</span><img data-full-image="img/page05-2/100118.jpg" src="img/page05-2/100118_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Ильи Пророка. Услаждение вод иерихонского источника пророком Елисеем</span><img data-full-image="img/page05-2/100121.jpg" src="img/page05-2/100121_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Ильи Пророка. История Товия и Товита</span><img data-full-image="img/page05-2/100129.jpg" src="img/page05-2/100129_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Ильи Пророка. Род царствия да благословится (Родословие Романовых)</span><img data-full-image="img/page05-2/100098.jpg" src="img/page05-2/100098_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись,Галерея"><span class="tp-info">Церковь Ильи Пророка. Страшный суд</span><img data-full-image="img/page05-2/100109.jpg" src="img/page05-2/100109_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись,Галерея"><span class="tp-info">Церковь Ильи Пророка. Молитва Господня</span><img data-full-image="img/page05-2/100110.jpg" src="img/page05-2/100110_mini.jpg"></li>
+
+<!-- Церковь Богоявления -->
+<li data-pile="Внешний вид,Глава,Изразцы,Колокольня"><span class="tp-info">Церковь Богоявления. Северный фасад</span><img data-full-image="img/page05-5/_DSC6715.jpg" src="img/page05-5/_DSC6715_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Изразцы,Галерея,Колокольня"><span class="tp-info">Церковь Богоявления. Южный фасад</span><img data-full-image="img/page05-5/_DSC6899.jpg" src="img/page05-5/_DSC6899_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Изразцы,Галерея,Колокольня"><span class="tp-info">Церковь Богоявления. Вид с юго-западного угла</span><img data-full-image="img/page05-5/_DSC6905.jpg" src="img/page05-5/_DSC6905_mini.jpg"></li>
+<li data-pile="Внешний вид,Детали,Изразцы"><span class="tp-info">Церковь Богоявления. Деталь оформления фасада</span><img data-full-image="img/page05-5/_DSC6610.jpg" src="img/page05-5/_DSC6610_mini.jpg"></li>
+<li data-pile="Внешний вид,Детали,Глава,Изразцы"><span class="tp-info">Церковь Богоявления. Деталь оформления глав</span><img data-full-image="img/page05-5/_DSC6615.jpg" src="img/page05-5/_DSC6615_mini.jpg"></li>
+<li data-pile="Внешний вид,Детали,Изразцы,Галерея"><span class="tp-info">Церковь Богоявления. Северный фасад</span><img data-full-image="img/page05-5/_DSC6438.jpg" src="img/page05-5/_DSC6438_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись южного свода: Воскресение Господне. Сошествие во ад</span><img data-full-image="img/page05-5/120172.jpg" src="img/page05-5/120172_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись северного свода: Вознесение Господне</span><img data-full-image="img/page05-5/120174.jpg" src="img/page05-5/120174_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись южной стены: Проповедь на море</span><img data-full-image="img/page05-5/120177.jpg" src="img/page05-5/120177_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись южной стены: Христос перед Каиафой</span><img data-full-image="img/page05-5/120179.jpg" src="img/page05-5/120179_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись западной стены: Спор о субботе</span><img data-full-image="img/page05-5/120180.jpg" src="img/page05-5/120180_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись северной стены: Вечеря в доме Симона прокажённого</span><img data-full-image="img/page05-5/120181.jpg" src="img/page05-5/120181_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись западной стены: Поругание Иисуса Христа</span><img data-full-image="img/page05-5/120183.jpg" src="img/page05-5/120183_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись западной стены: Усекновение главы Иоанна Предтечи</span><img data-full-image="img/page05-5/120184.jpg" src="img/page05-5/120184_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись на своде: Троица Новозаветная</span><img data-full-image="img/page05-5/120173.jpg" src="img/page05-5/120173_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись южной стены: Богоявление</span><img data-full-image="img/page05-5/120175.jpg" src="img/page05-5/120175_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись северной стены: Исцеление в стране Гадаринской</span><img data-full-image="img/page05-5/120178.jpg" src="img/page05-5/120178_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись северной стены: Хождение по водам. Сомнение Петра</span><img data-full-image="img/page05-5/120182.jpg" src="img/page05-5/120182_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись южной стены: Лепта вдовицы</span><img data-full-image="img/page05-5/120176.jpg" src="img/page05-5/120176_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись"><span class="tp-info">Церковь Богоявления. Роспись на своде: Успение Богоматери</span><img data-full-image="img/page05-5/120170.jpg" src="img/page05-5/120170_mini.jpg"></li>
+
+<!-- Церковь Иоанна Предтечи -->
+<li data-pile="Внешний вид,Глава,Изразцы,Портал,Галерея"><span class="tp-info">Церковь Иоанна Предтечи. Западный фасад</span><img data-full-image="img/page05-6/_DSC6676.jpg" src="img/page05-6/_DSC6676_mini.jpg"></li>
+<li data-pile="Внешний вид,Глава,Изразцы,Галерея,Придел"><span class="tp-info">Церковь Иоанна Предтечи. Вид с северо-восточного угла</span><img data-full-image="img/page05-6/_DSC6661.jpg" src="img/page05-6/_DSC6661_mini.jpg"></li>
+<li data-pile="Внешний вид,Изразцы,Портал"><span class="tp-info">Церковь Иоанна Предтечи. Крыльцо</span><img data-full-image="img/page05-6/_DSC6842.jpg" src="img/page05-6/_DSC6842_mini.jpg"></li>
+<li data-pile="Внешний вид,Детали,Изразцы,Галерея"><span class="tp-info">Церковь Иоанна Предтечи. Деталь фасада</span><img data-full-image="img/page05-6/_DSC6684.jpg" src="img/page05-6/_DSC6684_mini.jpg"></li>
+<li data-pile="Внешний вид,Изразцы,Портал"><span class="tp-info">Церковь Иоанна Предтечи. Деталь крыльца</span><img data-full-image="img/page05-6/_DSC6866.jpg" src="img/page05-6/_DSC6866_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись,Галерея"><span class="tp-info">Церковь Иоанна Предтечи. Интерьер галереи</span><img data-full-image="img/page05-6/_DSC6845.jpg" src="img/page05-6/_DSC6845_mini.jpg"></li>
+<li data-pile="Интерьер,Детали"><span class="tp-info">Церковь Иоанна Предтечи</span><img data-full-image="img/page05-6/_DSC6858.jpg" src="img/page05-6/_DSC6858_mini.jpg"></li>
+<li data-pile="Интерьер,Роспись,Галерея"><span class="tp-info">Церковь Иоанна Предтечи. Интерьер галереи</span><img data-full-image="img/page05-6/_DSC6851.jpg" src="img/page05-6/_DSC6851_mini.jpg"></li>
+<li data-pile="Интерьер,Детали"><span class="tp-info">Церковь Иоанна Предтечи. Пир у царя Ирода. Танец Саломеи</span><img data-full-image="img/page05-6/110154.jpg" src="img/page05-6/110154_mini.jpg"></li>
+<li data-pile="Интерьер,Детали"><span class="tp-info">Церковь Иоанна Предтечи. Песнь песней</span><img data-full-image="img/page05-6/110156.jpg" src="img/page05-6/110156_mini.jpg"></li>
+<li data-pile="Интерьер,Детали"><span class="tp-info">Церковь Иоанна Предтечи. Четьи минеи: Июль</span><img data-full-image="img/page05-6/110151.jpg" src="img/page05-6/110151_mini.jpg"></li>
+<li data-pile="Интерьер,Детали"><span class="tp-info">Церковь Иоанна Предтечи. Сотворение мира: День пятый</span><img data-full-image="img/page05-6/110140.jpg" src="img/page05-6/110140_mini.jpg"></li>
+<li data-pile="Интерьер,Детали"><span class="tp-info">Церковь Иоанна Предтечи. Купание Вирсавии</span><img data-full-image="img/page05-6/110142.jpg" src="img/page05-6/110142_mini.jpg"></li>
+<li data-pile="Интерьер,Детали"><span class="tp-info">Церковь Иоанна Предтечи. Видение святого Венедикта</span><img data-full-image="img/page05-6/110148.jpg" src="img/page05-6/110148_mini.jpg"></li>
+            </ul>
+            <br><br><br><br><br><br><br><br><br>
+        </div>
+    </div>
+</div>
