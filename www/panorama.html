@@ -1,50 +1,71 @@
 <!doctype html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Panorama</title>
-        
-        <link rel="stylesheet" type="text/css" href="css/panorama.css">
-        
-        <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
-        <script type="text/javascript" src="js/swfkrpano.js"></script>
-        <script type="text/javascript" src="js/krpanoiphone.license.js"></script>
-        <script type="text/javascript" src="js/krpanoiphone.js"></script>
+  <head>
+    <meta charset="UTF-8">
+    <title>Panorama</title>
 
-        <script type="text/javascript">
-            $(document).ready(function(e) {
-                var path = "panoramas/" + document.location.search.substring(1) + "/";
-                var settings = {
-                  swf: path+"virtualtour.swf",
-                  xml: path+"virtualtour.xml",
-                  target: "PanoramaContent",
-                  html5: "prefer"
-                }
-                var panoramaViewer = createPanoViewer(settings);
-                panoramaViewer.embed();
-				
-				$("#ClosePanorama,#Gyroscope").unbind("touchstart").bind("touchstart",
-					function(event) {
-						var target = event.currentTarget,
-						      krpano = document.getElementById("krpanoSWFObject");
-						switch (target.id) {
-							case "ClosePanorama":
-								krpano.unload();
-								window.location.href = "index.html" + document.location.search;
-							break;
-							case "Gyroscope":
-								krpano.set("plugin[gyro].enabled", !krpano.get("plugin[gyro].enabled"));
-							break;
-						  }
-					});
-            });
-        </script>
-    </head>
-    <body>
-         <div id="PanoramaContent" class="invisible" data-url="panorama.html">
-            <img id="ClosePanorama" src="img/buttons/panorama_close.png">
-            <img id="Gyroscope" src="img/buttons/panorama_gyroscope.png">    
-         </div>
-    </body>
+    <link rel="stylesheet" type="text/css" href="css/panorama.css">
+
+    <script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="js/swfkrpano.js"></script>
+    <script type="text/javascript" src="js/krpanoiphone.license.js"></script>
+    <script type="text/javascript" src="js/krpanoiphone.js"></script>
+
+    <script type="text/javascript">
+      $(document).ready(function(e) {
+        var parseParameters = function (str) {
+          var options = {
+                backpage: "Page05-1",
+                temple: "Page05-1",
+                panorama: "panorama_0.xml"
+              },
+              parameters = str.match(/([^=&?]+)=([^&]+)/g);
+          for (var i = parameters.length - 1; i >= 0; i--) {
+            var keyValuePair = parameters[i].split("=");
+            switch (keyValuePair[0]) {
+            case "backpage":
+              options.backpage = keyValuePair[1];
+              break;
+            case "panorama":
+              options.panorama = keyValuePair[1];
+              break;
+            case "temple":
+              options.temple = keyValuePair[1];
+              break;
+            }
+          }
+          return options;
+        };
+
+        var options = parseParameters(document.location.search),
+            path = "panoramas/" + options.temple + "/",
+            settings = {
+              xml: path + options.panorama,
+              target: "PanoramaContent",
+              html5: "prefer"
+            },
+            panoramaViewer = createPanoViewer(settings);
+        panoramaViewer.embed();
+
+        $("#ClosePanorama,#Gyroscope").unbind("touchstart").bind("touchstart", function(event) {
+          var krpano = document.getElementById("krpanoSWFObject");
+          switch (event.currentTarget.id) {
+            case "ClosePanorama":
+              krpano.unload();
+              window.location.href = "index.html?" + options.backpage;
+              break;
+            case "Gyroscope":
+              krpano.set("plugin[gyro].enabled", !krpano.get("plugin[gyro].enabled"));
+              break;
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="PanoramaContent" class="invisible" data-url="panorama.html">
+      <img id="ClosePanorama" src="img/buttons/panorama_close.png">
+      <img id="Gyroscope" src="img/buttons/panorama_gyroscope.png">
+    </div>
+  </body>
 </html>
-

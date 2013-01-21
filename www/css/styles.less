@@ -746,109 +746,26 @@ body {
 						}
 					}
 				}
-				/*
-					li {
-						div {
-							position: absolute;
-							background: #fff;
-							line-height: 20px;
-							color: #333;
-							left: 0px;
-							top: 40%;
-
-							padding: 10px 35px 10px 10px;
-							width: 50%;
-							box-shadow: 0 2px 3px rgba(0,0,0,0.2);
-							span:nth-child(2) {
-								color: #aaa;
-								padding: 0 5px;
-								background: #F7F7F7;
-								right: 0px;
-								height: 100%;
-								line-height: 40px;
-								top: 0px;
-								position: absolute;
-								display: block;
-							}
+			}
+			&#Page07 {
+				table {
+					padding: (@padding-top-thick + 38px) @padding-right 0px @padding-left-thick;
+					font-family: "PT Sans Pro Narrow Demi Regular";
+					text-align: center;
+					tr {
+						vertical-align: bottom;
+						img {
+							max-width: 205px;
+							max-height: 205px;
 						}
-
-
+						&:nth-child(odd) {
+							height: 250px;
+						}
+						&:nth-child(1), {
+							height: 0px;
+						}
 					}
 				}
-				/*
-				ul#Photos.tp-grid {
-					list-style-type: none;
-					position: relative;
-					display: block;
-
-					left: @padding-left-thick;
-					top: @padding-top-thin;
-
-					max-width: @width-portrait - @padding-left-thick - @buttons-width;
-
-					padding: 0px;
-					margin: 0px;
-
-					li {
-						position: absolute;
-						cursor: pointer;
-						border: 10px solid #fff;
-						box-shadow: 0 2px 3px rgba(0,0,0,0.2);
-						display: none;
-						overflow: hidden;
-						-webkit-backface-visibility: hidden;
-						backface-visibility: hidden;
-
-						img {
-							display: block;
-							position: relative;
-							border: none;
-							max-width: 240px;
-							max-height: 160px;
-						}
-
-						.tp-info, .tp-title {
-							position: absolute;
-							background: #fff;
-							line-height: 20px;
-							color: #333;
-							left: 0px;
-							top: 40%;
-							font-family: "PT Sans Pro Narrow Demi Regular";
-							font-size: 35pt / @font-divisor;
-						}
-
-						.tp-info {
-							width: 240px;
-							opacity: 0;
-						}
-
-						.tp-title {
-							padding: 10px 35px 10px 10px;
-							width: 50%;
-							box-shadow: 0 2px 3px rgba(0,0,0,0.2);
-						}
-
-						.tp-title span:nth-child(2){
-							color: #aaa;
-							padding: 0 5px;
-							background: #F7F7F7;
-							right: 0px;
-							height: 100%;
-							line-height: 40px;
-							top: 0px;
-							position: absolute;
-							display: block;
-						}
-					}
-					&.tp-open li {
-						overflow: visible;
-						.tp-info {
-							top: 160px + 15px;
-							opacity: 1;
-						}
-					}
-				}*/
 			}
 		}
 	}

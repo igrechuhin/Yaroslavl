@@ -2,7 +2,7 @@ function Guide() {}
 
 Guide.zoom = null;
 
-Guide.setImage = function(source, text) {
+Guide.setImage = function (source, text) {
 	var _image = _PlanImage.find("#Image"),
 		_label = _PlanImage.find("#Label"),
 		_imageContent = _PlanImage.find("#ImageContent"),
@@ -10,9 +10,9 @@ Guide.setImage = function(source, text) {
 
 	_imageContent.addClass("hide");
 	_image.attr("src", source);
-	setTimeout(function() {
+	setTimeout(function () {
 		Guide.zoomCreate(_imageContent);
-		setTimeout(function() {
+		setTimeout(function () {
 			var imageHeight = _image.css("height").replace(/[^\-\d\.]/g, ""),
 				marginTop = (areaHeight - imageHeight) / 2;
 			_image.css("margin-top", marginTop + "px");
@@ -22,9 +22,9 @@ Guide.setImage = function(source, text) {
 	}, 250);
 };
 
-Guide.register = function(target) {
+Guide.register = function (target) {
 	var images = [];
-	target.children().each(function(index, element) {
+	target.children().each(function (index, element) {
 		var el = $(element);
 		images.push({
 			source: "img/" + el.data("image"),
@@ -39,23 +39,25 @@ Guide.register = function(target) {
 
 	audio.initialize({
 		controls: _PlanImage.find("#AudioPlayer"),
-		onPositionUpdate: function(position) {
-			var pos = parseInt(position);
-			if (pos >= images[currentIndex].from && pos <= images[currentIndex].to) return;
+		onPositionUpdate: function (position) {
+			var pos = parseInt(position, 10);
+			if (pos >= images[currentIndex].from && pos <= images[currentIndex].to) {
+				return;
+			}
 			for (var i = 0; i < images.length; i++) {
 				if (pos >= images[i].from && pos <= images[i].to) {
 					currentIndex = i;
 					Guide.setImage(images[currentIndex].source, images[currentIndex].label);
 					return;
-				};
-			};
+				}
+			}
 		},
-		onRelease: function() {
+		onRelease: function () {
 			_PlanImage.find("#Image").attr("src", "");
 			_PlanImage.find("#Label").text("");
 		}
 	});
-	setTimeout(function() {
+	setTimeout(function () {
 		_PlanImage.removeClass("invisible").find("#Close").unbind("touchstart").bind("touchstart", Guide.hide);
 		_Pages.addClass("invisible");
 		_Hint.addClass("invisible");
@@ -66,9 +68,9 @@ Guide.register = function(target) {
 		});
 	}, 100);
 	event.stopPropagation();
-}
+};
 
-Guide.hide = function() {
+Guide.hide = function () {
 	Guide.zoomDestroy();
 	audio.release();
 	_PlanImage.find("#PlayPause").removeClass("invert");
@@ -76,16 +78,16 @@ Guide.hide = function() {
 	_PlanImage.addClass("invisible");
 	_Pages.removeClass("invisible");
 	_Hint.removeClass("invisible");
-}
+};
 
-Guide.zoomDestroy = function() {
+Guide.zoomDestroy = function () {
 	if (Guide.zoom !== null) {
 		Guide.zoom.destroy();
 		Guide.zoom = null;
-	};
-}
+	}
+};
 
-Guide.zoomCreate = function(target) {
+Guide.zoomCreate = function (target) {
 	if (Guide.zoom !== null) {
 		Guide.zoom.zoom(0, 0, 1, 0);
 		Guide.zoom.refresh();
@@ -101,4 +103,4 @@ Guide.zoomCreate = function(target) {
 			lockDirection: false
 		});
 	}
-}
+};

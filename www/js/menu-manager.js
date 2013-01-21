@@ -1,20 +1,20 @@
 function Menu() {}
 
-Menu.register = function() {
+Menu.register = function () {
   setTimeout(function () {
     _Menu.children(".button").bind(
       "touchstart",
       Menu.touch);
     _Menu.children("#Dim").bind(
       "touchstart touchmove touchend touchcancel",
-      function(event) {
+      function (event) {
         event.stopPropagation();
       }
     );
   }, 0);
 };
 
-Menu.setup = function(Parameters) {
+Menu.setup = function (Parameters) {
   console.assert(Parameters.hasOwnProperty("pageID"), "Menu.setup -- pageID undefined");
   var currentButtonID = ["#Page", "Button"].join(Parameters.pageID.substring(4, 6));
   _Menu.children().removeClass("invert").addClass("normal");
@@ -22,32 +22,32 @@ Menu.setup = function(Parameters) {
   Menu.hide();
 };
 
-Menu.show = function() {
+Menu.show = function () {
   $("video").addClass("invisible2");
   _Menu.removeClass("invisible");
-  setTimeout(function() {
+  setTimeout(function () {
     _Menu.children().addClass("show");
-    setTimeout(function() {
+    setTimeout(function () {
       _Menu.children(".hide").removeClass("show");
     }, 1000);
   }, 50);
 };
 
-Menu.hide = function() {
+Menu.hide = function () {
   _Menu.children().removeClass("show");
   $("video").removeClass("invisible2");
-  setTimeout(function() {
+  setTimeout(function () {
     _Menu.addClass("invisible");
   }, 500);
 };
 
-Menu.touch = function(event) {
-  Menu.gotoPage($("#"+$(event.currentTarget).data("page")));
+Menu.touch = function (event) {
+  Menu.gotoPage($("#" + $(event.currentTarget).data("page")));
   event.stopPropagation();
 };
 
 Menu.currentPage = -1;
-Menu.gotoPage = function(target) {
+Menu.gotoPage = function (target) {
   var doLoad = true;
   if (typeof target === "number") {
     if (Menu.currentPage.index() !== target) {
@@ -68,7 +68,7 @@ Menu.gotoPage = function(target) {
   }
 };
 
-Menu.createScroller = function(page, options) {
+Menu.createScroller = function (page, options) {
   var pageIndex = page.index();
   if (pageScroller[pageIndex] === undefined || pageScroller[pageIndex] === null) {
     setTimeout(function () {
@@ -79,10 +79,10 @@ Menu.createScroller = function(page, options) {
     pageScroller[pageIndex].refresh();
     pageScroller[pageIndex].scrollTo(0, 0, 0);
   }
-}
+};
 
-Menu.initPageAfterLoad = function(Parameters) {
-  setTimeout(function() {
+Menu.initPageAfterLoad = function (Parameters) {
+  setTimeout(function () {
     mainScroller.refresh();
     mainScroller.scrollToPage(Menu.currentPage.index(), 0, 300);
   }, 0);
@@ -91,92 +91,110 @@ Menu.initPageAfterLoad = function(Parameters) {
       pageID = that.attr("id"),
       pageIndex = that.index();
   switch (pageID) {
-    case "Buttons":
-    case "PanoramaContent":
-      Buttons.register();
+  case "Buttons":
+  case "PanoramaContent":
+    Buttons.register();
     break;
-    case "Menu":
-      Menu.register();
+  case "Menu":
+    Menu.register();
     break;
-    case "Temples":
-      Temples.register();
+  case "Temples":
+    Temples.register();
     break;
-    default:
-      if (Parameters.hasOwnProperty("loadNext") && Parameters.loadNext === true && that.hasClass("page")) {
-        setTimeout(function () {
-          Loader.getContent({
-             target: that.prev()
-            ,loadNext: false
-          });
-          Loader.getContent({
-             target: that.next()
-            ,loadNext: false
-          });
-        }, 300);
-        $(".plan").addClass("invisible");
-        var scrollerOptions = {
-          snap: true,
-          momentum: true,
-          hScroll: false,
-          vScroll: true,
-          hScrollbar: false,
-          vScrollbar: false,
-          lockDirection: true
-        };
-        switch (pageID) {
-          case "Page03":
-            var screens = that.find(".screen");
-            screens.css("height", wrapperHeight);
-            that.find(".scroller").css("height", wrapperHeight * screens.length);
-            scrollerOptions.onScrollEnd = function() {
-              Buttons.toggleEyeText.call(pageScroller[pageIndex]);
-              Buttons.refreshScroll.call(pageScroller[pageIndex]);
-            }
-            Menu.createScroller(that, scrollerOptions);
-            setTimeout(function () {
-              Buttons.toggleEyeText();
-            }, 50);
-          break;
-          case "Page04":
-            setTimeout(function () {
-              Map.register({target: that.children("#Map")});
-            }, 1000);
-          break;
-          case "Page05-1":
-          case "Page05-2":
-          case "Page05-3":
-          case "Page05-4":
-          case "Page05-5":
-          case "Page05-6":
-            scrollerOptions.snap = false;
-            scrollerOptions.onScrollEnd = Buttons.refreshScroll;
-            Menu.createScroller(that, scrollerOptions);
-          break;
+  default:
+    if (Parameters.hasOwnProperty("loadNext") && Parameters.loadNext === true && that.hasClass("page")) {
+      setTimeout(function () {
+        Loader.getContent({
+           target: that.prev(),
+           loadNext: false
+        });
+        Loader.getContent({
+           target: that.next(),
+           loadNext: false
+        });
+      }, 300);
+      $(".plan").addClass("invisible");
+      var scrollerOptions = {
+        snap: true,
+        momentum: true,
+        hScroll: false,
+        vScroll: true,
+        hScrollbar: false,
+        vScrollbar: false,
+        lockDirection: true,
+        onScrollMove: function () {
+          Buttons.skipImageShow = true;
+          Buttons.skipTouchOnScroll = true;
+        },
+        onScrollEnd: function () {
+          Buttons.refreshScroll();
+          setTimeout(function () {
+              Buttons.skipTouchOnScroll = false;
+          }, 50);
         }
-        setTimeout(function() {
-          var setupObj = { pageID: pageID };
-          Menu.setup(setupObj);
-          Temples.setup(setupObj);
-          Buttons.setup(setupObj);
-        }, 100);
-        // Cleanup
-        setTimeout(function() {
-          for (index in pageScroller) {
-            var ind = parseInt(index);
-            if (ind === pageIndex /*|| ind === _Page06.index()*/) continue;
-            if (pageScroller[ind] !== undefined && pageScroller[ind] !== null) {
-              pageScroller[ind].destroy();
-              pageScroller[ind] = null;
-            }
-          }
-          if (pageIndex !== _Page06.index()) {
-            Buttons.hideImages();
-          }
-          var toClear = that.prevAll(":gt(0)").add(that.nextAll(":gt(0)")).not(_Page04);//.not(_Page06);
-          toClear.children().remove();
-          toClear.html("");
-        }, 500);
+      };
+      switch (pageID) {
+      case "Page03":
+        var screens = that.find(".screen");
+        screens.css("height", wrapperHeight);
+        that.find(".scroller").css("height", wrapperHeight * screens.length);
+        scrollerOptions.onScrollEnd = function () {
+          Buttons.toggleEyeText();
+          Buttons.refreshScroll();
+          setTimeout(function () {
+            Buttons.skipTouchOnScroll = false;
+          }, 50);
+        };
+        Menu.createScroller(that, scrollerOptions);
+        setTimeout(function () {
+          Buttons.toggleEyeText();
+        }, 50);
+        break;
+      case "Page04":
+        setTimeout(function () {
+          Map.register({target: that.children("#Map")});
+        }, 1000);
+        break;
+      case "Page05-1":
+      case "Page05-2":
+      case "Page05-3":
+      case "Page05-4":
+      case "Page05-5":
+      case "Page05-6":
+        scrollerOptions.snap = false;
+        scrollerOptions.onScrollEnd = Buttons.refreshScroll;
+        Menu.createScroller(that, scrollerOptions);
+        break;
+      case "Page07":
+        var screens = that.find(".screen");
+        screens.css("height", wrapperHeight);
+        that.find(".scroller").css("height", wrapperHeight * screens.length);
+        Menu.createScroller(that, scrollerOptions);
+        break;
       }
+      setTimeout(function () {
+        var setupObj = { pageID: pageID };
+        Menu.setup(setupObj);
+        Temples.setup(setupObj);
+        Buttons.setup(setupObj);
+      }, 100);
+      // Cleanup
+      setTimeout(function () {
+        for (var ind = 0; ind < pageScroller.length; ind++) {
+          if (ind === pageIndex || pageScroller[ind] === undefined || pageScroller[ind] === null /*|| ind === _Page06.index()*/) {
+            continue;
+          }
+          pageScroller[ind].destroy();
+          pageScroller[ind] = null;
+        }
+        if (pageIndex !== _Page06.index()) {
+          Buttons.hideImages();
+        }
+        var toClear = that.prevAll(":gt(0)").add(that.nextAll(":gt(0)")).not(_Page04);//.not(_Page06);
+        toClear.children().remove();
+        toClear.html("");
+      }, 500);
+    }
     break;
   }
 };

@@ -38,19 +38,19 @@
         <script type="text/javascript" src="js/plan-manager.js"></script>
         <script type="text/javascript" src="js/guide-manager.js"></script>
         <script type="text/javascript" src="js/content-loader.js"></script>
-        
+
         <script type="text/javascript">
             $(document).ready(function(e) {
                 _Menu = $("#Menu");
-				_Buttons = $("#Buttons");
-				_Temples = $("#Temples");
-				_Hint = $("#Hint");
-				_MenuButton = $("#MenuButton");
-				_Pages = $("#Pages");
-				_PagesScroller = _Pages.children("#PagesScroller");
-				_PlanImage = $("#PlanImage");
+                _Buttons = $("#Buttons");
+                _Temples = $("#Temples");
+                _Hint = $("#Hint");
+                _MenuButton = $("#MenuButton");
+                _Pages = $("#Pages");
+                _PagesScroller = _Pages.children("#PagesScroller");
+                _PlanImage = $("#PlanImage");
 
-				_Page01 = _PagesScroller.children("#Page01");
+                _Page01 = _PagesScroller.children("#Page01");
                 _Page02 = _PagesScroller.children("#Page02");
                 _Page03 = _PagesScroller.children("#Page03");
                 _Page04 = _PagesScroller.children("#Page04");
@@ -69,60 +69,62 @@
                 _Page12 = _PagesScroller.children("#Page12");
                 _Page13 = _PagesScroller.children("#Page13");
 
-	            Loader.getContent({target: _Menu});
+                Loader.getContent({target: _Menu});
                 Loader.getContent({target: _Buttons});
-				Loader.getContent({target: _Temples});
-				Loader.getContent({target: _Hint});
-				Loader.getContent({target: _PlanImage});
+                Loader.getContent({target: _Temples});
+                Loader.getContent({target: _Hint});
+                Loader.getContent({target: _PlanImage});
 
-				var wrapperWidth = _Pages.width();
-				wrapperHeight = _Pages.height();
-				var pages = _PagesScroller.children();
+                var wrapperWidth = _Pages.width();
+                wrapperHeight = _Pages.height();
+                var pages = _PagesScroller.children();
 
-				_PagesScroller.css("width", wrapperWidth * pages.length);
-				pages.css("width", wrapperWidth).css("min-height", wrapperHeight);
+                _PagesScroller.css("width", wrapperWidth * pages.length);
+                pages.css("width", wrapperWidth).css("min-height", wrapperHeight);
 
-				mainScroller = new iScroll(_Pages.get(0), {
-					snap: true,
+                mainScroller = new iScroll(_Pages.get(0), {
+                    snap: true,
                     skipScrollRatio: 0.2,
-					momentum: false,
-					hThreshold: 200,
-					hScroll: true,
-					vScroll: false,
-					hScrollbar: false,
-					vScrollbar: false,
-					lockDirection: true,
-					onScrollMove: function(event) {
-                        Buttons.skipTouchOnMainScroll = true;
-						_MenuButton.addClass("invisible");
-						_Buttons.addClass("invisible");                        
-					},
-					onTouchEnd: function() {
+                    momentum: false,
+                    hThreshold: 200,
+                    hScroll: true,
+                    vScroll: false,
+                    hScrollbar: false,
+                    vScrollbar: false,
+                    lockDirection: true,
+                    onScrollMove: function(event) {
+                        Buttons.skipTouchOnScroll = true;
+                        _MenuButton.addClass("invisible");
+                        _Buttons.addClass("invisible");
+                    },
+                    onTouchEnd: function() {
                         Menu.gotoPage(this.currPageX);
-					},
+                    },
                     onScrollEnd: function() {
-                        Buttons.skipTouchOnMainScroll = false;
+                        setTimeout(function () {
+                            Buttons.skipTouchOnScroll = false;
+                        }, 50);
                     }
-				});
-				pageScroller = [];
+                });
+                pageScroller = [];
 
-				var pageID = document.location.search.substring(1);
-				var loadPage = pages.first();
-				if (pageID.length > 0) {
-					loadPage = pages.filter("#"+pageID);
-				}
-			
-				Menu.gotoPage(loadPage);
+                var pageID = document.location.search.substring(1);
+                var loadPage = pages.first();
+                if (pageID.length > 0) {
+                    loadPage = pages.filter("#"+pageID);
+                }
+
+                Menu.gotoPage(loadPage);
             });
         </script>
     </head>
     <body>
-    	<div id="MenuButton" class="brown"><p>содержание</p></div>
+        <div id="MenuButton" class="brown"><p>содержание</p></div>
         <div id="Menu" class="invisible" data-url="menu.html"></div>
         <div id="Buttons" data-url="buttons.html"></div>
         <div id="Temples" class="invisible" data-url="temples.html"></div>
         <div id="Pages">
-        	<div id="PagesScroller">
+            <div id="PagesScroller">
                 <div id="Page01" class="page" data-url="page01.html"></div>
                 <div id="Page02" class="page" data-url="page02.html"></div>
                 <div id="Page03" class="page" data-url="page03.html"></div>
