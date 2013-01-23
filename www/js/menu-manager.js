@@ -114,6 +114,12 @@ Menu.initPageAfterLoad = function (Parameters) {
         });
       }, 300);
       $(".plan").addClass("invisible");
+      var scrollEnd = function () {
+          Buttons.refreshScroll();
+          setTimeout(function () {
+              Buttons.skipTouchOnScroll = false;
+          }, 50);
+      };
       var scrollerOptions = {
         snap: true,
         momentum: true,
@@ -126,12 +132,7 @@ Menu.initPageAfterLoad = function (Parameters) {
           Buttons.skipImageShow = true;
           Buttons.skipTouchOnScroll = true;
         },
-        onScrollEnd: function () {
-          Buttons.refreshScroll();
-          setTimeout(function () {
-              Buttons.skipTouchOnScroll = false;
-          }, 50);
-        }
+        onScrollEnd: scrollEnd
       };
       switch (pageID) {
       case "Page03":
@@ -140,10 +141,7 @@ Menu.initPageAfterLoad = function (Parameters) {
         that.find(".scroller").css("height", wrapperHeight * screens.length);
         scrollerOptions.onScrollEnd = function () {
           Buttons.toggleEyeText();
-          Buttons.refreshScroll();
-          setTimeout(function () {
-            Buttons.skipTouchOnScroll = false;
-          }, 50);
+          scrollEnd();
         };
         Menu.createScroller(that, scrollerOptions);
         setTimeout(function () {
@@ -161,8 +159,10 @@ Menu.initPageAfterLoad = function (Parameters) {
       case "Page05-4":
       case "Page05-5":
       case "Page05-6":
+      case "Page09":
+//      case "Page10":
+      case "Page12":
         scrollerOptions.snap = false;
-        scrollerOptions.onScrollEnd = Buttons.refreshScroll;
         Menu.createScroller(that, scrollerOptions);
         break;
       case "Page07":
@@ -170,6 +170,10 @@ Menu.initPageAfterLoad = function (Parameters) {
         screens.css("height", wrapperHeight);
         that.find(".scroller").css("height", wrapperHeight * screens.length);
         Menu.createScroller(that, scrollerOptions);
+        break;
+      case "Page08":
+        break;
+      case "Page11":
         break;
       }
       setTimeout(function () {

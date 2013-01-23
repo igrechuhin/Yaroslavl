@@ -29,6 +29,7 @@
 
 @padding-top-thin:			85px;
 @padding-top-thick:			116px;
+@padding-top-thick2:		148px;
 @padding-right:				126px;
 @padding-left-thin:			26px;
 @padding-left-thick:		52px;
@@ -290,7 +291,7 @@ body {
 		color: @color-normal;
 		&.invert {
 			color: @color-invert;
-			&#Panorama {
+			&#Photo,&#Panorama {
 				color: @color-normal;
 			}
 		}
@@ -308,7 +309,7 @@ body {
 		&#Plan {.buttons-define("plan");}
 		&#Audio {.buttons-define("audio");}
 		&#Route {.buttons-define("marshrut");}
-		&#Photo {.buttons-define("photo");}
+		&#Photo {background-image: url("../img/buttons/photo.png");}
 		&#Panorama {background-image: url("../img/buttons/panorama.png");}
 		&#Temple {
 			.buttons-define("hramy");
@@ -398,6 +399,8 @@ body {
 #Pages {
 	.full-screen;
 	z-index: @page-zindex;
+	-webkit-transform: translateZ(0);
+	.unselectable;
 	div#PagesScroller {
 		-webkit-transform: translate3d(0,0,0);
 		transform: translate3d(0,0,0);
@@ -431,6 +434,7 @@ body {
 				span {border-bottom: 1px solid #000;}
 				z-index: @header-zindex;
 				background-color: #FFF;
+				.unselectable;
 			}		
 			article {
 				padding-left: @padding-left-thick;
@@ -519,11 +523,11 @@ body {
 			}
 			&#Page03 {
 				img {
-					padding: 150px 0px 0px @padding-left-thin;
+					padding: @padding-top-thick2 0px 0px @padding-left-thin;
 					height: 840px;
 				}
 				article {
-					padding-top: 150px;
+					padding-top: @padding-top-thick2;
 					font-size: 10pt;
 					line-height: 14pt;
 					-webkit-column-count: 2;
@@ -599,9 +603,9 @@ body {
 			&#Page05-1,&#Page05-2,&#Page05-3,&#Page05-4,&#Page05-5,&#Page05-6 {
 				.screen {
 					table {
-						padding: 148px @padding-right 0px @padding-left-thick;
+						-webkit-transform: translateZ(0);
+						padding: @padding-top-thick2 @padding-right 0px @padding-left-thick;
 						font-family: "PT Sans Pro Narrow Demi Regular";
-						text-align: center;
 						tr {
 							vertical-align: bottom;
 							img {
@@ -766,6 +770,117 @@ body {
 						}
 					}
 				}
+			}
+			&#Page08 {
+				table {
+					padding: @padding-top-thin @padding-right 0px (2 * @padding-left-thick);
+					font-family: "PT Sans Pro Narrow Demi Regular";
+					font-size: 35pt / @font-divisor;
+					text-align: left;
+					tr {
+						height: 1.5 * @buttons-size;
+						vertical-align: bottom;
+						&:first-child {
+							height: @buttons-size;
+						}
+						td {
+							&.audio-button {
+								background-image: url("../img/buttons/audio.png");
+								background-size: @buttons-size;
+								background-repeat: no-repeat;
+								background-position: center bottom;
+								width: 140px;
+								//.size (@buttons-size);
+								p {
+									position: relative;
+									font-size: 10pt;
+									letter-spacing: 0.5px;
+									line-height: 13px;
+									bottom: -20px;
+									left: -20px;
+									text-align: center;
+									width: 130%;
+								}
+								color: @color-normal;
+							}
+							&.header {
+								p {
+									position: relative;
+									bottom: -26px;
+								}
+							}
+						}
+					}
+				}
+			}
+			&#Page09,&#Page10 {
+				article {
+					padding-top: @padding-top-thick2;
+					p:first-of-type {
+						span {
+							&:first-of-type, &:nth-of-type(2) {
+								font-family: 'PT Sans Pro Condensed Demi Regular';
+								font-size: 17pt;
+								span {
+									border-bottom: 2px solid black;
+								}
+							}
+						}
+					}
+				}
+			}
+			&#Page11 {
+				img#Info {
+					width: 100%;
+				}
+				div {
+					position: absolute;
+					left: @padding-left-thick;
+					top: 940px;
+					img {
+						.size(30px);
+						padding-right: 40px;
+					}
+				}
+			}
+			&#Page12 {
+				article {
+					padding-top: @padding-top-thick2;
+				}
+			}
+			&#Page13 {
+				article {
+					padding-top: @padding-top-thick2;
+					line-height: 15px;
+					-webkit-column-count: 2;
+					-webkit-column-rule-width: 0px;
+					p {
+						-webkit-column-break-inside: avoid;
+						margin-top: 0px;
+						span {
+							&.text {
+								font-size: 24pt / @font-divisor;
+								font-family: "PT Sans Caption Regular";
+							}
+							&.header1 {
+								font-size: 40pt / @font-divisor;
+								font-family: "PT Sans Pro Condensed Demi Regular";
+								border-bottom: 2px solid black;
+							}
+							&.header2 {
+								font-size: 25pt / @font-divisor;
+								font-family: 'PT Sans Pro Narrow Extra Bold Regular';
+							}
+						}
+					}
+				}
+				img {
+					//position: absolute;
+					//bottom: 0px;
+					padding-left: @padding-left-thick;
+					width: @width-portrait - @padding-left-thick - @padding-right;
+				}
+
 			}
 		}
 	}

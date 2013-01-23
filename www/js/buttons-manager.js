@@ -19,6 +19,8 @@ Buttons.setup = function (Parameters) {
     _MenuButton.addClass("brown");
     break;
   case "Page02":
+  case "Page10":
+  case "Page13":
     _Buttons.children("#Temple").removeClass("invisible");
     break;
   case "Page03":
@@ -45,6 +47,18 @@ Buttons.setup = function (Parameters) {
     _Buttons.children("#Temple").add(_Hint).removeClass("invisible");
     _Page07.find("td.panorama-button").unbind("touchend").bind("touchend", Buttons.touch);
     break;
+  case "Page08":
+    _Buttons.children("#Temple").removeClass("invisible");
+    _Page08.find("td.audio-button").unbind("touchend").bind("touchend", Buttons.touch);
+    break;
+  case "Page09":
+  case "Page12":
+    _Buttons.children("#Temple").add(_Hint).removeClass("invisible");
+    break;
+  case "Page11":
+    _Buttons.children("#Temple").removeClass("invisible");
+    _Page11.find("img.social-button").unbind("touchend").bind("touchend", Buttons.touch);
+    break;
   }
   _Buttons.removeClass("invisible");
   _Buttons.children("#Audio").popover("destroy");
@@ -65,6 +79,10 @@ Buttons.touch = function (event) {
     Buttons.showImages(targetObj);
   } else if (targetObj.hasClass("panorama-button")) {
     window.location.href = "panorama.html?backpage=Page07" + "&temple=" + targetObj.data("temple") + "&panorama=" + targetObj.data("panorama");
+  } else if (targetObj.hasClass("audio-button")) {
+    Guide.register(targetObj.children("ul"));
+  } else if (targetObj.hasClass("social-button")) {
+    window.open(targetObj.data("url"), "_blank");
   } else {
     switch (target.id) {
     case "Dim":
@@ -121,6 +139,10 @@ Buttons.touch = function (event) {
       break;
     case "Photo":
       targetObj = _Buttons.children("#" + target.id);
+      Menu.gotoPage(_Page06);
+      setTimeout(function () {
+        Buttons.showImages(_Page06.find("td#Temple" + currentPage.attr("id").substr("Page05-".length)));
+      }, 100);
       break;
     case "Plan":
       var plan = currentPage.children("#PlanContent");
@@ -142,23 +164,23 @@ Buttons.touch = function (event) {
   }
 };
 
-Buttons.scrollY = function (currentScroller, direction) {
-  if (currentScroller === undefined || currentScroller === null) {
+Buttons.scrollY = function (scroll, direction) {
+  if (scroll === undefined || scroll === null) {
     return;
   }
   var currentPageIndex = Menu.currentPage.index(),
       dir = (direction === "Up") ? -1 : 1,
       scrollHeight = 0;
-  if (mainScroller.currPageX >= 4 && mainScroller.currPageX <= 9) {
+  if ((currentPageIndex >= 4 && currentPageIndex <= 9) || currentPageIndex === 13 || currentPageIndex === 16) {
     var linesCount = 3,
         lineHeight = Menu.currentPage.find("#MainContent > .scroller > .screen > article").css("line-height").replace(/[^\-\d\.]/g, ""),
         hintHeight = _Hint.css("height").replace(/[^\-\d\.]/g, "");
-    scrollHeight = currentScroller.wrapperH - hintHeight - lineHeight * linesCount;
+    scrollHeight = scroll.wrapperH - hintHeight - lineHeight * linesCount;
   }
   if (scrollHeight !== 0) {
-    currentScroller.scrollTo(0, dir * scrollHeight, Buttons.scrollDuration, true);
-  } else if (currentScroller.pagesY.length !== 0) {
-    currentScroller.scrollToPage(0, currentScroller.currPageY + dir, Buttons.scrollDuration);
+    scroll.scrollTo(0, dir * scrollHeight, Buttons.scrollDuration, true);
+  } else if (scroll.pagesY.length !== 0) {
+    scroll.scrollToPage(0, scroll.currPageY + dir, Buttons.scrollDuration);
   }
   else {
     if (currentPageIndex === _Page06.index()) {
@@ -169,12 +191,12 @@ Buttons.scrollY = function (currentScroller, direction) {
             height = $eq.height(),
             windowHeight = $(window).height();
         if (top <= dir * windowHeight && (top + height >= dir * windowHeight)) {
-          currentScroller.scrollToElement($eq.get(0), Buttons.scrollDuration);
+          scroll.scrollToElement($eq.get(0), Buttons.scrollDuration);
           return;
         }
       }
       if (dir === -1) {
-        currentScroller.scrollToElement($li.eq(0).get(0), Buttons.scrollDuration);
+        scroll.scrollToElement($li.eq(0).get(0), Buttons.scrollDuration);
       }
     }
   }
@@ -207,6 +229,9 @@ Buttons.toggleEyeText = function () {
 Buttons.refreshScroll = function () {
   var scrollHint = _Hint.children("#UpDown"),
       scroll = pageScroller[Menu.currentPage.index()];
+   if (scroll === undefined || scroll === null) {
+    return;
+  }
   scrollHint.children().removeClass("invisible2");
   if (scroll.pagesY.length !== 0) {
     if (scroll.currPageY === 0) { // remove up
@@ -268,6 +293,11 @@ Buttons.showImages = function (target) {
             }, 50);
           }
       };
+
+  Buttons.skipImageShow = true;
+  setTimeout(function () {
+      Buttons.skipImageShow = false;
+  }, 50);
 
   Buttons.psInstance = $list.find("img").photoSwipe(galleryOptions);
 

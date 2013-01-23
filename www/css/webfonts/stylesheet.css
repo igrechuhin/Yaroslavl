@@ -60,3 +60,25 @@
 		url('ptf55f-webfont.ttf') format('truetype'),
 		url('ptf55f-webfont.svg') format('svg');
 }
+
+@font-face {
+    font-family: 'PT Sans Caption Regular';
+    src: url('ptc55f-webfont.eot');
+    src: url('ptc55f-webfont.eot?#iefix') format('embedded-opentype'),
+         url('ptc55f-webfont.woff') format('woff'),
+         url('ptc55f-webfont.ttf') format('truetype'),
+         url('ptc55f-webfont.svg#pt_sans_captionregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Sans Pro Narrow Extra Bold Regular';
+    src: url('ptn87-webfont.eot');
+    src: url('ptn87-webfont.eot?#iefix') format('embedded-opentype'),
+         url('ptn87-webfont.woff') format('woff'),
+         url('ptn87-webfont.ttf') format('truetype'),
+         url('ptn87-webfont.svg#pt_sans_pro_narrow_extra_boRg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
