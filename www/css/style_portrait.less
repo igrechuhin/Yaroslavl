@@ -1,4 +1,3 @@
-@import url("webfonts/stylesheet.css");
 
 @color-green:				#93C357;
 @color-purple:				#745AA3;
@@ -29,7 +28,7 @@
 
 @padding-top-thin:			85px;
 @padding-top-thick:			116px;
-@padding-top-thick2:		148px;
+@padding-top-thick2:		145px;
 @padding-right:				126px;
 @padding-left-thin:			26px;
 @padding-left-thick:		52px;
@@ -38,6 +37,9 @@
 
 @width-portrait:			768px;
 @height-portrait:			1024px;
+
+@width-landscape:			1024px;
+@height-landscape:			768px;
 
 @hint-height:				45px;
 
@@ -50,7 +52,7 @@
 }
 
 .invisible {
-	display: none !important;
+	display: none;
 }
 
 .invisible2 {
@@ -140,7 +142,7 @@ body {
 	padding: 0px;
 }
 
-#MenuButton {
+div#MenuButton {
 	position: absolute;
 	z-index: @menuButton-zindex;
 	background-size: contain;
@@ -171,54 +173,56 @@ body {
 @font-medium: 35.8px / @coord-divisor;
 @font-small: 32px / @coord-divisor;
 
-#Menu {
+div#Menu {
 	div {
-		&#Page01Button {left: 318px; top: 580px; 
+		@menu-offset-left: 40px;
+		@menu-offset-top: 200px;
+		&#Page01Button {left: @menu-offset-left + 278px; top: @menu-offset-top + 380px; 
 			div {top: 30px; font-size: @font-big; text-align: center;}}
-		&#Page02Button {left: 129px; top: 596px; 
+		&#Page02Button {left: @menu-offset-left + 89px; top: @menu-offset-top + 396px; 
 			div {top: 12px; font-size: @font-medium; text-align: center;}}
-		&#Page03Button {left: 318px; top: 376px; 
+		&#Page03Button {left: @menu-offset-left + 278px; top: @menu-offset-top + 176px; 
 			div {top: 13px; font-size: @font-big; text-align: center;}}
-		&#Page04Button {left: 421px; top: 478px; 
+		&#Page04Button {left: @menu-offset-left + 381px; top: @menu-offset-top + 278px; 
 			div {top: 30px; font-size: @font-big; text-align: center;}}
-		&#Page05Button {left: 215px; top: 478px; 
+		&#Page05Button {left: @menu-offset-left + 175px; top: @menu-offset-top + 278px; 
 			div {top: 30px; font-size: @font-big; text-align: center;}}
-		&#Page06Button {left: 40px;  top: 509px; 
+		&#Page06Button {left: @menu-offset-left + 0px;  top: @menu-offset-top + 309px; 
 			div {top: 9px; font-size: @font-small; text-align: center;}}
-		&#Page07Button {left: 40px;  top: 713px; 
+		&#Page07Button {left: @menu-offset-left + 0px;  top: @menu-offset-top + 513px; 
 			div {top: 9px; font-size: @font-medium; text-align: center;}}
-		&#Page08Button {left: 656px; top: 508px; 
+		&#Page08Button {left: @menu-offset-left + 616px; top: @menu-offset-top + 308px; 
 			div {top: 9px; font-size: @font-medium; text-align: center;}}
-		&#Page09Button {left: 142px; top: 816px; 
+		&#Page09Button {left: @menu-offset-left + 102px; top: @menu-offset-top + 616px; 
 			div {top: 11px; font-size: @font-medium; text-align: center;}}
-		&#Page10Button {left: 348px; top: 816px; 
+		&#Page10Button {left: @menu-offset-left + 308px; top: @menu-offset-top + 616px; 
 			div {top: 15px;  font-size: @font-small; text-align: center;}}
-		&#Page11Button {left: 438px; top: 700px; 
+		&#Page11Button {left: @menu-offset-left + 398px; top: @menu-offset-top + 500px; 
 			div {top: 22px; font-size: @font-medium; text-align: center;}}
-		&#Page12Button {left: 232px; top: 290px; 
+		&#Page12Button {left: @menu-offset-left + 192px; top: @menu-offset-top + 90px; 
 			div {top: 9px; font-size: @font-small; text-align: center;}}
-		&#Page13Button {left: 348px; top: 200px; 
+		&#Page13Button {left: @menu-offset-left + 308px; top: @menu-offset-top + 0px; 
 			div {top: 6px;  font-size: @font-small; text-align: center;}}
 		
-		&#MenuCircle01 {left: 440px; top: 290px;}
-		&#MenuCircle02 {left: 656px; top: 713px;}
-		&#MenuCircle03 {left: 142px; top: 200px;}
-		&#MenuCircle04 {left: 129px; top: 392px;}
+		&#MenuCircle01 {left: @menu-offset-left + 400px; top: @menu-offset-top + 90px;}
+		&#MenuCircle02 {left: @menu-offset-left + 616px; top: @menu-offset-top + 513px;}
+		&#MenuCircle03 {left: @menu-offset-left + 102px; top: @menu-offset-top + 0px;}
+		&#MenuCircle04 {left: @menu-offset-left + 89px; top: @menu-offset-top + 192px;}
 		
-		&#MenuRect01 {left: 595px;	top: 356px; width: 10px;  height: 185px;}
-		&#MenuRect02 {left: 568px;	top: 542px; width: 80px;  height: 10px;}
-		&#MenuRect03 {left: 485px;	top: 625px; width: 10px;  height: 65px;}
-		&#MenuRect04 {left: 550px;	top: 748px; width: 100px; height: 10px;}
-		&#MenuRect05 {left: 690px;	top: 595px; width: 10px;  height: 110px;}
-		&#MenuRect06 {left: 381px;	top: 726px; width: 10px;  height: 82px;}
-		&#MenuRect07 {left: 192px;	top: 758px; width: 165px; height: 10px;}
-		&#MenuRect08 {left: 174px;	top: 709px; width: 10px;  height: 100px;}
-		&#MenuRect09 {left: 126px;	top: 542px; width: 80px;  height: 10px;}
-		&#MenuRect10 {left: 74px;	top: 595px; width: 10px;  height: 110px;}
-		&#MenuRect11 {left: 380px;	top: 287px; width: 10px;  height: 80px;}
-		&#MenuRect12 {left: 322px;	top: 281px; width: 35px;  height: 10px;}
-		&#MenuRect13 {left: 224px;	top: 266px; width: 10px;  height: 35px;}
-		&#MenuRect14 {left: 177px;	top: 285px; width: 10px;  height: 100px;}
+		&#MenuRect01 {left: @menu-offset-left + 555px;	top: @menu-offset-top + 156px; width: 10px;  height: 185px;}
+		&#MenuRect02 {left: @menu-offset-left + 528px;	top: @menu-offset-top + 342px; width: 80px;  height: 10px;}
+		&#MenuRect03 {left: @menu-offset-left + 445px;	top: @menu-offset-top + 425px; width: 10px;  height: 65px;}
+		&#MenuRect04 {left: @menu-offset-left + 510px;	top: @menu-offset-top + 548px; width: 100px; height: 10px;}
+		&#MenuRect05 {left: @menu-offset-left + 650px;	top: @menu-offset-top + 395px; width: 10px;  height: 110px;}
+		&#MenuRect06 {left: @menu-offset-left + 341px;	top: @menu-offset-top + 526px; width: 10px;  height: 82px;}
+		&#MenuRect07 {left: @menu-offset-left + 152px;	top: @menu-offset-top + 558px; width: 165px; height: 10px;}
+		&#MenuRect08 {left: @menu-offset-left + 134px;	top: @menu-offset-top + 509px; width: 10px;  height: 100px;}
+		&#MenuRect09 {left: @menu-offset-left + 86px;	top: @menu-offset-top + 342px; width: 80px;  height: 10px;}
+		&#MenuRect10 {left: @menu-offset-left + 34px;	top: @menu-offset-top + 395px; width: 10px;  height: 110px;}
+		&#MenuRect11 {left: @menu-offset-left + 340px;	top: @menu-offset-top + 87px; width: 10px;  height: 80px;}
+		&#MenuRect12 {left: @menu-offset-left + 282px;	top: @menu-offset-top + 81px; width: 35px;  height: 10px;}
+		&#MenuRect13 {left: @menu-offset-left + 184px;	top: @menu-offset-top + 66px; width: 10px;  height: 35px;}
+		&#MenuRect14 {left: @menu-offset-left + 137px;	top: @menu-offset-top + 85px; width: 10px;  height: 100px;}
 
 		position: fixed;
 		z-index: @menu-zindex;
@@ -266,7 +270,7 @@ body {
 	}
 }
 
-#Buttons {
+div#Buttons {
 	position: fixed;
 	z-index: @buttons-zindex;
 	top: 0px;
@@ -337,7 +341,7 @@ body {
 	}
 }
 
-#Temples {
+div#Temples {
 	position: fixed;
 	z-index: @buttons-zindex;
 	bottom: 0px;
@@ -396,7 +400,7 @@ body {
 @plan05-6-top: 320px / @coord-divisor;
 @plan05-6-left: 78px / @coord-divisor;
 
-#Pages {
+div#Pages {
 	.full-screen;
 	z-index: @page-zindex;
 	-webkit-transform: translateZ(0);
@@ -409,7 +413,7 @@ body {
 
 		-webkit-backface-visibility: hidden;
 		backface-visibility: hidden;
-		.page {
+		div.page {
 			float: left;
 			-webkit-transform: translate3d(0,0,0);
 			transform: translate3d(0,0,0);
@@ -453,7 +457,7 @@ body {
 				top: 40%;
 				left: 25%;
 			}
-			.plan {
+			div.plan {
 				.full-screen;
 				z-index: @plan-zindex;
 				background-color: #FFF;
@@ -470,14 +474,14 @@ body {
 					background-size: contain;
 				}				
 			}
-			.content {
+			div.content {
 				.full-screen;
-				.scroller {
+				div.scroller {
 					position: absolute;
 					z-index: @page-zindex;
 					width: 100%;
 					padding: 0px;
-					.screen {
+					div.screen {
 						-webkit-transform: translate3d(0,0,0);
 						-webkit-overflow-scrolling: touch;
 
@@ -491,23 +495,163 @@ body {
 			}
 			&#Page01 {
 				background-color: @color-red;
+				@header-top: 120px / @coord-divisor;
 				p {
 					font-family: "PT Sans Pro Condensed Demi Regular";
 					font-size: 42px;
+					margin: 0px;
 					color: #FFF;
 					border-bottom: 3px solid #FFF;
 					position: absolute;
-					left: 52px;
+					left: @padding-left-thick;
 					letter-spacing: 1px;
 					text-shadow: none;
 					&#Header0 {
 						font-family: "PT Sans Pro Narrow Light Regular";
-						top: -28px;
+						top: 14px;
 						letter-spacing: 2px;
 					}
+					&#Header1 {
+						top: @header-top;
+					}
+					&#Header2 {
+						top: @header-top + 50px;
+					}
+					&#Header3 {
+						top: @header-top + 100px;
+					}
+					&#Header4 {
+						top: @header-top + 150px;
+					}
+
 				}
 				img {
 					position: absolute;
+					&:first-of-type {
+						left: 120px / @coord-divisor;
+						top: 340px;
+						width: 640px;
+					}
+					&:nth-of-type(2) {
+						right: 41px;
+						top: 216px / @coord-divisor;
+						width: 210px;
+					}
+				}
+				div#GetInfo {
+					position: absolute;
+					top: 1822px / @coord-divisor;
+					left: @padding-left-thin;
+					background-size: contain;
+					background-image: url("../img/buttons/info_brown.png");
+					.size (@buttons-size);
+					p {
+						position: relative;
+						font-family: "PT Sans Pro Narrow Demi Regular";
+						font-size: 10pt;
+						letter-spacing: 0.5px;
+						line-height: 13px;
+						bottom: -70px;
+						left: -10px;
+						text-align: center;
+						width: 130%;
+						color: @color-bown;
+						border: none;
+					}
+				}
+				div#Info {
+					position: absolute;
+
+					left: 0px;
+					top: @height-portrait;
+					
+					@info-size: 510px / @coord-divisor;
+					width: 100%;
+					height: @info-size;
+					&.active {
+						//top: @height-portrait - (510px / @coord-divisor);
+						-webkit-transform: translate3d(0,-(@info-size),0);
+					}
+					-webkit-transform: translate3d(0,0,0);
+					-webkit-transition: all 0.3s ease-out;
+
+					background-color: white;
+					@row1: 85px / @coord-divisor;
+					p {
+						font-family: "PT Sans Pro Narrow Demi Regular";
+						font-size: 27pt / @font-divisor;
+						
+						letter-spacing: 0.5px;
+
+						&#Header {
+							top: 26px / @coord-divisor;
+							left: @padding-left-thick;
+							color: @color-invert;
+							border-bottom: 2px solid @color-invert;
+						}
+						&#Definition {
+							top: @row1;
+							left: 1194px / @coord-divisor;
+							color: @color-normal;
+							width: 290px / @coord-divisor;
+							border: none;
+						}
+					}
+
+
+					div {
+						position: absolute;
+						background-size: contain;
+						.size (@buttons-size);
+						p {
+							position: relative;
+							font-family: "PT Sans Pro Narrow Demi Regular";
+							font-size: 10pt;
+							letter-spacing: 0.5px;
+							line-height: 13px;
+							bottom: -70px;
+							left: -10px;
+							text-align: center;
+							width: 130%;
+							color: @color-normal;
+							border: none;
+						}
+						&.invert p{
+							color: @color-invert;
+						}
+
+						@row2: @row1 + (200px / @coord-divisor);
+
+						@col1: @padding-left-thick;
+						@col2: 347px / @coord-divisor;
+						@col3: 582px / @coord-divisor;
+						@col4: 750px / @coord-divisor;
+						@col5: 956px / @coord-divisor;
+
+						&#Close {
+							top: 0px;
+							left: 0px;
+							background-image: url("../img/buttons/closed_small.png");
+							.size (50px);
+						}
+
+						&#Menu {top: @row1; left: @col1; .buttons-define("contents");}
+						&#Temple {top: @row2; left: @col1; 
+							background-image: url("../img/buttons/hramy.png");
+							&.invert {
+								background-image: url("../img/buttons/hramy_invert_2.png");
+							}
+						}
+						&#Eye {top: @row1; left: @col2; .buttons-define("eye");}
+						&#Text {top: @row2; left: @col2; .buttons-define("text");}
+
+						&#Plan {top: @row1; left: @col3; .buttons-define("plan");}
+						&#Audio {top: @row1; left: @col4; .buttons-define("audio");}
+						&#Photo {top: @row2; left: @col3; .buttons-define("photo");}
+						&#Panorama {top: @row2; left: @col4; .buttons-define("panorama");}
+						
+						&#Route {top: @row1; left: @col5; .buttons-define("marshrut");}
+					}
 				}
 			}
 			&#Page02 {
@@ -523,8 +667,13 @@ body {
 			}
 			&#Page03 {
 				img {
-					padding: @padding-top-thick2 0px 0px @padding-left-thin;
-					height: 840px;
+					&.portrait {
+						padding: @padding-top-thick2 0px 0px @padding-left-thin;
+						height: 840px;						
+					}
+					&.landscape {
+						.invisible;
+					}
 				}
 				article {
 					padding-top: @padding-top-thick2;
@@ -533,6 +682,10 @@ body {
 					-webkit-column-count: 2;
 					-webkit-column-rule-width: 0px;
 					p {
+						&.landscape {
+							.invisible;
+						}
+
 						-webkit-column-break-inside: avoid;
 						margin-top: 0px;
 						span.templeName {
@@ -555,47 +708,15 @@ body {
 					bottom: @padding-left-thin;
 					border: 1px double #000;
 					.map_info {
-						font-family: "PT Sans Narrow Regular", Verdana, sans-serif;
+						font-family: 'PT Sans Narrow Demi Regular';
 						padding-top: 8px;
 						height: 100%;
 						
-						#Name {font-weight: 700;}
-						
-						p {padding-left: 10px;}
-						
-						table {
-							font-weight: normal;
-							width: 100%;
-							border: none;
-							vertical-align: bottom;
-							color: #FFF;
-							text-align: center;
-							tr {
-								height: 40px;
-								th {
-									color: @color-normal;
-									&.selected {
-										color: @color-red;
-									}
-								}
-								td {
-									color: #FFF;
-									background-color: @color-normal;
-									background-size: 50px;
-									background-position: center;
-									background-repeat: no-repeat;
-									&.selected {
-										color: #FFF;
-										background-color: @color-red;
-									}
-									&.month {
-										width: 40%;
-									}
-								}
-								&#Up {.map-info-table("up");}
-								&#Down {.map-info-table("down");}
-							}
+						#Name {
+							font-family: 'PT Sans Narrow Demi Bold';
 						}
+						
+						p {padding-left: 10px;}						
 					}
 				}
 				#MapMarkers {display: none;}
@@ -682,91 +803,126 @@ body {
 				}
 			}
 			&#Page06 {
-				table {
-					padding: @padding-top-thin @padding-right 0px @padding-left-thick;
-					font-family: "PT Sans Pro Narrow Demi Regular";
-					text-align: center;
-					tr {
-						vertical-align: bottom;
-						img {
-							max-width: 205px;
-							max-height: 205px;
-						}
-						&:nth-child(odd) {
-							height: 250px;
-						}
-						&:nth-child(1), {
-							height: 0px;
+				div {
+					&.images-button {
+						@shiftX: 290px;
+						@shiftY: 280px;
+						@row1: @padding-top-thick;
+						@row2: @row1 + @shiftY;
+						@row3: @row2 + @shiftY;
+						@col1: 88px;
+						@col2: @col1 + @shiftX;
+
+						div {
+							@size: 205px;
+							.size(@size + 30px);
+							background-size: @size;
+							background-repeat: no-repeat;
+							background-position: center bottom;
+
+							&:nth-of-type(1) { top: @row1; left: @col1; background-image: url("../img/page05-1/photo.jpg"); }
+							&:nth-of-type(2) { top: @row1; left: @col2; background-image: url("../img/page05-2/photo.jpg"); }
+							&:nth-of-type(3) { top: @row2; left: @col1; background-image: url("../img/page05-3/photo.jpg"); }
+							&:nth-of-type(4) { top: @row2; left: @col2; background-image: url("../img/page05-4/photo.jpg"); }
+							&:nth-of-type(5) { top: @row3; left: @col1; background-image: url("../img/page05-5/photo.jpg"); }
+							&:nth-of-type(6) { top: @row3; left: @col2; background-image: url("../img/page05-6/photo.jpg"); }
+
+							p {
+								position: relative;
+								font-family: "PT Sans Pro Narrow Demi Regular";
+								top: @size + 20px;
+								text-align: center;
+								width: 100%;
+							}
 						}
 					}
-				}
 
-				div#MainContent.content {
-					top: @padding-top-thin;
-					bottom: 1.3 * @hint-height;
-					//background-color: black;
-				}
-
-				ul.image-gallery {
-					//background-color: black;
-
-					list-style-type: none;
-					position: relative;
-					display: block;
-
-					left: @padding-left-thick;
-					//top: @padding-top-thin;
-
-					//max-width: @width-portrait - @padding-left-thick - @buttons-width;
-
-					padding: 0px;
-					margin: 0px;
-
-					li {
-						float: left;
-						padding: 0px 20px 0px 0px;
-
-						//overflow: hidden;
-						-webkit-backface-visibility: hidden;
-						backface-visibility: hidden;
-
-						img {
-							display: block;
-							position: relative;
-							max-width: 265px;
-							//max-height: 350px;
-
-							border: 10px solid #fff;
-							box-shadow: 0 2px 3px rgba(0,0,0,0.2);
+					@rowsCount: 7;
+					@colsCount: 4;
+					@previewWidth: 280px / @coord-divisor;
+					@previewHeight: 218px / @coord-divisor;
+					@padding: 10px;
+					@offsetTop: @padding-top-thick2;
+					@offsetLeft: @padding-left-thick;
+					//@borderSize: 6px;
+					//@sizeWithBorders: @previewSize;// + (2 * @borderSize);
+					.divColsLoop (@indexCols) when (@indexCols > 0) {
+						@divIndex: (@indexRows - 1) * @colsCount + @indexCols;
+						(~"div:nth-of-type(@{divIndex})") {
+							top: (@indexRows - 1) * (@previewHeight + @padding) + @offsetTop;
+							left: (@indexCols - 1) * (@previewWidth + @padding) + @offsetLeft;
 						}
-						div {
-							font-family: "PT Sans Pro Narrow Demi Regular";
-							font-size: 35pt / @font-divisor;
-							width: 265px;
-							min-height: 45px;
+						.divColsLoop(@indexCols - 1);
+					}
+					.divColsLoop (0) {}
 
-							//max-width: 265px;
-							//min-height: 45px;
+					.divRowsLoop (@indexRows) when (@indexRows > 0) {
+						.divColsLoop (@colsCount);
+						.divRowsLoop(@indexRows - 1);
+					}
+					.divRowsLoop (0) {}
+					.divRowsLoop (@rowsCount);
+
+					div {
+						position: absolute;
+						img {
+							width: @previewWidth;
+							height: @previewHeight;
 						}
 					}
 				}
 			}
 			&#Page07 {
-				table {
-					padding: (@padding-top-thick + 38px) @padding-right 0px @padding-left-thick;
-					font-family: "PT Sans Pro Narrow Demi Regular";
-					text-align: center;
-					tr {
-						vertical-align: bottom;
-						img {
-							max-width: 205px;
-							max-height: 205px;
-						}
-						&:nth-child(odd) {
-							height: 250px;
-						}
-						&:nth-child(1), {
-							height: 0px;
+				div.content div.scroller div.screen div.panorama-button {
+					@shiftX: 290px;
+					@shiftY: 280px;
+					@row1: @padding-top-thick;
+					@row2: @row1 + @shiftY;
+					@row3: @row2 + @shiftY;
+					@col1: 38px;
+					@col2: @col1 + @shiftX;
+
+					position: absolute;
+					left: 50px;
+
+					div {
+						position: absolute;
+						@size: 205px;
+						.size(@size + 30px);
+						background-size: @size;
+						background-repeat: no-repeat;
+						background-position: center bottom;
+
+						&#Temple1-0 { background-image: url("../img/page05-1/panorama_0.jpg"); }
+						&#Temple1-1 { background-image: url("../img/page05-1/panorama_1.jpg"); }
+						&#Temple2-0 { background-image: url("../img/page05-2/panorama_0.jpg"); }
+						&#Temple2-1 { background-image: url("../img/page05-2/panorama_1.jpg"); }
+						&#Temple2-2 { background-image: url("../img/page05-2/panorama_2.jpg"); }
+						&#Temple3-0 { background-image: url("../img/page05-3/panorama_0.jpg"); }
+						&#Temple3-1 { background-image: url("../img/page05-3/panorama_1.jpg"); }
+						&#Temple3-2 { background-image: url("../img/page05-3/panorama_2.jpg"); }
+						&#Temple3-3 { background-image: url("../img/page05-3/panorama_3.jpg"); }
+						&#Temple4-0 { background-image: url("../img/page05-4/panorama_0.jpg"); }
+						&#Temple5-0 { background-image: url("../img/page05-5/panorama_0.jpg"); }
+						&#Temple6-0 { background-image: url("../img/page05-6/panorama_0.jpg"); }
+						&#Temple6-1 { background-image: url("../img/page05-6/panorama_1.jpg"); }
+						&#Temple6-2 { background-image: url("../img/page05-6/panorama_2.jpg"); }
+						&#Temple6-3 { background-image: url("../img/page05-6/panorama_3.jpg"); }
+						&#Temple6-4 { background-image: url("../img/page05-6/panorama_4.jpg"); }
+
+						&:nth-of-type(1) { top: @row1; left: @col1; }
+						&:nth-of-type(2) { top: @row1; left: @col2; }
+						&:nth-of-type(3) { top: @row2; left: @col1; }
+						&:nth-of-type(4) { top: @row2; left: @col2; }
+						&:nth-of-type(5) { top: @row3; left: @col1; }
+						&:nth-of-type(6) { top: @row3; left: @col2; }
+
+						p {
+							position: relative;
+							font-family: "PT Sans Pro Narrow Demi Regular";
+							top: @size + 20px;
+							text-align: center;
+							width: 100%;
 						}
 					}
 				}
@@ -832,6 +988,10 @@ body {
 			&#Page11 {
 				img#Info {
 					width: 100%;
+					height: 100%;
+					&.landscape {
+						.invisible;
+					}
 				}
 				div {
 					position: absolute;
@@ -872,22 +1032,42 @@ body {
 								font-family: 'PT Sans Pro Narrow Extra Bold Regular';
 							}
 						}
+						br.landscape {
+							.invisible;
+						}
 					}
 				}
 				img {
 					//position: absolute;
 					//bottom: 0px;
-					padding-left: @padding-left-thick;
-					width: @width-portrait - @padding-left-thick - @padding-right;
-				}
+					//padding-left: @padding-left-thick;
+					float: left;
+					&:first-of-type {
+						padding-left: @padding-left-thick;
+						width: 310px / @coord-divisor;
+						height: 128px / @coord-divisor;
+					}
 
+					&:nth-of-type(2) {
+						padding-left: 100px;
+						width: 190px / @coord-divisor;
+						height: 157px / @coord-divisor;
+					}
+
+					&:nth-of-type(3) {
+						padding-left: 120px;
+						width: 250px / @coord-divisor;
+						height: 181px / @coord-divisor;
+					}
+				}
 			}
 		}
 	}
 }
 
-#Hint {
+div#Hint {
 	position: fixed;
+	//top: 500px; //@height-portrait - @hint-height;
 	bottom: 0px;
 	padding-left: @padding-left-thick;
 	padding-right: @padding-right;
@@ -895,26 +1075,29 @@ body {
 	height: @hint-height;
 	background-color: #FFF;
 	z-index: @hint-zindex;
-	#UpDown {
-		z-index: @hint-zindex;
+	div#UpDown {
+		z-index: @hint-zindex + 1;
 		height: 100%;
 		width: 100%;
-	}
-	#Up,#Down {
-		z-index: @hint-zindex;
-		height: 100%;
-		width: 50%;
-		float: left;
-		background-repeat: no-repeat;
-		background-position: center;
-		background-size: 20%;
-	}
+		div#Up,#Down {
+			z-index: @hint-zindex + 2;
+			height: 100%;
+			width: 50%;
+			float: left;
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: 20%;
+		}
 
-	#Up {background-image: url("../img/buttons/up.png");}
-	#Down {background-image: url("../img/buttons/down.png");}
+		div#Up {background-image: url("../img/buttons/up.png");}
+		div#Down {background-image: url("../img/buttons/down.png");}
+		img {
+			.invisible;
+		}
+	}
 }
 
-#PlanImage {
+div#PlanImage {
 	position: fixed;
 	z-index: @plan-image-zindex;
 	background-color: #FFF;
@@ -923,6 +1106,13 @@ body {
 	table {
 		tr#Row1 {
 			height: @buttons-size;
+			td {
+				div#Close {
+					background-image: url("../img/buttons/hramy_invert.png");
+					background-size: contain;
+					.size (@buttons-size);
+				}
+			}
 		}
 		tr#Row2 {
 			height: 100%;
@@ -950,39 +1140,35 @@ body {
 		}
 		tr#Row3 td {
 			width: 22px;
+			div#Label {
+				font-family: "PT Sans Pro Narrow Demi Regular";
+				font-size: 35pt / @font-divisor;
+				//padding-left: @padding-left-thick;
+			}
 		}
 		tr#Row4 {
 			height: @buttons-size;
-		}
-	}
-	#Close {
-		background-image: url("../img/buttons/hramy_invert.png");
-		background-size: contain;
-		.size (@buttons-size);
-	}
-	#Label {
-		font-family: "PT Sans Pro Narrow Demi Regular";
-		font-size: 35pt / @font-divisor;
-		//padding-left: @padding-left-thick;
-	}
-	
-	#AudioPlayer {
-		position: fixed;
-		left: 0px;
-		bottom: 10px;
-		width: @width-portrait - @buttons-width;
-		#PlayPause {
-			background-size: contain;
-			background-position: center;
-			background-repeat: no-repeat;
-			height: @buttons-size;
-			width: @padding-left-thick;
-			.buttons-define("play");
-			float: left;
-		}
-		#LayoutSlider{
-			padding: @padding-left-thin @padding-left-thick @padding-left-thin @padding-left-thick;
-			width: @width-portrait - 2*@padding-left-thick;
+			td {
+				div#AudioPlayer {
+					position: fixed;
+					left: 0px;
+					bottom: 10px;
+					width: @width-portrait - @buttons-width;
+					div#PlayPause {
+						background-size: contain;
+						background-position: center;
+						background-repeat: no-repeat;
+						height: @buttons-size;
+						width: @padding-left-thick;
+						.buttons-define("play");
+						float: left;
+					}
+					div#LayoutSlider{
+						padding: @padding-left-thin @padding-left-thick @padding-left-thin @padding-left-thick;
+						width: @width-portrait - 2*@padding-left-thick;
+					}
+				}
+			}
 		}
 	}
 }

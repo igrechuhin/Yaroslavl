@@ -11,8 +11,7 @@ Plan.touch = function(event) {
 	var target = $(event.currentTarget),
 		_image = _PlanImage.find("#Image"),
 		_label = _PlanImage.find("#Label"),
-		_imageContent = _PlanImage.find("#ImageContent"),
-		areaHeight = _imageContent.css("height").replace(/[^\-\d\.]/g, "");
+		_imageContent = _PlanImage.find("#ImageContent");
 
 	_imageContent.addClass("hide");
 	_image.attr("src", "img/" + target.data("image"));
@@ -36,13 +35,8 @@ Plan.touch = function(event) {
 			vScrollbar: false,
 			lockDirection: false
 		});
-		setTimeout(function() {
-			var imageHeight = _image.css("height").replace(/[^\-\d\.]/g, ""),
-				marginTop = (areaHeight - imageHeight) / 2;
-			_image.css("margin-top", marginTop + "px");
-			_label.text(target.data("label"));
-			_imageContent.removeClass("hide");
-		}, 100);
+		Plan.refresh();
+		_label.text(target.data("label"));
 	}, 100);
 
 	event.stopPropagation();
@@ -56,4 +50,20 @@ Plan.hide = function() {
 	_PlanImage.find("#AudioPlayer").addClass("invisible2");
 	_PlanImage.addClass("invisible");
 	_Pages.removeClass("invisible");
+	Menu.refreshPage();
+}
+
+Plan.refresh = function () {
+	setTimeout(function() {
+		var _image = _PlanImage.find("#Image"),
+			imageHeight = _image.css("height").replace(/[^\-\d\.]/g, ""),
+			_imageContent = _PlanImage.find("#ImageContent"),
+			areaHeight = _imageContent.css("height").replace(/[^\-\d\.]/g, ""),
+			marginTop = (areaHeight - imageHeight) / 2;
+		_image.css("margin-top", marginTop + "px");
+		_imageContent.removeClass("hide");
+		if (Plan.zoom) {
+			Plan.zoom.refresh();
+		}
+	}, 100);
 }

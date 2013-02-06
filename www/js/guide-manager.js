@@ -60,7 +60,7 @@ Guide.register = function (target) {
 	setTimeout(function () {
 		_PlanImage.removeClass("invisible").find("#Close").unbind("touchstart").bind("touchstart", Guide.hide);
 		_Pages.addClass("invisible");
-		_Hint.addClass("invisible");
+		_Hint.addClass("invisible2");
 
 		audio.setSource({
 			url: "audio/" + target.data("audio"),
@@ -77,7 +77,7 @@ Guide.hide = function () {
 	_PlanImage.find("#AudioPlayer").addClass("invisible2");
 	_PlanImage.addClass("invisible");
 	_Pages.removeClass("invisible");
-	_Hint.removeClass("invisible");
+	_Hint.removeClass("invisible2");
 };
 
 Guide.zoomDestroy = function () {

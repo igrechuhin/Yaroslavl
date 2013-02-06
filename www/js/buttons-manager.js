@@ -41,11 +41,11 @@ Buttons.setup = function (Parameters) {
     break;
   case "Page06":
     _Buttons.children("#Temple").removeClass("invisible");
-    _Page06.find("td.images-button").unbind("touchend").bind("touchend", Buttons.touch);
+    _Page06.find("div.images-button").unbind("touchend").bind("touchend", Buttons.touch);
     break;
   case "Page07":
     _Buttons.children("#Temple").add(_Hint).removeClass("invisible");
-    _Page07.find("td.panorama-button").unbind("touchend").bind("touchend", Buttons.touch);
+    _Page07.find("div.panorama-button").unbind("touchend").bind("touchend", Buttons.touch);
     break;
   case "Page08":
     _Buttons.children("#Temple").removeClass("invisible");
@@ -76,8 +76,10 @@ Buttons.touch = function (event) {
       currentPage = Menu.currentPage,
       currentScroller = pageScroller[currentPage.index()];
   if (targetObj.hasClass("images-button")) {
-    Buttons.showImages(targetObj);
+    Menu.backPage = Menu.currentPage;
+    Buttons.showImages($(event.target));
   } else if (targetObj.hasClass("panorama-button")) {
+    targetObj = $(event.target);
     window.location.href = "panorama.html?backpage=Page07" + "&temple=" + targetObj.data("temple") + "&panorama=" + targetObj.data("panorama");
   } else if (targetObj.hasClass("audio-button")) {
     Guide.register(targetObj.children("ul"));
@@ -139,9 +141,11 @@ Buttons.touch = function (event) {
       break;
     case "Photo":
       targetObj = _Buttons.children("#" + target.id);
+      Menu.backPage = Menu.currentPage;
       Menu.gotoPage(_Page06);
+      Menu.needGoBack = true;
       setTimeout(function () {
-        Buttons.showImages(_Page06.find("td#Temple" + currentPage.attr("id").substr("Page05-".length)));
+        Buttons.showImages(_Page06.find("div.images-button > div#Temple" + currentPage.attr("id").substr("Page05-".length)));
       }, 100);
       break;
     case "Plan":
@@ -171,11 +175,15 @@ Buttons.scrollY = function (scroll, direction) {
   var currentPageIndex = Menu.currentPage.index(),
       dir = (direction === "Up") ? -1 : 1,
       scrollHeight = 0;
-  if ((currentPageIndex >= 4 && currentPageIndex <= 9) || currentPageIndex === 13 || currentPageIndex === 16) {
+  if ((currentPageIndex >= _Page051.index() && currentPageIndex <= _Page056.index()) || 
+      currentPageIndex === _Page09.index() || 
+      currentPageIndex === _Page12.index()) {
     var linesCount = 3,
         lineHeight = Menu.currentPage.find("#MainContent > .scroller > .screen > article").css("line-height").replace(/[^\-\d\.]/g, ""),
-        hintHeight = _Hint.css("height").replace(/[^\-\d\.]/g, "");
-    scrollHeight = scroll.wrapperH - hintHeight - lineHeight * linesCount;
+        hintHeight = _Hint.css("height").replace(/[^\-\d\.]/g, ""),
+        header = Menu.currentPage.children("h1"),
+        headerHeight = header.height() + header.css("padding-top").replace(/[^\-\d\.]/g, "")*1 + header.css("padding-bottom").replace(/[^\-\d\.]/g, "")*1;
+    scrollHeight = scroll.wrapperH - headerHeight - hintHeight - lineHeight * linesCount;
   }
   if (scrollHeight !== 0) {
     scroll.scrollTo(0, dir * scrollHeight, Buttons.scrollDuration, true);
@@ -248,14 +256,15 @@ Buttons.refreshScroll = function () {
   }
 };
 
-Buttons.skipImageShow = false;
 Buttons.psInstance = null;
+//Buttons.hackTimer = null;
 Buttons.showImages = function (target) {
   var $header = _Page06.find("h1 > span"),
-      $table = _Page06.children("table"),
-      $wrapper = _Page06.children("div#MainContent"),
-      $list = $wrapper.find("ul#" + target.attr("id")),
-      templeName = target.parent().next().children().eq(target.index()).text(),
+      $table = _Page06.children("div.images-button"),
+      $list = _Page06.children("div#" + target.attr("id")),
+      $div = $list.children("div"),
+      $img = $div.children("img"),
+      templeName = target.children().text(),
       galleryOptions = {
         autoStartSlideshow: false,
         zIndex: 20000,
@@ -268,68 +277,67 @@ Buttons.showImages = function (target) {
         maxUserZoom: 3.0,
         minUserZoom: 1.0,
         captionAndToolbarAutoHideDelay: 0,
-        checkCanShow: function () {
-          var skip = Buttons.skipImageShow;
-          Buttons.skipImageShow = false;
-          return !skip;
-        }},
-      scrollerOptions = {
-          snap: false,
-          momentum: true,
-          hScroll: false,
-          vScroll: true,
-          hScrollbar: false,
-          vScrollbar: false,
-          lockDirection: true,
-          handleClick: false,
-          onScrollMove: function () {
-            Buttons.skipImageShow = true;
-            Buttons.skipTouchOnScroll = true;
-          },
-          onScrollEnd: function () {
-            Buttons.refreshScroll();
-            setTimeout(function () {
-                Buttons.skipTouchOnScroll = false;
-            }, 50);
-          }
+        checkCanShow: function() {
+          return !Buttons.skipTouchOnScroll;
+        }
       };
-
-  Buttons.skipImageShow = true;
-  setTimeout(function () {
-      Buttons.skipImageShow = false;
-  }, 50);
-
-  Buttons.psInstance = $list.find("img").photoSwipe(galleryOptions);
 
   $header.data("original", $header.data("original") || $header.text()).text($header.data("original") + " — " + templeName);
   $header.bind("touchstart", Buttons.hideImages);
 
-  $table.addClass("invisible");
-  _Hint.removeClass("invisible");
-  $wrapper.removeClass("invisible");
-  $list.removeClass("invisible");
-  
-  Menu.createScroller(_Page06, scrollerOptions);
+  $table.addClass("invisible2");
+
+  setTimeout(function () {
+    Buttons.psInstance = $img.photoSwipe(galleryOptions);
+    setTimeout(function () {
+      $list.removeClass("invisible2");
+      $div.unbind("touchend").bind("touchend", function (event) {
+        event.currentTarget = event.currentTarget.firstChild;
+        window.Code.PhotoSwipe.onTriggerElementClick.call(Buttons.psInstance, event);
+      });
+      console.assert(Buttons.psInstance, "Buttons.showImages -- photoSwipe instance is null");
+    }, 50);
+  }, 0);
+  //Buttons.hackTimer = setInterval(function() {
+    //console.log();
+  //}, 100);
 };
 
 Buttons.hideImages = function () {
   if (Buttons.psInstance !== null) {
     var $header = _Page06.find("h1 > span"),
-        $table = _Page06.children("table"),
-        $wrapper = _Page06.children("div#MainContent"),
-        $list = $wrapper.find("ul");
+        $table = _Page06.children("div.images-button"),
+        $list = _Page06.children("div"),
+        $div = $list.children("div");
 
     $header.text($header.data("original"));
     $header.unbind("touchstart");
 
-    Code.PhotoSwipe.detatch(Buttons.psInstance);
-    Buttons.psInstance = null;
+    $list.addClass("invisible2");
 
-    Buttons.skipImageShow = false;
-
-    $table.removeClass("invisible");
-    _Hint.addClass("invisible");
-    $wrapper.addClass("invisible");
-    $list.addClass("invisible");
+    setTimeout(function () {
+      Code.PhotoSwipe.detatch(Buttons.psInstance);
+      Buttons.psInstance = null;
+      
+      if (Menu.needGoBack && Menu.isSamePage(Menu.currentPage, _Page06)) {
+        Menu.gotoPage(Menu.backPage);
+      }
+    }, 50);
+    
+    $div.unbind("touchend");
+    $table.removeClass("invisible2");
+    //clearInterval(Buttons.hackTimer);
   }
 };
+
+Buttons.infoTouch = function () {
+  if (event.currentTarget.id === "GetInfo") {
+    _Page01.children("div#Info").addClass("active");
+  } else if (event.currentTarget.id === "Close") {
+    _Page01.children("div#Info").removeClass("active");
+  } else {
+    _Page01.find("p#Definition").html($(event.currentTarget).data("definition"));
+    _Page01.children("div#Info").children("div").removeClass("invert");
+    $(event.currentTarget).addClass("invert");
+  }
+}

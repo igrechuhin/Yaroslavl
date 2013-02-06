@@ -23,7 +23,7 @@ Menu.setup = function (Parameters) {
 };
 
 Menu.show = function () {
-  $("video").addClass("invisible2");
+  $("video").hide();
   _Menu.removeClass("invisible");
   setTimeout(function () {
     _Menu.children().addClass("show");
@@ -35,7 +35,7 @@ Menu.show = function () {
 
 Menu.hide = function () {
   _Menu.children().removeClass("show");
-  $("video").removeClass("invisible2");
+  $("video").show();
   setTimeout(function () {
     _Menu.addClass("invisible");
   }, 500);
@@ -46,26 +46,26 @@ Menu.touch = function (event) {
   event.stopPropagation();
 };
 
-Menu.currentPage = -1;
+Menu.currentPage = $();
+Menu.backPage = $();
+Menu.needGoBack = false;
 Menu.gotoPage = function (target) {
-  var doLoad = true;
   if (typeof target === "number") {
-    if (Menu.currentPage.index() !== target) {
-      target = _PagesScroller.children().eq(target);
-    } else {
-      doLoad = false;
-      _Buttons.add(_MenuButton).removeClass("invisible");
-    }
+    target = _PagesScroller.children().eq(target);
+  } else if (target.attr("id") === undefined) {
+    return;
   }
-  if (doLoad) {
-    Menu.currentPage = target;
-    var loadOptions = {
-      target: target,
-      loadNext: true
-    };
-
-    Loader.getContent(loadOptions);
+  Menu.needGoBack = false;
+  if (Menu.isSamePage(Menu.currentPage, target)) {
+    _Buttons.add(_MenuButton).removeClass("invisible");
+    return;
   }
+  Menu.currentPage = target;
+  var loadOptions = {
+    target: target,
+    loadNext: true
+  };
+  Loader.getContent(loadOptions);
 };
 
 Menu.createScroller = function (page, options) {
@@ -81,11 +81,15 @@ Menu.createScroller = function (page, options) {
   }
 };
 
-Menu.initPageAfterLoad = function (Parameters) {
+Menu.refreshPage = function () {
+  mainScroller.refresh();
   setTimeout(function () {
-    mainScroller.refresh();
     mainScroller.scrollToPage(Menu.currentPage.index(), 0, 300);
-  }, 0);
+  }, 50);
+};
+
+Menu.initPageAfterLoad = function (Parameters) {
+  Menu.refreshPage();
 
   var that = this,
       pageID = that.attr("id"),
@@ -128,21 +132,25 @@ Menu.initPageAfterLoad = function (Parameters) {
         hScrollbar: false,
         vScrollbar: false,
         lockDirection: true,
+        momentumDeceleration: 0.006,
         onScrollMove: function () {
-          Buttons.skipImageShow = true;
           Buttons.skipTouchOnScroll = true;
         },
         onScrollEnd: scrollEnd
       };
       switch (pageID) {
+      case "Page01":
+        _Page01.find("div#Info > div,div#GetInfo").unbind("touchstart").bind("touchstart", Buttons.infoTouch);
+        break;
       case "Page03":
         var screens = that.find(".screen");
-        screens.css("height", wrapperHeight);
-        that.find(".scroller").css("height", wrapperHeight * screens.length);
+        screens.css("height", window.innerHeight);
+        that.find(".scroller").css("height", window.innerHeight * screens.length);
         scrollerOptions.onScrollEnd = function () {
           Buttons.toggleEyeText();
           scrollEnd();
         };
+        scrollerOptions.momentumDeceleration = 0.6;
         Menu.createScroller(that, scrollerOptions);
         setTimeout(function () {
           Buttons.toggleEyeText();
@@ -167,8 +175,8 @@ Menu.initPageAfterLoad = function (Parameters) {
         break;
       case "Page07":
         var screens = that.find(".screen");
-        screens.css("height", wrapperHeight);
-        that.find(".scroller").css("height", wrapperHeight * screens.length);
+        screens.css("height", window.innerHeight);
+        that.find(".scroller").css("height", window.innerHeight * screens.length);
         Menu.createScroller(that, scrollerOptions);
         break;
       case "Page08":
@@ -183,6 +191,9 @@ Menu.initPageAfterLoad = function (Parameters) {
         Buttons.setup(setupObj);
       }, 100);
       // Cleanup
+      if (!Menu.isSamePage(Menu.currentPage, _Page06)) {
+        Buttons.hideImages();
+      }
       setTimeout(function () {
         for (var ind = 0; ind < pageScroller.length; ind++) {
           if (ind === pageIndex || pageScroller[ind] === undefined || pageScroller[ind] === null /*|| ind === _Page06.index()*/) {
@@ -191,9 +202,6 @@ Menu.initPageAfterLoad = function (Parameters) {
           pageScroller[ind].destroy();
           pageScroller[ind] = null;
         }
-        if (pageIndex !== _Page06.index()) {
-          Buttons.hideImages();
-        }
         var toClear = that.prevAll(":gt(0)").add(that.nextAll(":gt(0)")).not(_Page04);//.not(_Page06);
         toClear.children().remove();
         toClear.html("");
@@ -201,4 +209,8 @@ Menu.initPageAfterLoad = function (Parameters) {
     }
     break;
   }
+};
+
+Menu.isSamePage = function (Page1, Page2) {
+  return Page1.attr("id") === Page2.attr("id");
 };

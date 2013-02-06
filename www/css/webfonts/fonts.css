@@ -1,4 +1,26 @@
 @font-face {
+    font-family: 'PT Sans Narrow Demi Regular';
+    src: url('ptn57f-webfont.eot');
+    src: url('ptn57f-webfont.eot?#iefix') format('embedded-opentype'),
+         url('ptn57f-webfont.woff') format('woff'),
+         url('ptn57f-webfont.ttf') format('truetype'),
+         url('ptn57f-webfont.svg#pt_sans_narrowregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'PT Sans Narrow Demi Bold';
+    src: url('ptn77f-webfont.eot');
+    src: url('ptn77f-webfont.eot?#iefix') format('embedded-opentype'),
+         url('ptn77f-webfont.woff') format('woff'),
+         url('ptn77f-webfont.ttf') format('truetype'),
+         url('ptn77f-webfont.svg#pt_sans_narrowbold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
     font-family: 'PT Sans Pro Narrow Demi Regular';
     src: url('ptn67-webfont.eot');
     src: url('ptn67-webfont.eot?#iefix') format('embedded-opentype'),

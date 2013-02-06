@@ -1,6 +1,6 @@
 function Map() {}
 
-Map.months = ['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август', 'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
+Map.months = {1: 'январь', 2: 'февраль', 3: 'март', 4: 'апрель', 5: 'май', 6: 'июнь', 7: 'июль', 8: 'август', 9: 'сентябрь', 10: 'октябрь', 11: 'ноябрь', 12: 'декабрь'};
 Map.markers = {size: new google.maps.Size(32, 55),
 		origin: new google.maps.Point(0,0),
 		anchor: new google.maps.Point(16, 55),
@@ -138,53 +138,65 @@ Map.reInitMarkers = function() {
 };
 
 Map.makeInfoWindow = function(marker) {
-  var date = Map.checkDate;
-  var dd = date.getDate();
-  var mm = date.getMonth();
-  var yyyy = date.getFullYear();
-
-  var imagesPath = Map.target.data('imagespath');
-
-  var markersDefs = Map.target.parent().children('#MapMarkers');
+  var date = Map.checkDate,
+      dd = date.getDate(),
+      mm = date.getMonth(),
+      yyyy = date.getFullYear(),
+      markersDefs = Map.target.parent().children('#MapMarkers');
   Map.templeDef = markersDefs.children(['li:nth-child(',')'].join(marker.zIndex));
 
-  var infoImage = imagesPath + markersDefs.data('infoimage') + marker.zIndex + markersDefs.data('imageextension');
-  var name = Map.templeDef.text();
-  var address = Map.templeDef.data('address');
+  var imagesPath = Map.target.data('imagespath'),
+      infoImage = imagesPath + markersDefs.data('infoimage') + marker.zIndex + markersDefs.data('imageextension'),
+      name = Map.templeDef.text(),
+      address = Map.templeDef.data('address'),
+      curWorkState = Map.getWorkState(),
+      div = document.createElement('div');
+  
+  div.className = "map_info";
+  div.innerHTML =
+    '<img src="'+infoImage+'" width="270" height="153">' +
+    '<p id="Name">'+name+'</p>' +
+    '<p>'+address+'</p>' +
+    '<p><span class="map_info_day">'+dd+'</span> <span class="map_info_month">'+Map.months[mm]+'</span> <span class="map_info_year">'+yyyy+'</span></p>' +
+    '<p id="MapInfoState" style="color: '+curWorkState.color+';">'+curWorkState.text+'</p>';
 
-  var curWorkState = Map.getWorkState();
-  var contentString =
-      '<div class="map_info">' +
-      '<img src="'+infoImage+'" width="270" height="153">' +
-        '<p id="Name">'+name+'</p>' +
-        '<p>'+address+'</p>' +
-        '<p><span class="map_info_day">'+dd+'</span> <span class="map_info_month">'+Map.months[mm]+'</span> <span class="map_info_year">'+yyyy+'</span></p>' +
-        '<p id="MapInfoState" style="color: '+curWorkState.color+';">'+curWorkState.text+'</p>' +
-        '<table>' +
-                '<tr>' +
-                        '<th class="day">число</th>' +
-                        '<th class="month">месяц</th>' +
-                        '<th class="year">год</th>' +
-                '</tr>' +
-                '<tr id="Up">' +
-                        '<td class="day" onClick="Map.onDayChange(true)"></td>' +
-                        '<td class="month" onClick="Map.onMonthChange(true)"></td>' +
-                        '<td class="year" onClick="Map.onYearChange(true)"></td>' +
-                '</tr>' +
-                '<tr id="Info">' +
-                        '<td class="day map_info_day">'+dd+'</td>' +
-                        '<td class="month map_info_month">'+Map.months[mm]+'</td>' +
-                        '<td class="year map_info_year">'+yyyy+'</td>' +
-                '</tr>' +
-                '<tr id="Down">' +
-                        '<td class="day" onClick="Map.onDayChange(false)"></td>' +
-                        '<td class="month" onClick="Map.onMonthChange(false)"></td>' +
-                        '<td class="year" onClick="Map.onYearChange(false)"></td>' +
-                '</tr>' +
-        '</table>' +
-      '</div>';
-  Map.infoWindow.setContent(contentString);
+  var i, years = {},
+      days = function (count) {
+        var days = {};
+        for( var i = 1; i <= count; i += 1 ) {
+          days[i] = i;
+        }
+        return days;
+      },
+      daysInMonth = function (yyyy, mm) { 
+        return new Date(yyyy, mm, 0).getDate();
+      };
+
+  for(i = date.getFullYear()-10; i < date.getFullYear()+10; i += 1 ) {
+    years[i] = i;
+  }
+
+  SpinningWheel.addSlot(0, days(daysInMonth(yyyy, mm)), 'right', dd);
+  SpinningWheel.addSlot(1, Map.months, 'right', mm);
+  SpinningWheel.addSlot(2, years, 'right', yyyy);
+
+  Map.infoWindow.setContent(div);
   Map.infoWindow.open(Map.google, marker);
+  setTimeout(function () {
+    SpinningWheel.open({
+      target: div,
+      onScrollEnd: function (values, slotNum) {
+        var day = values.keys[0],
+            month = values.keys[1],
+            year = values.keys[2];
+        Map.checkDate = new Date(year, month - 1, day);
+        Map.setWorkStateText();
+        if (slotNum > 0) {
+          SpinningWheel.replaceSlot(0, days(daysInMonth(year, month)));
+        }
+      }
+    });
+  }, 50);
 };
 
 Map.getWorkState = function() {
@@ -205,42 +217,9 @@ Map.getWorkState = function() {
   return {text: Map.templeDef.data('worktext'), color: 'green'};
 };
 
-Map.onDayChange = function(isUp) {
-  Map.target.find('.month,.year').removeClass('selected');
-  Map.target.find('.day').addClass('selected');
-  if (isUp) {
-    Map.checkDate.setDate(Map.checkDate.getDate() + 1);
-  } else {
-    Map.checkDate.setDate(Map.checkDate.getDate() - 1);
-  }
-  Map.setWorkStateText();
-};
-
-Map.onMonthChange = function(isUp) {
-  Map.target.find('.day,.year').removeClass('selected');
-  Map.target.find('.month').addClass('selected');
-  if (isUp) {
-    Map.checkDate.setMonth(Map.checkDate.getMonth() + 1);
-  } else {
-    Map.checkDate.setMonth(Map.checkDate.getMonth() - 1);
-  }
-  Map.setWorkStateText();
-};
-
-Map.onYearChange = function(isUp) {
-  Map.target.find('.day,.month').removeClass('selected');
-  Map.target.find('.year').addClass('selected');
-  if (isUp) {
-    Map.checkDate.setYear(Map.checkDate.getFullYear() + 1);
-  } else {
-    Map.checkDate.setYear(Map.checkDate.getFullYear() - 1);
-  }
-  Map.setWorkStateText();
-};
-
 Map.setWorkStateText = function() {
   Map.target.find('.map_info_day').text(Map.checkDate.getDate());
-  Map.target.find('.map_info_month').text(Map.months[Map.checkDate.getMonth()]);
+  Map.target.find('.map_info_month').text(Map.months[Map.checkDate.getMonth() + 1]);
   Map.target.find('.map_info_year').text(Map.checkDate.getFullYear());
   var state = Map.getWorkState();
   Map.target.find('#MapInfoState').html(state.text).css('color', state.color);

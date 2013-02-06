@@ -101,6 +101,7 @@ var m = Math,
 			bounce: true,
 			bounceLock: false,
 			momentum: true,
+			momentumDeceleration: 0.0006,
 			lockDirection: true,
 			useTransform: true,
 			useTransition: false,
@@ -572,6 +573,7 @@ iScroll.prototype = {
 								e.ctrlKey, e.altKey, e.shiftKey, e.metaKey,
 								0, null);
 							ev._fake = true;
+				
 							target.dispatchEvent(ev);
 						}
 					}, that.options.zoom ? 250 : 0);
@@ -789,7 +791,7 @@ iScroll.prototype = {
 	},
 
 	_momentum: function (dist, time, maxDistUpper, maxDistLower, size) {
-		var deceleration = 0.0006,
+		var deceleration = this.options.momentumDeceleration,
 			speed = m.abs(dist) / time,
 			newDist = (speed * speed) / (2 * deceleration),
 			newTime = 0, outsideDist = 0;
