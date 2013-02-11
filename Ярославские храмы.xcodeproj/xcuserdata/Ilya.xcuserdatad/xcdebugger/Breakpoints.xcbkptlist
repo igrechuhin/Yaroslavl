@@ -13,7 +13,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "92"
          endingLineNumber = "92"
-         landmarkName = "-application:didFinishLaunchingWithOptions:"
+         landmarkName = "-application:handleOpenURL:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -65,8 +65,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "111"
          endingLineNumber = "111"
-         landmarkName = "-application:didFinishLaunchingWithOptions:"
-         landmarkType = "5">
+         landmarkName = "@implementation AppDelegate"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -90,9 +90,7 @@
          startingColumnNumber = "9223372036854775807"
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "140"
-         endingLineNumber = "140"
-         landmarkName = "-application:supportedInterfaceOrientationsForWindow:"
-         landmarkType = "5">
+         endingLineNumber = "140">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -117,7 +115,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "81"
          endingLineNumber = "81"
-         landmarkName = "-application:didFinishLaunchingWithOptions:"
+         landmarkName = "-application:handleOpenURL:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
@@ -130,8 +128,8 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "79"
          endingLineNumber = "79"
-         landmarkName = "-application:didFinishLaunchingWithOptions:"
-         landmarkType = "5">
+         landmarkName = "@implementation AppDelegate"
+         landmarkType = "3">
       </FileBreakpoint>
       <FileBreakpoint
          shouldBeEnabled = "No"
@@ -143,7 +141,7 @@
          endingColumnNumber = "9223372036854775807"
          startingLineNumber = "88"
          endingLineNumber = "88"
-         landmarkName = "-application:didFinishLaunchingWithOptions:"
+         landmarkName = "-application:handleOpenURL:"
          landmarkType = "5">
       </FileBreakpoint>
       <FileBreakpoint
