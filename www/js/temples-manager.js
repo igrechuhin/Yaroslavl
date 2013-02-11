@@ -1,27 +1,29 @@
-function Temples() {}
+/*global $, App, setTimeout*/
 
-Temples.register = function() {
-	setTimeout(function () {
-		_Temples.children().bind('touchstart', Temples.touch);
-	}, 0);
-}
+App.TemplesManager = {
 
-Temples.setup = function(Parameters) {
-	console.assert(Parameters.hasOwnProperty('pageID'), 'Temples.setup -- pageID undefined');
-	_Temples.children().removeClass();
-	_Temples.children('[data-page='+Parameters.pageID+']').addClass('invert');
-	Temples.hide();
-}
+	register: function () {
+		setTimeout(function () {
+			App.DOM.Temples.children().bind('touchstart', App.TemplesManager.touch);
+		}, 0);
+	},
 
-Temples.show = function() {
-	_Temples.removeClass('invisible');
-}
+	setup: function (Parameters) {
+		App.DOM.Temples.children().removeClass();
+		App.DOM.Temples.children('[data-page='+Parameters.pageID+']').addClass('invert');
+		App.TemplesManager.hide();
+	},
 
-Temples.hide = function() {
-	_Temples.addClass('invisible');
-}
+	show: function () {
+		App.DOM.Temples.removeClass('invisible');
+	},
 
-Temples.touch = function(event) {
-	Menu.gotoPage($("#"+$(event.currentTarget).data("page")));
-	event.stopPropagation();
-}
+	hide: function () {
+		App.DOM.Temples.addClass('invisible');
+	},
+
+	touch: function (event) {
+		App.MenuManager.gotoPage($("#"+$(event.currentTarget).data("page")));
+		event.stopPropagation();
+	}
+};

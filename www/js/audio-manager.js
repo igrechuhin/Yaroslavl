@@ -1,4 +1,6 @@
-var audio = {
+/*global setTimeout, setInterval, clearInterval, Media, App */
+
+App.AudioManager = {
 	MyMedia: null,
 	MediaTimer: null,
 	
@@ -13,54 +15,54 @@ var audio = {
 	
 	IsTouching: false,
 	IsPlaying: false,
+	IsPaused: true,
 
 	Status: 0,
 
 	initialize: function(guiElements) {
-		console.assert(guiElements.hasOwnProperty("controls"), "Audio manager: controls undefined");
-		audio.Controls = guiElements.controls;	
-		audio.PlayPauseBtn = audio.Controls.children("#PlayPause");
-		audio.PositionSlider = audio.Controls.find("#SliderSingle");
-		audio.OnPositionUpdate = audio.OnPositionUpdate || guiElements.onPositionUpdate;
-		audio.OnRelease = audio.OnRelease || guiElements.onRelease;
+		var audioMgr = App.AudioManager;
+		audioMgr.Controls = guiElements.controls;	
+		audioMgr.PlayPauseBtn = audioMgr.Controls.children("#PlayPause");
+		audioMgr.PositionSlider = audioMgr.Controls.find("#SliderSingle");
+		audioMgr.OnPositionUpdate = audioMgr.OnPositionUpdate || guiElements.onPositionUpdate;
+		audioMgr.OnRelease = audioMgr.OnRelease || guiElements.onRelease;
 	},
 	
 	setSource: function(source) {
-		console.assert(source.hasOwnProperty("url") && source.url !== null, "Audio manager: url undefined");
-		console.assert(source.url !== "", "Audio manager: url is empty");
-		console.assert(typeof Media !== "undefined", "Audio manager: Media undefined");
-		if (typeof Media === "undefined") return;
-		audio.release();
-		audio.MyMedia = new Media(source.url,
+		if (typeof Media === "undefined") { return; }
+		var audioMgr = App.AudioManager;
+		audioMgr.release();
+		audioMgr.MyMedia = new Media(source.url,
 			function() { //mediaSuccess
-				audio.MyMedia.seekTo(1);
-				audio.MyMedia.pause();
+				audioMgr.MyMedia.seekTo(1);
+				audioMgr.MyMedia.pause();
+				audioMgr.IsPaused = true;
 			},
 			function() { //mediaError
 			},
 			function( value ) { //mediaStatus
-				audio.Status = value;
+				audioMgr.Status = value;
 				if (value == 4) { //Media.MEDIA_STOPPED = 4;
-					audio.PositionSlider.slider("value", 0);
-					audio.MyMedia.seekTo(0);
-					audio.PlayPauseBtn.removeClass("invert");
-				};
+					audioMgr.PositionSlider.slider("value", 0);
+					audioMgr.MyMedia.seekTo(0);
+					audioMgr.PlayPauseBtn.removeClass("invert");
+				}
 			}
 		);
-		if (audio.MediaTimer !== null) {
-			clearInterval(audio.MediaTimer);
-			audio.MediaTimer = null;
-		};
-		audio.togglePlay();
+		if (audioMgr.MediaTimer !== null) {
+			clearInterval(audioMgr.MediaTimer);
+			audioMgr.MediaTimer = null;
+		}
+		audioMgr.togglePlay();
 		if (source.hasOwnProperty("startPlay") && source.startPlay === false) {
-			audio.togglePlay();
-		};
+			audioMgr.togglePlay();
+		}
 		var timerDur = setInterval(function() {
-			var dur = audio.MyMedia.getDuration();
+			var dur = audioMgr.MyMedia.getDuration();
 			if (dur > 0) {
 				clearInterval(timerDur);
-				audio.Duration = dur;
-				audio.PositionSlider.slider({
+				audioMgr.Duration = dur;
+				audioMgr.PositionSlider.slider({
 					from: 0,
 					to: dur,
 					step: 1,
@@ -70,80 +72,86 @@ var audio = {
 						return mins + ":" + (secs < 10 ? "0"+secs : secs);
 					},
 					onstatechange: function ( value ) {
-						if (audio.IsTouching) {
-							audio.MyMedia.pause();
+						if (audioMgr.IsTouching && !audioMgr.IsPaused) {
+							audioMgr.MyMedia.pause();
+							audioMgr.IsPaused = true;
 						}
-						if (audio.OnPositionUpdate) {
-							audio.OnPositionUpdate.call(this, value);
+						if (audioMgr.OnPositionUpdate) {
+							audioMgr.OnPositionUpdate.call(this, value);
 						}
 					},
-					mouseDownCallback: function ( value ) {
-						audio.IsTouching = true;
+					mouseDownCallback: function () {
+						audioMgr.IsTouching = true;
 					},
 					mouseUpCallback: function ( value ) {
-						audio.MyMedia.seekTo(value * 1000);
-						if (audio.IsPlaying) {
-							audio.MyMedia.play();
+						audioMgr.MyMedia.seekTo(value * 1000);
+						if (audioMgr.IsPlaying) {
+							audioMgr.MyMedia.play();
+							audioMgr.IsPaused = false;
 						}
-						audio.IsTouching = false;
+						audioMgr.IsTouching = false;
 					}
 				});
-				audio.PositionSlider.slider("limits", {
+				audioMgr.PositionSlider.slider("limits", {
 					from: 0,
 					to: dur});
-				audio.PositionSlider.slider("value", 0);
+				audioMgr.PositionSlider.slider("value", 0);
 				setTimeout(function () {
-					audio.Controls.removeClass("invisible2");
+					audioMgr.Controls.removeClass("invisible2");
 				}, 0);
 			}
 		}, 50);
 		
-		audio.PlayPauseBtn.unbind("touchstart").bind("touchstart", audio.togglePlay);
+		audioMgr.PlayPauseBtn.unbind("touchstart").bind("touchstart", audioMgr.togglePlay);
 	},
 
 	release: function() {
-		if (audio.MyMedia !== null) {
-			if (audio.OnRelease) {
-				audio.OnRelease.call(this);
+		var audioMgr = App.AudioManager;
+		if (audioMgr.MyMedia !== null) {
+			if (audioMgr.OnRelease) {
+				audioMgr.OnRelease.call(this);
 			}
 
-			audio.MyMedia.release();
-			audio.MyMedia = null;
+			audioMgr.MyMedia.release();
+			audioMgr.MyMedia = null;
 
-			clearInterval(audio.MediaTimer);
-			audio.MediaTimer = null;
+			clearInterval(audioMgr.MediaTimer);
+			audioMgr.MediaTimer = null;
 
-			audio.OnPositionUpdate = null;
-			audio.OnRelease = null;
-			audio.Duration = -1;
-			audio.IsPlaying = false;
-			audio.IsTouching = false;
-			audio.Status = 0;
+			audioMgr.OnPositionUpdate = null;
+			audioMgr.OnRelease = null;
+			audioMgr.Duration = -1;
+			audioMgr.IsPlaying = false;
+			audioMgr.IsTouching = false;
+			audioMgr.Status = 0;
 		}
 	},
 
 	togglePlay: function() {
-		if (audio.MyMedia) {
-			var doPlay = !audio.PlayPauseBtn.hasClass("invert");
+		var audioMgr = App.AudioManager;
+		if (audioMgr.MyMedia) {
+			var doPlay = !audioMgr.PlayPauseBtn.hasClass("invert");
 			if (doPlay) {
-				audio.MyMedia.play();
-				audio.IsPlaying = true;
-				if (audio.MediaTimer === null) {
-					audio.MediaTimer = setInterval( function() {
-						audio.MyMedia.getCurrentPosition(function(position) {
-							if (position > -1 && audio.Duration > -1) {
-								audio.PositionSlider.slider("value", position);
+				audioMgr.MyMedia.play();
+				audioMgr.IsPaused = false;
+				audioMgr.IsPlaying = true;
+				if (audioMgr.MediaTimer === null) {
+					audioMgr.MediaTimer = setInterval( function() {
+						audioMgr.MyMedia.getCurrentPosition(function(position) {
+							if (position > -1 && audioMgr.Duration > -1) {
+								audioMgr.PositionSlider.slider("value", position);
 							}
 						});
 					}, 1000);
 				}
 			} else {
-				audio.MyMedia.pause();
-				audio.IsPlaying = false;
-				clearInterval(audio.MediaTimer);
-				audio.MediaTimer = null;
+				audioMgr.MyMedia.pause();
+				audioMgr.IsPlaying = false;
+				audioMgr.IsPaused = true;
+				clearInterval(audioMgr.MediaTimer);
+				audioMgr.MediaTimer = null;
 			}
-			audio.PlayPauseBtn.toggleClass("invert");
-		};
+			audioMgr.PlayPauseBtn.toggleClass("invert");
+		}
 	}
-}
+};

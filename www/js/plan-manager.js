@@ -1,69 +1,83 @@
-function Plan() {}
+/*global $, App, setTimeout, iScroll*/
 
-Plan.zoom = null;
+App.PlanManager = {
+	Zoom: null,
 
-Plan.register = function(target) {
-	target.children(".marker").unbind("touchstart").bind('touchstart', Plan.touch);
-	audio.initialize({controls: _PlanImage.find("#AudioPlayer")});
-}
+	register: function(target) {
+		var planMgr = App.PlanManager,
+			audioMgr = App.AudioManager,
+			dom = App.DOM;
+		target.children(".marker").unbind("touchstart").bind('touchstart', planMgr.touch);
+		audioMgr.initialize({controls: dom.PlanImage.find("#AudioPlayer")});
+	},
 
-Plan.touch = function(event) {
-	var target = $(event.currentTarget),
-		_image = _PlanImage.find("#Image"),
-		_label = _PlanImage.find("#Label"),
-		_imageContent = _PlanImage.find("#ImageContent");
+	touch: function(event) {
+		var planMgr = App.PlanManager,
+			audioMgr = App.AudioManager,
+			dom = App.DOM,
+			$planImg = dom.PlanImage,
+			target = $(event.currentTarget),
+			$image = $planImg.find("#Image"),
+			$imageContent = $planImg.find("#ImageContent");
 
-	_imageContent.addClass("hide");
-	_image.attr("src", "img/" + target.data("image"));
+		$imageContent.addClass("hide");
+		$image.attr("src", "img/" + target.data("image"));
 
-	setTimeout(function() {
-		_PlanImage.removeClass("invisible").find("#Close").unbind("touchstart").bind("touchstart", Plan.hide);
-		_Pages.addClass("invisible");
+		setTimeout(function() {
+			$planImg.removeClass("invisible").find("#Close").unbind("touchstart").bind("touchstart", planMgr.hide);
+			dom.Pages.addClass("invisible2");
 
-		audio.setSource({
-			url: "audio/" + target.data("audio"),
-			startPlay: true
-		});
+			audioMgr.setSource({
+				url: "audio/" + target.data("audio"),
+				startPlay: true
+			});
 
-		Plan.zoom = new iScroll(_imageContent.get(0), {
-			snap: false,
-			snapThreshold: 100,
-			zoom: true,
-			zoomMax: 3,
-			momentum: false,
-			hScrollbar: false,
-			vScrollbar: false,
-			lockDirection: false
-		});
-		Plan.refresh();
-		_label.text(target.data("label"));
-	}, 100);
+			planMgr.Zoom = new iScroll($imageContent.get(0), {
+				snap: false,
+				snapThreshold: 100,
+				zoom: true,
+				zoomMax: 3,
+				momentum: false,
+				hScrollbar: false,
+				vScrollbar: false,
+				lockDirection: false
+			});
+			planMgr.refresh();
+			$planImg.find("#Label").text(target.data("label"));
+			$planImg.find("#Speaker").text(target.data("speaker"));
+		}, 100);
 
-	event.stopPropagation();
-}
+		event.stopPropagation();
+	},
 
-Plan.hide = function() {
-	Plan.zoom.destroy();
-	Plan.zoom = null;
-	audio.release();
-	_PlanImage.find("#PlayPause").removeClass("invert");
-	_PlanImage.find("#AudioPlayer").addClass("invisible2");
-	_PlanImage.addClass("invisible");
-	_Pages.removeClass("invisible");
-	Menu.refreshPage();
-}
+	hide: function() {
+		var planMgr = App.PlanManager,
+			audioMgr = App.AudioManager,
+			dom = App.DOM;
+		planMgr.Zoom.destroy();
+		planMgr.Zoom = null;
+		audioMgr.release();
+		dom.PlanImage.find("#PlayPause").removeClass("invert");
+		dom.PlanImage.find("#AudioPlayer").addClass("invisible2");
+		dom.PlanImage.addClass("invisible");
+		dom.Pages.removeClass("invisible2");
+		App.MenuManager.refreshPage();
+	},
 
-Plan.refresh = function () {
-	setTimeout(function() {
-		var _image = _PlanImage.find("#Image"),
-			imageHeight = _image.css("height").replace(/[^\-\d\.]/g, ""),
-			_imageContent = _PlanImage.find("#ImageContent"),
-			areaHeight = _imageContent.css("height").replace(/[^\-\d\.]/g, ""),
-			marginTop = (areaHeight - imageHeight) / 2;
-		_image.css("margin-top", marginTop + "px");
-		_imageContent.removeClass("hide");
-		if (Plan.zoom) {
-			Plan.zoom.refresh();
-		}
-	}, 100);
-}
+	refresh: function () {
+		setTimeout(function() {
+			var planMgr = App.PlanManager,
+				dom = App.DOM,
+				$image = dom.PlanImage.find("#Image"),
+				imageHeight = $image.css("height").replace(/[^\-\d\.]/g, ""),
+				$imageContent = dom.PlanImage.find("#ImageContent"),
+				areaHeight = $imageContent.css("height").replace(/[^\-\d\.]/g, ""),
+				marginTop = (areaHeight - imageHeight) / 2;
+			$image.css("margin-top", marginTop + "px");
+			$imageContent.removeClass("hide");
+			if (planMgr.Zoom) {
+				planMgr.Zoom.refresh();
+			}
+		}, 100);
+	}
+};
