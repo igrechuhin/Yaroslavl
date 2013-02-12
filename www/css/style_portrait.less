@@ -23,6 +23,8 @@
 
 .invisible { display: none; }
 
+.red_line { padding-left: 20px; }
+
 div#MenuButton {
 	top: 40px / @coord-divisor;
 	right: @buttons-width - @buttons-size;	
@@ -638,8 +640,9 @@ div#Pages {
 			&#Page13 {
 				article {
 					padding-top: 96px;
+					height: 740px;
 					-webkit-column-count: 2;
-					p br.landscape { .invisible; }
+					p.col2p { -webkit-column-break-before: always; }
 				}
 				img {
 					&:nth-of-type(2) { padding-left: 100px; }

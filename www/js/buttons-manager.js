@@ -2,6 +2,7 @@
 
 App.ButtonsManager = {
   SkipTouchOnScroll: false,
+  SkipPhotoShow: false,
   ScrollDuration: 200,
   PSInstance: null,
 
@@ -31,7 +32,6 @@ App.ButtonsManager = {
       break;
     case "Page02":
     case "Page10":
-    case "Page13":
       $btns.children("#Temple").removeClass("invisible");
       break;
     case "Page03":
@@ -69,6 +69,10 @@ App.ButtonsManager = {
     case "Page11":
       $btns.children("#Temple").removeClass("invisible");
       dom.Page11.find("img.social-button").unbind("touchend").bind("touchend", btnsMgr.touch);
+      break;
+    case "Page13":
+      $btns.children("#Temple").removeClass("invisible");
+      dom.Page13.find("img.social-button").unbind("touchend").bind("touchend", btnsMgr.touch);
       break;
     }
     $btns.removeClass("invisible");
@@ -139,13 +143,16 @@ App.ButtonsManager = {
         targetObj.popover("destroy");
         break;
       case "Photo":
+        if (btnsMgr.SkipPhotoShow) { return; }
+        btnsMgr.SkipPhotoShow = true;
         targetObj = dom.Buttons.children("#" + target.id);
         menuMgr.BackPage = currentPage;
         menuMgr.gotoPage(dom.Page06);
         menuMgr.NeedGoBack = true;
         setTimeout(function () {
           btnsMgr.showImages(dom.Page06.find("div.images-button > div#Temple" + currentPage.attr("id").substr("Page05-".length)));
-        }, 100);
+          btnsMgr.SkipPhotoShow = false;
+        }, 50);
         break;
       case "Plan":
         plan = currentPage.children("#PlanContent");
@@ -278,6 +285,7 @@ App.ButtonsManager = {
           console.log(""); // hack to make it wakeup
         });
       }, 50);
+      console.log(""); // hack to make it wakeup
     }, 0);
   },
 

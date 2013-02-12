@@ -163,7 +163,8 @@ App.MapManager = {
       '<img src="'+infoImage+'" width="270" height="153">' +
       '<p id="Name">'+name+'</p>' +
       '<p>'+address+'</p>' +
-      '<p><span class="map_info_day">'+dd+'</span> <span class="map_info_month">'+mapMgr.Months[mm]+'</span> <span class="map_info_year">'+yyyy+'</span></p>' +
+      '<p>В выбранный день:</p>' +
+      //'<p><span class="map_info_day">'+dd+'</span> <span class="map_info_month">'+mapMgr.Months[mm]+'</span> <span class="map_info_year">'+yyyy+'</span></p>' +
       '<p id="MapInfoState" style="color: '+curWorkState.color+';">'+curWorkState.text+'</p>';
 
     var i, years = {},
@@ -178,12 +179,12 @@ App.MapManager = {
           return new Date(yyyy, mm, 0).getDate();
         };
 
-    for(i = date.getFullYear()-10; i < date.getFullYear()+10; i += 1 ) {
+    for(i = date.getFullYear()-2; i < date.getFullYear()+10; i += 1 ) {
       years[i] = i;
     }
 
     SpinningWheel.addSlot(0, days(daysInMonth(yyyy, mm)), 'right', dd);
-    SpinningWheel.addSlot(1, mapMgr.Months, 'right', mm);
+    SpinningWheel.addSlot(1, mapMgr.Months, 'right', mm+1);
     SpinningWheel.addSlot(2, years, 'right', yyyy);
 
     mapMgr.InfoWindow.setContent(div);
