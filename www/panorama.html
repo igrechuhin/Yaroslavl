@@ -59,22 +59,22 @@
               break;
             case "Gyroscope":
               krpano.set("plugin[gyro].enabled", !krpano.get("plugin[gyro].enabled"));
+              $("#Gyroscope").toggleClass("invert");
               break;
           }
         });
-        $("#Gyroscope").hide();
         document.addEventListener("deviceready", function () {
           if (device.model !== "iPad1,1") {
-            $("#Gyroscope").show();
+            $("#Gyroscope").removeClass("invisible");
           }
         }, false);
       });
     </script>
   </head>
   <body>
-    <div id="PanoramaContent" class="invisible" data-url="panorama.html">
-      <img id="ClosePanorama" src="img/buttons/panorama_close.png">
-      <img id="Gyroscope" src="img/buttons/panorama_gyroscope.png">
+    <div id="PanoramaContent" data-url="panorama.html">
+      <div id="ClosePanorama"></div>
+      <div id="Gyroscope" class="invisible invert"></div>
     </div>
   </body>
 </html>

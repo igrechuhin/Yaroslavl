@@ -2,6 +2,8 @@
 
 @panorama-zindex:	1200;
 
+.invisible { display: none; }
+
 .full-screen {
     position: absolute;
     top: 0px;
@@ -11,20 +13,35 @@
     overflow: hidden;
 }
 
-#PanoramaContent {
+.size (@size) {
+    width: @size;
+    height: @size;
+}
+
+.buttons-define(@name) {
+    background-image: url("../img/buttons/@{name}.png");
+    &.invert { background-image: url("../img/buttons/@{name}_invert.png"); }
+}
+
+div#PanoramaContent {
 	.full-screen;
 	z-index: @panorama-zindex;
-	img {
-		z-index: @panorama-zindex + 1;
-		position: fixed;
-		width: 50px;
-		&#ClosePanorama {
-			left: @padding-left-thin;
-			top: @padding-left-thin;
-		}
-		&#Gyroscope {
-			right: @padding-left-thin;
-			bottom: @padding-left-thin;
-		}
-	}
+    div {
+        z-index: @panorama-zindex;
+        position: fixed;
+        .size(50px);
+        background-size: contain;
+        &#ClosePanorama {
+            z-index: @panorama-zindex + 1;
+            left: @padding-left-thin;
+            top: @padding-left-thin;
+            background-image: url("../img/buttons/panorama_close.png");
+        }
+        &#Gyroscope {
+            z-index: @panorama-zindex + 1;
+            right: @padding-left-thin;
+            bottom: @padding-left-thin;
+            .buttons-define("panorama_gyroscope");
+        }
+    }
 }

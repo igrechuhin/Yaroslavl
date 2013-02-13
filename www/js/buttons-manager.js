@@ -256,7 +256,7 @@ App.ButtonsManager = {
         galleryOptions = {
           autoStartSlideshow: false,
           zIndex: 20000,
-          slideshowDelay: 3000,
+          preventSlideshow: true,
           cacheMode: Code.PhotoSwipe.Cache.Mode.normal,
           slideTimingFunction: "ease-in-out",
           loop: true,

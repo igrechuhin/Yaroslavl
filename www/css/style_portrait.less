@@ -253,16 +253,16 @@ div#Pages {
 					p {
 						&#Definition {
 							top: @row1;
-							left: 1194px / @coord-divisor;
+							left: 1186px / @coord-divisor;
 						}
 					}
 					div {
 						@row2: @row1 + (200px / @coord-divisor);
-						@col1: @padding-left-thick;
-						@col2: 347px / @coord-divisor;
-						@col3: 582px / @coord-divisor;
-						@col4: 750px / @coord-divisor;
-						@col5: 956px / @coord-divisor;
+						@col1: 46px;
+						@col2: 341px / @coord-divisor;
+						@col3: 576px / @coord-divisor;
+						@col4: 744px / @coord-divisor;
+						@col5: 950px / @coord-divisor;
 
 						&#Menu {
 							top: @row1;
@@ -298,6 +298,10 @@ div#Pages {
 						}
 						&#Route {
 							top: @row1;
+							left: @col5;
+						}
+						&#Gyroscope {
+							top: @row2;
 							left: @col5;
 						}
 					}
