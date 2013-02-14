@@ -252,7 +252,7 @@ div#Pages {
 					@row1: 85px / @coord-divisor;
 					p {
 						&#Definition {
-							top: @row1;
+							top: @row1 + 10px / @coord-divisor;
 							left: 1186px / @coord-divisor;
 						}
 					}
@@ -674,6 +674,13 @@ div#PlanImage {
 				div#AudioPlayer {
 					width: @width-portrait - @buttons-width;
 					div#LayoutSlider{ width: @width-portrait - 2*@padding-left-thick; }
+				}
+			}
+		}
+		tr#Row5 {
+			td {
+				div#Speaker {
+					left: 35%;
 				}
 			}
 		}

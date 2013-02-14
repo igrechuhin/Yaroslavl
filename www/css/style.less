@@ -162,55 +162,55 @@ div#MenuButton {
 div#Menu {
 	div {
 		&#Page01Button div {
-			top: 30px;
+			top: 52px;
 			font-size: @font-big;
 		}
 		&#Page02Button div {
-			top: 12px;
+			top: 33px;
 			font-size: @font-medium;
 		}
 		&#Page03Button div {
-			top: 13px;
+			top: 32px;
 			font-size: @font-big;
 		}
 		&#Page04Button div {
-			top: 30px;
+			top: 50px;
 			font-size: @font-big;
 		}
 		&#Page05Button div {
-			top: 30px;
+			top: 50px;
 			font-size: @font-big;
 		}
 		&#Page06Button div {
-			top: 9px;
+			top: 25px;
 			font-size: @font-small;
 		}
 		&#Page07Button div {
-			top: 9px;
+			top: 25px;
 			font-size: @font-medium;
 		}
 		&#Page08Button div {
-			top: 9px;
+			top: 25px;
 			font-size: @font-medium;
 		}
 		&#Page09Button div {
-			top: 11px;
+			top: 25px;
 			font-size: @font-medium;
 		}
 		&#Page10Button div {
-			top: 15px;
+			top: 25px;
 			font-size: @font-small;
 		}
 		&#Page11Button div {
-			top: 22px;
+			top: 39px;
 			font-size: @font-medium;
 		}
 		&#Page12Button div {
-			top: 9px;
+			top: 20px;
 			font-size: @font-small;
 		}
 		&#Page13Button div {
-			top: 6px;
+			top: 17px;
 			font-size: @font-small;
 		}
 
@@ -432,7 +432,6 @@ div#Pages {
 				line-height: 17pt;
 				color: #000;
 			}
-
 			img#Loading {
 				position: absolute;
 				height: 200px;
@@ -824,7 +823,6 @@ div#PlanImage {
 	.size (100%);
 	table {
 		tr#Row1 {
-			height: @buttons-size;
 			td div#Close {
 				background-image: url("../img/buttons/hramy_invert.png");
 				background-size: contain;
@@ -832,7 +830,7 @@ div#PlanImage {
 			}
 		}
 		tr#Row2 {
-			height: 100%;
+			height: 70%;
 			td div#ImageContent {
 				opacity: 1;
 				.menu-opacity-animation (0.3s, ease-in-out);
@@ -847,21 +845,34 @@ div#PlanImage {
 				}
 			}
 		}
-		tr#Row3,tr#Row5 {
+		tr#Row3 {
 			td {
 				width: 22px;
-				div#Label,div#Speaker {
+				div#Label {
+					font-family: "PT Sans Pro Narrow Demi Regular";
+					font-size: 35pt / @font-divisor;
+				}
+			}
+		}
+		tr#Row5 {
+			height: 100%;
+			td {
+				width: 22px;
+				div#Speaker {
+					bottom: 25px;
+					position: fixed;
+
 					font-family: "PT Sans Pro Narrow Demi Regular";
 					font-size: 35pt / @font-divisor;
 				}
 			}
 		}
 		tr#Row4 {
-			height: @buttons-size;
+			height: @buttons-size + 20px;
 			td {
 				div#AudioPlayer {
 					left: 0px;
-					bottom: 10px;
+					bottom: 35px;
 					position: fixed;
 					div#PlayPause {
 						background-size: contain;

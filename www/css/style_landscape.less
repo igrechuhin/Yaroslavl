@@ -23,7 +23,7 @@
 
 .invisible { display: none; }
 
-.red_line { padding-left: 80px; }
+.red_line { padding-left: 70px; }
 
 div#MenuButton {
 	top: 40px / @coord-divisor;
@@ -433,6 +433,7 @@ div#Pages {
 				}
 			}
 			&#Page05-4 {
+				.portrait { .invisible; }
 				.plan {
 					img {
 						padding-top: @plan05-4-top;
@@ -457,6 +458,7 @@ div#Pages {
 				}
 			}
 			&#Page05-5 {
+				.portrait { .invisible; }
 				.plan {
 					img {
 						padding-top: @plan05-5-top;
@@ -681,6 +683,13 @@ div#PlanImage {
 				div#AudioPlayer {
 					width: @width-landscape - @buttons-width;
 					div#LayoutSlider{ width: @width-landscape - 2*@padding-left-thick; }
+				}
+			}
+		}
+		tr#Row5 {
+			td {
+				div#Speaker {
+					left: 39%;
 				}
 			}
 		}
