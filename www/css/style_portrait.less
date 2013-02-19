@@ -79,12 +79,12 @@ div#Menu {
 			top: @menu-offset-top + 616px;
 		}
 		&#Page11Button {
-			left: @menu-offset-left + 398px; 
-			top: @menu-offset-top + 500px;
-		}
-		&#Page12Button {
 			left: @menu-offset-left + 192px; 
 			top: @menu-offset-top + 90px;
+		}
+		&#Page12Button {
+			left: @menu-offset-left + 398px; 
+			top: @menu-offset-top + 500px;
 		}
 		&#Page13Button {
 			left: @menu-offset-left + 308px; 
@@ -630,10 +630,22 @@ div#Pages {
 					tr { height: 1.5 * @buttons-size; }
 				}
 			}
-			&#Page09,&#Page10,&#Page12 {
+			&#Page09,&#Page10 {
 				article { padding-top: @padding-top-thick2 + 3px; }
 			}
 			&#Page11 {
+				article {
+					padding-top: @padding-top-thick2;
+					-webkit-column-count: 1;
+					p{
+						img {
+							&#FPLogo { width: 302px / @coord-divisor; }
+							&#MGLogo { width: 320px / @coord-divisor; }
+						}
+					}
+				}
+			}
+			&#Page12 {
 				img#Info.landscape { .invisible; }
 				div {
 					left: @padding-left-thick;

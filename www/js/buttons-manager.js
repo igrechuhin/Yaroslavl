@@ -63,12 +63,18 @@ App.ButtonsManager = {
       dom.Page08.find("td.audio-button").unbind("touchend").bind("touchend", btnsMgr.touch);
       break;
     case "Page09":
-    case "Page12":
       $btns.children("#Temple").add($hint).removeClass("invisible");
       break;
     case "Page11":
       $btns.children("#Temple").removeClass("invisible");
-      dom.Page11.find("img.social-button").unbind("touchend").bind("touchend", btnsMgr.touch);
+      if (App.Orientation === "portrait") {
+          $hint.removeClass("invisible");
+      }
+      dom.Page11.find("img.social-button,span.social-button").unbind("touchend").bind("touchend", btnsMgr.touch);
+      break;
+    case "Page12":
+      $btns.children("#Temple").removeClass("invisible");
+      dom.Page12.find("img.social-button").unbind("touchend").bind("touchend", btnsMgr.touch);
       break;
     case "Page13":
       $btns.children("#Temple").removeClass("invisible");
@@ -185,7 +191,7 @@ App.ButtonsManager = {
         scrollHeight = 0;
     if ((currentPageIndex >= dom.Page051.index() && currentPageIndex <= dom.Page056.index()) || 
         currentPageIndex === dom.Page09.index() || 
-        currentPageIndex === dom.Page12.index()) {
+        currentPageIndex === dom.Page11.index()) {
       var linesCount = 3,
           lineHeight = menuMgr.CurrentPage.find("#MainContent > .scroller > .screen > article").css("line-height").replace(/[^\-\d\.]/g, ""),
           hintHeight = dom.Hint.css("height").replace(/[^\-\d\.]/g, ""),
@@ -224,9 +230,7 @@ App.ButtonsManager = {
         scrollHint = dom.Hint.children("#UpDown"),
         menuMgr = App.MenuManager,
         scroll = menuMgr.getScroller();
-     if (scroll === undefined || scroll === null) {
-      return;
-    }
+    if (scroll === undefined || scroll === null) { return; }
     scrollHint.children().removeClass("invisible2");
     if (scroll.pagesY.length !== 0) {
       if (scroll.currPageY === 0) { // remove up

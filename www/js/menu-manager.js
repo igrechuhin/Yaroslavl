@@ -82,7 +82,7 @@ App.MenuManager = {
         var pgIndex = page.index();
         menuMgr.PageScroller[pgIndex] = new iScroll(page.children("#MainContent").get(0), options);
         btnsMgr.refreshScroll.call(menuMgr.PageScroller[pgIndex]);
-      }, 0);
+      }, 50);
     } else if (pgScroller !== null) {
       pgScroller.refresh();
       pgScroller.scrollTo(0, 0, 0);
@@ -196,6 +196,12 @@ App.MenuManager = {
         case "Page01":
           dom.Page01.find("div#Info > div,div#GetInfo").unbind("touchstart").bind("touchstart", btnsMgr.infoTouch);
           break;
+        case "Page02":
+          var video = document.getElementById('video');
+          video.addEventListener('click', function () {
+            video.play();
+          }, false);
+          break;
         case "Page03":
           screens = that.find(".screen");
           screens.css("height", window.innerHeight);
@@ -222,7 +228,7 @@ App.MenuManager = {
         case "Page05-5":
         case "Page05-6":
         case "Page09":
-        case "Page12":
+        case "Page11":
           scrollerOptions.snap = false;
           menuMgr.createPageScroller(that, scrollerOptions);
           break;
