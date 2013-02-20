@@ -1,4 +1,4 @@
-/*global $, window, App, setTimeout, Code */
+/*global $, window, console, App, setTimeout, Code */
 
 App.ButtonsManager = {
   SkipTouchOnScroll: false,

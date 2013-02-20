@@ -1,4 +1,4 @@
-/*global $, window, App, setTimeout, iScroll */
+/*global $, window, document, App, setTimeout, clearTimeout, iScroll */
 
 App.MenuManager = {
   CurrentPage: $(),
@@ -6,6 +6,9 @@ App.MenuManager = {
   NeedGoBack: false,
   PageScroller: [],
   MainScroller: null,
+  CleanupTimer: null,
+  DefaultCleanupDelay: 3000,
+  CleanupDelay: 3000,
 
   register: function () {
     setTimeout(function () {
@@ -67,7 +70,7 @@ App.MenuManager = {
       return;
     }
     menuMgr.CurrentPage = target;
-    loader.getContent({
+    loader({
       target: target,
       loadNext: true
     });
@@ -131,7 +134,7 @@ App.MenuManager = {
     var menuMgr = App.MenuManager;
     menuMgr.MainScroller.refresh();
     setTimeout(function () {
-      menuMgr.MainScroller.scrollToPage(menuMgr.CurrentPage.index(), 0, 300);
+      menuMgr.MainScroller.scrollToPage(menuMgr.CurrentPage.index(), 0, 200);
     }, 50);
   },
 
@@ -143,7 +146,6 @@ App.MenuManager = {
         loader = App.Loader,
         that = this,
         pageID = that.attr("id"),
-        pageIndex = that.index(),
         scrollEnd = function () {
           btnsMgr.refreshScroll();
           setTimeout(function () {
@@ -182,15 +184,15 @@ App.MenuManager = {
     default:
       if (Parameters.hasOwnProperty("loadNext") && Parameters.loadNext === true && that.hasClass("page")) {
         setTimeout(function () {
-          loader.getContent({
+          loader({
              target: that.prev(),
              loadNext: false
           });
-          loader.getContent({
+          loader({
              target: that.next(),
              loadNext: false
           });
-        }, 300);
+        }, 400);
         $(".plan").addClass("invisible");
         switch (pageID) {
         case "Page01":
@@ -245,25 +247,9 @@ App.MenuManager = {
           templesMgr.setup(setupObj);
           btnsMgr.setup(setupObj);
         }, 100);
-        // Cleanup
-        if (!menuMgr.isSamePage(menuMgr.CurrentPage, dom.Page06)) {
-          btnsMgr.hideImages();
-        }
-        setTimeout(function () {
-          var length = menuMgr.PageScroller.length,
-              toClear = that.prevAll(":gt(0)").add(that.nextAll(":gt(0)")).not(dom.Page04),
-              ind,
-              pgScroller; 
-          for (ind = 0; ind < length; ind++) {
-            if (ind === pageIndex) { continue; }
-            pgScroller = menuMgr.getScroller(ind);
-            if (pgScroller === undefined || pgScroller === null) { continue; }
-            pgScroller.destroy();
-            menuMgr.PageScroller[ind] = null;
-          }
-          toClear.children().remove();
-          toClear.html("");
-        }, 500);
+        clearTimeout(menuMgr.CleanupTimer);
+        menuMgr.CleanupTimer = setTimeout(menuMgr.cleanup, menuMgr.CleanupDelay);
+        menuMgr.CleanupDelay = menuMgr.CleanupDelay / 2;
       }
       break;
     }
@@ -271,5 +257,28 @@ App.MenuManager = {
 
   isSamePage: function (Page1, Page2) {
     return Page1.attr("id") === Page2.attr("id");
+  },
+
+  cleanup: function () {
+    var menuMgr = App.MenuManager,
+        dom = App.DOM,
+        btnsMgr = App.ButtonsManager,
+        $pg = menuMgr.CurrentPage,
+        pageIndex = $pg.index(),
+        length = menuMgr.PageScroller.length,
+        toClear = $pg.prevAll(":gt(0)").add($pg.nextAll(":gt(0)")).not(dom.Page04),
+        ind,
+        pgScroller;
+    if (!menuMgr.isSamePage($pg, dom.Page06)) { btnsMgr.hideImages(); }
+    for (ind = 0; ind < length; ind++) {
+      if (ind === pageIndex) { continue; }
+      pgScroller = menuMgr.getScroller(ind);
+      if (pgScroller === undefined || pgScroller === null) { continue; }
+      pgScroller.destroy();
+      menuMgr.PageScroller[ind] = null;
+    }
+    toClear.children().remove();
+    toClear.html("");
+    menuMgr.CleanupDelay = menuMgr.DefaultCleanupDelay;
   }
 };

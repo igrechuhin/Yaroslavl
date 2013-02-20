@@ -23,7 +23,7 @@
         <script type="text/javascript" src="https://maps.google.com/maps/api/js?sensor=true"></script>
         <script type="text/javascript" src="js/infobox_packed.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
-        <script type="text/javascript" src="js/iscroll.js"></script>
+        <script type="text/javascript" src="js/iscroll.min.js"></script>
         <script type="text/javascript" src="js/spinningwheel.min.js"></script>
 
         <script type="text/javascript" src="js/jshashtable-2.1_src.min.js"></script>
@@ -36,107 +36,14 @@
         <script type="text/javascript" src="js/klass.min.js"></script>
         <script type="text/javascript" src="js/code.photoswipe.jquery-3.0.5.min.js"></script>
 
-        <script type="text/javascript">
-            App = {};
-            $(document).ready(function(e) {
-                var pages = $("div#Pages"),
-                    pagesScroller = pages.children("div#PagesScroller"),
-                    pageID = document.location.search.substring(1),
-                    pagesArray = pagesScroller.children();
-
-                App.Orientation = (window.orientation == -90 || window.orientation == 90) ? "landscape" : "portrait";
-
-                App.DOM = {
-                    Menu: $("div#Menu"),
-                    Buttons: $("div#Buttons"),
-                    Temples: $("div#Temples"),
-                    Hint: $("div#Hint"),
-                    MenuButton: $("div#MenuButton"),
-                    Pages: pages,
-                    PagesScroller: pagesScroller,
-                    PlanImage: $("div#PlanImage"),
-
-                    Page01: pagesScroller.children("div#Page01"),
-                    Page02: pagesScroller.children("div#Page02"),
-                    Page03: pagesScroller.children("div#Page03"),
-                    Page04: pagesScroller.children("div#Page04"),
-                    Page051: pagesScroller.children("div#Page05-1"),
-                    Page052: pagesScroller.children("div#Page05-2"),
-                    Page053: pagesScroller.children("div#Page05-3"),
-                    Page054: pagesScroller.children("div#Page05-4"),
-                    Page055: pagesScroller.children("div#Page05-5"),
-                    Page056: pagesScroller.children("div#Page05-6"),
-                    Page06: pagesScroller.children("div#Page06"),
-                    Page07: pagesScroller.children("div#Page07"),
-                    Page08: pagesScroller.children("div#Page08"),
-                    Page09: pagesScroller.children("div#Page09"),
-                    Page10: pagesScroller.children("div#Page10"),
-                    Page11: pagesScroller.children("div#Page11"),
-                    Page12: pagesScroller.children("div#Page12"),
-                    Page13: pagesScroller.children("div#Page13")
-                };
-
-                App.Loader.getContent({target: App.DOM.Menu});
-                App.Loader.getContent({target: App.DOM.Buttons});
-                App.Loader.getContent({target: App.DOM.Temples});
-                App.Loader.getContent({target: App.DOM.Hint});
-                App.Loader.getContent({target: App.DOM.PlanImage});
-
-                sizePagesForOrientation();
-                App.MenuManager.createScroller();
-
-                App.MenuManager.gotoPage((pageID.length > 0) ? pagesArray.filter("div#"+pageID) : pagesArray.first());
-                //setInterval(function () {console.log(Buttons.skipTouchOnScroll);}, 100);
-            });
-            window.onorientationchange = function() {
-                var menuMgr = App.MenuManager,
-                    dom = App.DOM,
-                    $pg = menuMgr.CurrentPage,
-                    $scroller = null;
-                App.Orientation = (window.orientation == -90 || window.orientation == 90) ? "landscape" : "portrait";
-                sizePagesForOrientation();
-                menuMgr.refreshPage();
-                if (menuMgr.isSamePage($pg, dom.Page03) || menuMgr.isSamePage($pg, dom.Page07)) {
-                    var screens = $pg.find(".screen"),
-                        currScroller = menuMgr.getScroller(),
-                        currScrollerPosition = currScroller.$pgY;
-                    screens.css("height", window.innerHeight);
-                    $pg.find(".scroller").css("height", window.innerHeight * screens.length);
-                    currScroller.refresh();
-                    currScroller.scrollToPage(0, currScrollerPosition, 300);
-                } else if (menuMgr.isSamePage($pg, dom.Page11)) {
-                    $scroller = menuMgr.getScroller($pg.index());
-                    if (App.Orientation === "landscape") {
-                        dom.Hint.addClass("invisible");
-                        $scroller.disable();
-                    } else {
-                        dom.Hint.removeClass("invisible");
-                        $scroller.enable();
-                    }
-                }
-                App.PlanManager.refresh();
-            };
-            function sizePagesForOrientation() {
-                var dom = App.DOM,
-                    pagesScroller = dom.PagesScroller,
-                    pages = dom.PagesScroller.children();
-                pagesScroller.css("width", window.innerWidth * pages.length);
-                pages.css({
-                    "width" : window.innerWidth,
-                    "min-height" : window.innerHeight
-                });
-                dom.Page01.css("min-height", Math.max(window.innerHeight, window.innerWidth));
-            };
-        </script>
-
+        <script type="text/javascript" src="js/app.min.js"></script>
         <script type="text/javascript" src="js/map-manager.min.js"></script>
         <script type="text/javascript" src="js/audio-manager.min.js"></script>
-        <script type="text/javascript" src="js/menu-manager.js"></script>
-        <script type="text/javascript" src="js/buttons-manager.js"></script>
+        <script type="text/javascript" src="js/menu-manager.min.js"></script>
+        <script type="text/javascript" src="js/buttons-manager.min.js"></script>
         <script type="text/javascript" src="js/temples-manager.min.js"></script>
         <script type="text/javascript" src="js/plan-manager.min.js"></script>
         <script type="text/javascript" src="js/guide-manager.min.js"></script>
-        <script type="text/javascript" src="js/content-loader.min.js"></script>
     </head>
     <body>
         <div id="MenuButton" class="brown"><p>содержание</p></div>
