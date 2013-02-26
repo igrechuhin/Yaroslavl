@@ -594,13 +594,15 @@ div#Pages {
 				}
 			}
 			&#Page04 {
-				#Map {
+				div#Map {
 					top: @padding-top-thick + @header-top;
 					left: @padding-left-thin;
 					right: @padding-right;
 					bottom: @padding-left-thin;
 					position: absolute;
-					border: 1px double #000;
+					//border: 1px double #000;
+
+					background-size: contain;
 					.map_info {
 						padding-top: 8px;
 						height: 100%;
@@ -609,7 +611,7 @@ div#Pages {
 						p { padding-left: 10px; }
 					}
 				}
-				#MapMarkers { display: none; }
+				ul#MapMarkers { display: none; }
 			}
 			&#Page05-1,&#Page05-2,&#Page05-3,&#Page05-4,&#Page05-5,&#Page05-6 {
 				.screen {

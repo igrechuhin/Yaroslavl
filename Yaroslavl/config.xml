@@ -31,8 +31,8 @@
 	<preference name="MediaPlaybackRequiresUserAction" value="false"/>
 	<preference name="AllowInlineMediaPlayback" value="false"/>
 	<preference name="BackupWebStorage" value="cloud" />
-	        <content src="index.html" />
-		    <plugins>
+	<content src="index.html" />
+	<plugins>
         <plugin name="Device" value="CDVDevice" />
         <plugin name="Logger" value="CDVLogger" />
         <plugin name="Compass" value="CDVLocation" />

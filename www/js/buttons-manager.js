@@ -39,7 +39,7 @@ App.ButtonsManager = {
       btnsMgr.toggleEyeText();
       break;
     case "Page04":
-      $btns.children("#Temple,#Route").removeClass("invisible");
+      $btns.children("#Temple").removeClass("invisible");
       break;
     case "Page05-1":
     case "Page05-2":

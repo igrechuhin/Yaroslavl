@@ -9,6 +9,7 @@ App.MenuManager = {
   CleanupTimer: null,
   DefaultCleanupDelay: 3000,
   CleanupDelay: 3000,
+  ShowMapAlert: true,
 
   register: function () {
     setTimeout(function () {
@@ -148,9 +149,7 @@ App.MenuManager = {
         pageID = that.attr("id"),
         scrollEnd = function () {
           btnsMgr.refreshScroll();
-          setTimeout(function () {
-              btnsMgr.SkipTouchOnScroll = false;
-          }, 50);
+          setTimeout(function () { btnsMgr.SkipTouchOnScroll = false; }, 50);
         },
         scrollerOptions = {
           snap: true,
@@ -161,9 +160,7 @@ App.MenuManager = {
           vScrollbar: false,
           lockDirection: true,
           momentumDeceleration: 0.006,
-          onScrollMove: function () {
-            btnsMgr.SkipTouchOnScroll = true;
-          },
+          onScrollMove: function () { btnsMgr.SkipTouchOnScroll = true; },
           onScrollEnd: scrollEnd
         },
         screens;
@@ -220,7 +217,25 @@ App.MenuManager = {
           break;
         case "Page04":
           setTimeout(function () {
-            App.MapManager.register({target: that.children("#Map")});
+            var networkState = navigator.connection.type,
+                $btn = dom.Buttons.children("#Route"),
+                $target = that.children("div#Map");
+            if (networkState == Connection.UNKNOWN || networkState == Connection.NONE) {
+              if (menuMgr.ShowMapAlert === true || true) {
+                navigator.notification.alert(
+                    'Функции навигации недодступны', // message
+                    function () {}, // callback
+                    'Нет подключения к интернет' // title
+                );
+                menuMgr.ShowMapAlert = false;
+                $btn.addClass("invisible");
+              }
+            } else {
+              App.MapManager.register({target: $target});
+              $target.css("background-image", "none");
+              menuMgr.ShowMapAlert = true;
+              $btn.removeClass("invisible");
+            }
           }, 1000);
           break;
         case "Page05-1":
@@ -266,7 +281,7 @@ App.MenuManager = {
         $pg = menuMgr.CurrentPage,
         pageIndex = $pg.index(),
         length = menuMgr.PageScroller.length,
-        toClear = $pg.prevAll(":gt(0)").add($pg.nextAll(":gt(0)")).not(dom.Page04),
+        toClear = $pg.prevAll(":gt(0)").add($pg.nextAll(":gt(0)")).not(menuMgr.ShowMapAlert ? dom.Page04 : $()),
         ind,
         pgScroller;
     if (!menuMgr.isSamePage($pg, dom.Page06)) { btnsMgr.hideImages(); }
