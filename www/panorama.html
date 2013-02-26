@@ -63,8 +63,8 @@
           }
         });
         document.addEventListener("deviceready", function () {
-          if (device.model !== "iPad1,1") {
-            $("#Gyroscope").removeClass("invisible");
+          if (device.model == "iPad1,1") {
+            $("#Gyroscope").addClass("invisible");
           }
         }, false);
       });
@@ -73,7 +73,7 @@
   <body>
     <div id="PanoramaContent" data-url="panorama.html">
       <div id="ClosePanorama"></div>
-      <div id="Gyroscope" class="invisible invert"></div>
+      <div id="Gyroscope" class="invert"></div>
     </div>
   </body>
 </html>
