@@ -76,8 +76,9 @@ $(document).ready(function () {
     sizePagesForOrientation();
     App.MenuManager.createScroller();
 
-    App.MenuManager.gotoPage((pageID.length > 0) ? pagesArray.filter("div#"+pageID) : pagesArray.first());
-    //setInterval(function () {console.log(Buttons.skipTouchOnScroll);}, 100);
+    setTimeout(function () {
+        App.MenuManager.gotoPage((pageID.length > 0) ? pagesArray.filter("div#"+pageID) : pagesArray.first());
+    }, 50);
 });
 
 window.onorientationchange = function() {
